@@ -1,6 +1,6 @@
 import React from 'react';
-import SpotifyContainer from './unclient/spotify-container';
-import RecommendationsButton from './unclient/RecommendationsButton';
+import SpotifyContainer from './spotify-container';
+import RecommendationsButton from './RecommendationsButton';
 
 const Navbar = () => (
   <div>
