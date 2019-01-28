@@ -14,8 +14,8 @@ module.exports = router;
 
 // configure the keys for accessing AWS
 AWS.config.update({
-  accessKeyId: AWS_ACCESS_KEY_ID,
-  secretAccessKey: AWS_SECRET_ACCESS_KEY,
+  accessKeyId: s3secrets.accessKeyId || AWS_ACCESS_KEY_ID,
+  secretAccessKey: s3secrets.secretAccessKey || AWS_SECRET_ACCESS_KEY,
 });
 
 // configure AWS to work with promises
@@ -38,7 +38,7 @@ const uploadFile = (buffer, name, type) => {
 
 // Define POST route
 router.post('/test-upload', (request, response) => {
-  console.log(AWS_SECRET_ACCESS_KEY);
+  console.log('s3secrets', s3secrets);
   const form = new multiparty.Form();
   form.parse(request, async (error, fields, files) => {
     if (error) throw new Error(error);
