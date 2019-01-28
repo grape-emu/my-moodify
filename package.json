@@ -1,11 +1,19 @@
 {
   "name": "my-moodify",
   "version": "1.0.0",
+  "engines": {
+    "node": "10.x"
+  },
   "scripts": {
     "client": "cd client && npm start",
     "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
+  "cacheDirectories": [
+    "node_modules",
+    "client/node_modules"
+  ],
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4"
