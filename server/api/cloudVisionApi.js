@@ -1,10 +1,7 @@
 const router = require('express').Router();
-const multer = require('multer');
-const AWS = require('aws-sdk');
 const vision = require('@google-cloud/vision');
 const GoogleAPIKey = './server/api/keys/GoogleAPIKey.json';
 const imageUrl = './client/public/guliSad.jpeg';
-const fs = require('fs');
 
 // Imports the Google Cloud client library &
 // Creates a client
