@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 5000;
 const https = require('https');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -48,7 +49,6 @@ function spotifyAPI(params, token) {
 
 app.get('/api/spotify/find', async (req, res, next) => {
   let token = req.query.token;
-  // console.log('*******************', req.query)
   try {
     const data = await spotifyAPI(
       `recommendations?${functionConversion}`,
