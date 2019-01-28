@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { getHashParams } from './spotify-functions';
 
 // eslint-disable-next-line
@@ -21,7 +22,7 @@ export default class RecommendationsButton extends Component {
         }&recommendations?seed_genres=blues&max_valence=0.5`
       );
       // eslint-disable-next-line
-      const { data } = await fetch(
+      const { data } = await axios.get(
         `/api/spotify/find?token=${token.access_token}`
       ); // &recommendations?${functionConversion}
       // console.log returns the url to the Spotify Play link
