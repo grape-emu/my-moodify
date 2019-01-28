@@ -27,7 +27,7 @@ export function checkUrlForSpotifyAccessToken() {
 }
 
 export function getHashParams() {
-  //helper function to parse the query string that spotify sends back when you log in
+  //helper function to parse the query string that Spotify sends back when you log in
   var hashParams = {};
   var e,
     r = /([^&;=]+)=?([^&;]*)/g,
