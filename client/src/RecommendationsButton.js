@@ -24,8 +24,9 @@ export default class RecommendationsButton extends Component {
       // eslint-disable-next-line
       const { data } = await axios.get(
         `/api/spotify/find?token=${token.access_token}`
-      ); // &recommendations?${functionConversion}
-      // console.log returns the url to the Spotify Play link
+      ); // using relative path because of prpoxy setup for create-react-app
+
+      // console.log returns the url to the Spotify Play link to be used in future
       // console.log(data.tracks[0].external_urls.spotify)
     } catch (err) {
       console.error(err);
