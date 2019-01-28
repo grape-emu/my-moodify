@@ -7,6 +7,7 @@ const functionConversion = 'seed_genres=blues&max_valence=0.5';
 // function converting from google to spotify will have to convert to string before output: key=value.join('&')
 // will be importing output of function here (likewise ../../client/components/Recommendations)
 
+//JEFF SUGGESTED NEW NAME FOR SPOTIFY API FUNCTION
 //pass querystring, token
 function spotifyAPI(params, token) {
   return new Promise((resolve, reject) => {
@@ -38,7 +39,6 @@ function spotifyAPI(params, token) {
 
 router.get('/find', async (req, res, next) => {
   let token = req.query.token;
-  // console.log('*******************', req.query)
   try {
     const data = await spotifyAPI(
       `recommendations?${functionConversion}`,
