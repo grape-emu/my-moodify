@@ -17,6 +17,8 @@ app.post('/api/world', (req, res) => {
   );
 });
 
+app.use('/S3', require('./server/api/S3.js'));
+
 const functionConversion = 'seed_genres=blues&max_valence=0.5';
 
 function spotifyAPI(params, token) {
