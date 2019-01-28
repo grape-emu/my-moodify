@@ -1,34 +1,34 @@
-import React, {Component} from 'react'
-import axios from 'axios'
+import React, { Component } from 'react';
+import axios from 'axios';
 
 class ImageForm extends Component {
   constructor() {
-    super()
+    super();
     this.state = {
-      file: null
-    }
+      file: null,
+    };
   }
 
   submitFile = event => {
-    console.log('submitFile working...')
-    event.preventDefault()
-    const formData = new FormData()
-    formData.append('file', this.state.file[0])
+    console.log('submitFile working...');
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('file', this.state.file[0]);
     axios
-      .post('/test-upload', formData, {
+      .post('s3/test-upload', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       })
       .catch(error => {
-        console.log('error')
-      })
-  }
+        console.log('error');
+      });
+  };
 
   handleFileUpload = event => {
-    console.log('updating')
-    this.setState({file: event.target.files})
-  }
+    console.log('updating');
+    this.setState({ file: event.target.files });
+  };
 
   render() {
     return (
@@ -40,8 +40,8 @@ class ImageForm extends Component {
         />
         <button type="submit">Send</button>
       </form>
-    )
+    );
   }
 }
 
-export default ImageForm
+export default ImageForm;
