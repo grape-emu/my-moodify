@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { getHashParams } from './spotify-functions';
-import RecommendationsView from './RecommendationsView';
 
 // function converting from google to spotify will have to convert to string before output: key=value.join('&')
 // will be importing output of function here (likewise ../../server/api/spotify)
@@ -25,7 +24,7 @@ export default class RecommendationsButton extends Component {
 					token.access_token
 				}&recommendations?${convertedFromFunction}`
 			);
-
+      
 			//make request to backend to fetch querry from Spotify API
 			//using relative path because of proxy setup for create-react-app
 			const { data } = await axios.get(
