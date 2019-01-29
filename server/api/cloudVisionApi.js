@@ -1,9 +1,8 @@
 const router = require('express').Router();
 const vision = require('@google-cloud/vision');
 const GoogleAPIKey = './server/api/keys/GoogleAPIKey.json';
-// const imageUrl = './client/public/guliSad.jpeg';
 const imageUrl =
-  'https://my-moodify.s3.amazonaws.com/bucketFolder/1548708223687-lg.jpg?AWSAccessKeyId=AKIAIXS4PWIPEK3ICL2Q&Expires=1548791725&Signature=b0H8V7ns7tLUK7t5ndhuZY%2BXa0g%3D';
+  'https://my-moodify.s3.amazonaws.com/bucketFolder/1548791805067-lg.jpg';
 
 // Imports the Google Cloud client library &
 // Creates a client
