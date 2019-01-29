@@ -19,9 +19,12 @@
 .env.test.local
 .env.production.local
 /client/.env.local
+./conversion
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
 /src/secrets.js
+
+/server/api/keys/S3secrets.js
