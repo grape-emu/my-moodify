@@ -42,16 +42,18 @@ export default class RecommendationsButton extends Component {
 		}
 	};
 	render() {
+		console.log(this.state.tracks);
 		return (
 			<div>
 				<button type="button" onClick={this.handleRecommendations}>
 					Get Recommendations
 				</button>
-				{this.state.tracks.length > 0 ? (
-					<RecommendationsView tracks={this.state.tracks} />
-				) : (
+				{/* {this.state.tracks.length > 0 ? (
 					<div />
-				)}
+				) : (
+					// <RecommendationsView tracks={this.state.tracks} />
+					<div />
+				)} */}
 			</div>
 		);
 	}

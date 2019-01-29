@@ -20,7 +20,7 @@ function spotifyAPI(params, token) {
 			}
 		};
 
-		let httpsObject = https.get(options, res => {
+		https.get(options, res => {
 			let data = '';
 			res
 				.on('data', chunk => {
