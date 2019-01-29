@@ -12,7 +12,6 @@ export default class RecommendationsButton extends Component {
 	constructor() {
 		super();
 		this.state = {
-			id: false,
 			tracks: []
 		};
 		this.handleRecommendations = this.handleRecommendations.bind(this);
@@ -34,11 +33,8 @@ export default class RecommendationsButton extends Component {
 					token.access_token
 				}&recomendations?${convertedFromFunction}`
 			);
-			// console.log(data);
-
 			//update local state with URL
 			this.setState({
-				id: data.tracks[0].id,
 				tracks: data.tracks
 			});
 		} catch (err) {
@@ -51,7 +47,11 @@ export default class RecommendationsButton extends Component {
 				<button type="button" onClick={this.handleRecommendations}>
 					Get Recommendations
 				</button>
-				{this.state.id ? <RecommendationsView id={this.state.id} /> : <div />}
+				{this.state.tracks.length > 0 ? (
+					<RecommendationsView tracks={this.state.tracks} />
+				) : (
+					<div />
+				)}
 			</div>
 		);
 	}
