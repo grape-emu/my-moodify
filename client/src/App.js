@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from './navbar';
 import './App.css';
+import ImageForm from './ImageForm.js';
 
 class App extends Component {
   state = {
@@ -45,6 +46,7 @@ class App extends Component {
           <Navbar />
         </header>
         {/* TODO: Remove sample code */}
+        <ImageForm />
         <p>{this.state.response}</p>
         <form onSubmit={this.handleSubmit}>
           <p>
