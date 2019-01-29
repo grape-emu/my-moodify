@@ -6,6 +6,7 @@ const fs = require('fs');
 const fileType = require('file-type');
 const bluebird = require('bluebird');
 const multiparty = require('multiparty');
+const multer = require('multer');
 const S3_BUCKET = 'my-moodify';
 const s3secrets = require('./keys/S3secrets');
 const AWS_ACCESS_KEY_ID = process.env.REACT_APP_AWS_ACCESS_KEY_ID;
@@ -54,4 +55,33 @@ router.post('/test-upload', (request, response) => {
       return response.status(400).send(error);
     }
   });
+});
+
+// GET request
+const s3Bucket = new AWS.S3({ params: { Bucket: 'my-moodify' } });
+const urlParams = {
+  Bucket: 'my-moodify',
+  Key: 'bucketFolder/1548708223687-lg.jpg',
+};
+
+const vision = require('@google-cloud/vision');
+const GoogleAPIKey = './server/api/keys/GoogleAPIKey.json';
+const imageUrl = './client/public/guliSad.jpeg';
+
+const client = new vision.ImageAnnotatorClient({
+  keyFilename: GoogleAPIKey,
+});
+async function detectFaces(inputFile) {
+  try {
+    // Make a call to the Vision API to detect the faces
+    const request = { image: { source: { imageUri: inputFile } } };
+    const response = await client.faceDetection(request);
+    const facialData = response[0].faceAnnotations[0];
+    console.log('results[0].faceAnnotations[0]', facialData);
+  } catch (err) {
+    console.log('Cloud Vision API Error:', err);
+  }
+}
+s3Bucket.getSignedUrl('getObject', urlParams, function(err, url) {
+  detectFaces(url);
 });
