@@ -1,11 +1,11 @@
 const router = require('express').Router();
+const functionConversion = require('./conversionFunction');
 module.exports = router;
 
 const https = require('https');
 
-const functionConversion = 'seed_genres=blues&max_valence=0.5';
-// function converting from google to spotify will have to convert to string before output: key=value.join('&')
-// will be importing output of function here (likewise ../../client/components/Recommendations)
+// const functionConversion = 'seed_genres=blues&max_valence=0.5';
+// okay, I think the require statement above should cover this...
 
 //pass querystring, token
 function spotifyAPI(params, token) {
