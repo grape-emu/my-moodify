@@ -17,6 +17,7 @@ async function detectFaces(inputFile) {
     const response = await client.faceDetection(request);
     const facialData = response[0].faceAnnotations[0];
     console.log('results[0].faceAnnotations[0]', facialData);
+    console.log('GoogleAPIKey', GoogleAPIKey);
   } catch (err) {
     console.log('Cloud Vision API Error:', err);
   }
