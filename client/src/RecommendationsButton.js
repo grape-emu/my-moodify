@@ -27,7 +27,7 @@ export default class RecommendationsButton extends Component {
       ); // using relative path because of prpoxy setup for create-react-app
 
       // console.log returns the url to the Spotify Play link to be used in future
-      console.log(data.tracks[0].external_urls.spotify)
+      // console.log(data.tracks[0].external_urls.spotify)
     } catch (err) {
       console.error(err);
     }
