@@ -16,13 +16,26 @@ enum(Likelihood):
   LIKELY
   VERY_LIKELY
 
-"Image quality insufficient. Please upload a new selfie."
-  if(detectionConfidence == close to 0)
-  if(blurredLikelihood === 'VERY_LIKELY')
-  if(joyLikelihood === 'UNKNOWN' && sorrowLikelihood === 'UNKNOWN' && angerLikelihood === 'UNKNOWN' && surpriseLikelihood === 'UNKNOWN')
-  if(joyLikelihood === 'VERY_UNLIKELY' && sorrowLikelihood === 'VERY_UNLIKELY' && angerLikelihood === 'VERY_UNLIKELY' && surpriseLikelihood === 'VERY_UNLIKELY')
+
+case (detectionConfidence == close to 0) ||
+  (blurredLikelihood === 'VERY_LIKELY') ||
+  (joyLikelihood === 'UNKNOWN' && sorrowLikelihood === 'UNKNOWN' && angerLikelihood === 'UNKNOWN' && surpriseLikelihood === 'UNKNOWN') ||
+  (joyLikelihood === 'VERY_UNLIKELY' && sorrowLikelihood === 'VERY_UNLIKELY' && angerLikelihood === 'VERY_UNLIKELY' && surpriseLikelihood === 'VERY_UNLIKELY'):
+  return "Image quality insufficient. Please try a different selfie."
 
 
+case ((joyLikelihood === VERY_LIKELY || joyLikelihood === LIKELY) && (sorrowLikelihood === VERY_LIKELY || sorrowLikelihood === LIKELY)):
+  return
+
+
+case default:
+  return 'max_liveness=0.75&min_speechiness=0.66';
+
+  const functionConversion = 'seed_genres=blues&max_valence=0.5';
+
+  function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+  }
 
   to spotify:
   genre:
@@ -33,15 +46,13 @@ enum(Likelihood):
   liveness:       // Float[0,1], where >= 0.8 is probs a live recording
   valence:        // Float[0,1], the higher the value, the more positive mood for the song (where neg inc angry)        ********
   acousticness:   // Float[0,1] where 1 === def acoustic
-  speechiness:    // Float[0,1] where <= 0.33 is music; where .33-.66 is music and speech (inc rap); where >= 0.66 is all words // probs just always < 0.66
+  speechiness:    // Float[0,1] where <= 0.33 is music; where .33-.66 is music and speech (inc rap); where >= 0.66 is all words // probs just always > 0.66
   instrumentalness:   // Float[0,1], where values above 0.5 are probs instrumentalness	  ????
-  popularity:     // the higher the value, the more popular the song
+  popularity:     // Float[0,1], where the higher the value, the more popular the song
   tempo:          // bpm
-  time_signature: //
   mode:           // major === 1, minor === 0
 track_href:       //api endpoint w/full details on track
 
-(Math.random)
 
 Encode spaces with the hex code %20 or +.
 Operator: The operator NOT can be used to exclude results.

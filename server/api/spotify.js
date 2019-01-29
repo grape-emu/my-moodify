@@ -4,6 +4,8 @@ module.exports = router;
 const https = require('https');
 
 const functionConversion = 'seed_genres=blues&max_valence=0.5';
+// this may need to be refactored to pull directly from the front end (e.g., url bar)
+// library query string
 // function converting from google to spotify will have to convert to string before output: key=value.join('&')
 // will be importing output of function here (likewise ../../client/components/Recommendations)
 
