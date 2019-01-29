@@ -19,7 +19,7 @@ export default class RecommendationsButton extends Component {
 	handleRecommendations = async () => {
 		try {
 			const token = getHashParams();
-			// console.log returns the url to the Spotify Play link to be used in future
+			// logs url for testing and debugging
 			console.log(
 				`localhost:8080/api/spotify/find?token=${
 					token.access_token
@@ -50,7 +50,6 @@ export default class RecommendationsButton extends Component {
 					Get Recommendations
 				</button>
 				{this.state.id ? <RecommendationsView id={this.state.id} /> : <div />}
-				{/* {this.state.id ? <RecommendationsView id={'bear'} /> : <div />} */}
 			</div>
 		);
 	}
