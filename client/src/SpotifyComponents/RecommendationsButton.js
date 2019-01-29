@@ -12,7 +12,8 @@ export default class RecommendationsButton extends Component {
 	constructor() {
 		super();
 		this.state = {
-			id: false
+			id: false,
+			tracks: []
 		};
 		this.handleRecommendations = this.handleRecommendations.bind(this);
 	}
@@ -37,7 +38,8 @@ export default class RecommendationsButton extends Component {
 
 			//update local state with URL
 			this.setState({
-				id: data.tracks[0].id
+				id: data.tracks[0].id,
+				tracks: data.tracks
 			});
 		} catch (err) {
 			console.error(err);

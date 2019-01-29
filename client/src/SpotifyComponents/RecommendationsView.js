@@ -1,4 +1,5 @@
 import React from 'react';
+import RecomendationsComponent from './RecomendationsComponent';
 
 const RecommendationsView = props => {
 	return (
@@ -15,7 +16,7 @@ const RecommendationsView = props => {
 						frameBorder="0"
 						allow="encrypted-media"
 					/>
-			
+					<RecomendationsComponent id={props.id} />
 				</div>
 			}
 		</div>
