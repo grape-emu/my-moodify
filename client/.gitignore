@@ -25,4 +25,4 @@ yarn-error.log*
 
 /src/secrets.js
 
-server/api/keys/S3secrets
+/server/api/keys/S3secrets.js
