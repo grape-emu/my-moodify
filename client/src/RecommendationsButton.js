@@ -25,7 +25,7 @@ export default class RecommendationsButton extends Component {
 					token.access_token
 				}&recommendations?${convertedFromFunction}`
 			);
-
+      
 			//make request to backend to fetch querry from Spotify API
 			//using relative path because of proxy setup for create-react-app
 			const { data } = await axios.get(
