@@ -49,16 +49,29 @@ const energyFunc = obj => {
 
 const valenceFunc = obj => {
   const usefulObj = convertToNums(obj)
-  let valenceMid = translator(0, 1, 2, -2, 1, 1)(usefulObj.joyLikelihood, usefulObj.sorrowLikelihood, usefulObj.surpriseLikelihood, usefulObj.angerLikelihood)
+  let valenceMid = translator(0, 1, 2, -2, 1, -1)(usefulObj.joyLikelihood, usefulObj.sorrowLikelihood, usefulObj.surpriseLikelihood, usefulObj.angerLikelihood)
   let [min, max] = toRange(valenceMid, 0.2, 0, 1);
   if(min === 0) return `&valenceMax=${max}`;
   if(max === 1) return `&valenceMin=${min}`;
   else return `&valenceMin=${min}&valenceMax=${max}`;
 }
 
+const danceabilityFunc = obj => {
+  const usefulObj = convertToNums(obj)
+  let danceabilityMid = translator(0, 1, 1, -1, 1, 0)(usefulObj.joyLikelihood, usefulObj.sorrowLikelihood, usefulObj.surpriseLikelihood, usefulObj.angerLikelihood)
+  let [min, max] = toRange(danceabilityMid, 0.2, 0, 1);
+  if(min === 0) return `&danceabilityMax=${max}`;
+  if(max === 1) return `&danceabilityMin=${min}`;
+  else return `&danceabilityMin=${min}&danceabilityMax=${max}`;
+}
+
 
 const bigConversionFunc = obj => {
-  return energyFunc(obj).concat(valenceFunc(obj));
+  const sameForAll = 'max_liveness=0.75&min_speechiness=0.66';
+  return energyFunc(obj)
+  .concat(valenceFunc(obj))
+  .concat(danceabilityFunc(obj))
+  .concat(sameForAll);
 }
 
 module.exports = bigConversionFunc;
