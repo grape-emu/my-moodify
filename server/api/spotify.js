@@ -1,10 +1,10 @@
 const router = require('express').Router();
-const functionConversion = require('./conversionFunction');
+// const functionConversion = require('./conversionFunction');
 module.exports = router;
 
 const https = require('https');
 
-// const functionConversion = 'seed_genres=blues&max_valence=0.5';
+const functionConversion = 'seed_genres=blues&max_valence=0.5';
 // okay, I think the require statement above should cover this...
 
 //pass querystring, token
@@ -20,20 +20,20 @@ function spotifyAPI(params, token) {
       },
     };
 
-    let httpsObject = https.get(options, res => {
-      let data = '';
-      res
-        .on('data', chunk => {
-          data += chunk;
-        })
-        .on('end', () => {
-          resolve(data);
-        })
-        .on('error', err => {
-          reject(err);
-        });
-    });
-  });
+		https.get(options, res => {
+			let data = '';
+			res
+				.on('data', chunk => {
+					data += chunk;
+				})
+				.on('end', () => {
+					resolve(data);
+				})
+				.on('error', err => {
+					reject(err);
+				});
+		});
+	});
 }
 
 router.get('/find', async (req, res, next) => {

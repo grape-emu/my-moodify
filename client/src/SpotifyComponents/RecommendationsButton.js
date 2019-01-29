@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { getHashParams } from './spotify-functions';
-import RecommendationsView from './RecommendationsView';
 
 // function converting from google to spotify will have to convert to string before output: key=value.join('&')
 // will be importing output of function here (likewise ../../server/api/spotify)
@@ -12,7 +11,7 @@ export default class RecommendationsButton extends Component {
 	constructor() {
 		super();
 		this.state = {
-			id: false
+			tracks: []
 		};
 		this.handleRecommendations = this.handleRecommendations.bind(this);
 	}
@@ -33,23 +32,27 @@ export default class RecommendationsButton extends Component {
 					token.access_token
 				}&recomendations?${convertedFromFunction}`
 			);
-			// console.log(data);
-
 			//update local state with URL
 			this.setState({
-				id: data.tracks[0].id
+				tracks: data.tracks
 			});
 		} catch (err) {
 			console.error(err);
 		}
 	};
 	render() {
+		console.log(this.state.tracks);
 		return (
 			<div>
 				<button type="button" onClick={this.handleRecommendations}>
 					Get Recommendations
 				</button>
-				{this.state.id ? <RecommendationsView id={this.state.id} /> : <div />}
+				{/* {this.state.tracks.length > 0 ? (
+					<div />
+				) : (
+					// <RecommendationsView tracks={this.state.tracks} />
+					<div />
+				)} */}
 			</div>
 		);
 	}
