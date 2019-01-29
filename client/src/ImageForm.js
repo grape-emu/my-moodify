@@ -15,7 +15,7 @@ class ImageForm extends Component {
     const formData = new FormData();
     formData.append('file', this.state.file[0]);
     axios
-      .post('s3/test-upload', formData, {
+      .post('/api/s3/test-upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

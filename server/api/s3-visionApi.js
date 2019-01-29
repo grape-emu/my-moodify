@@ -8,15 +8,15 @@ const bluebird = require('bluebird');
 const multiparty = require('multiparty');
 const multer = require('multer');
 const S3_BUCKET = 'my-moodify';
-const s3secrets = require('./keys/S3secrets');
-const AWS_ACCESS_KEY_ID = process.env.REACT_APP_AWS_ACCESS_KEY_ID;
-const AWS_SECRET_ACCESS_KEY = process.env.REACT_APP_AWS_SECRET_ACCESS_KEY;
+const s3secrets = require('../../secrets/keys/S3secrets');
+const bigConversionFunc = require('./conversionFunction.js');
+
 module.exports = router;
 
 // configure the keys for accessing AWS
 AWS.config.update({
-  accessKeyId: s3secrets.accessKeyId || AWS_ACCESS_KEY_ID,
-  secretAccessKey: s3secrets.secretAccessKey || AWS_SECRET_ACCESS_KEY,
+  accessKeyId: s3secrets.accessKeyId,
+  secretAccessKey: s3secrets.secretAccessKey,
 });
 
 // configure AWS to work with promises
@@ -39,7 +39,7 @@ const uploadFile = (buffer, name, type) => {
 
 // Defining google cloud vision api:
 const vision = require('@google-cloud/vision');
-const GoogleAPIKey = './server/api/keys/GoogleAPIKey.json';
+const GoogleAPIKey = './secrets/keys/GoogleAPIKey.json';
 const client = new vision.ImageAnnotatorClient({
   keyFilename: GoogleAPIKey,
 });
@@ -56,6 +56,9 @@ async function detectFaces(inputFile) {
 }
 
 // Define POST route
+// Integrate Google Cloud Vision API in the route
+// Return facial data object
+
 router.post('/test-upload', (request, response) => {
   const form = new multiparty.Form();
   form.parse(request, async (error, fields, files) => {
@@ -71,6 +74,7 @@ router.post('/test-upload', (request, response) => {
       const facialDataObj = await detectFaces(urlLink);
       console.log('facialDataObj', facialDataObj);
       console.log('data.location = url?', urlLink);
+      console.log('conversion result', bigConversionFunc(facialDataObj));
 
       return response.status(200).send(facialDataObj);
     } catch (error) {
