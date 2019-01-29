@@ -37,9 +37,26 @@ const uploadFile = (buffer, name, type) => {
   return s3.upload(params).promise();
 };
 
+// Defining google cloud vision api:
+const vision = require('@google-cloud/vision');
+const GoogleAPIKey = './server/api/keys/GoogleAPIKey.json';
+const client = new vision.ImageAnnotatorClient({
+  keyFilename: GoogleAPIKey,
+});
+async function detectFaces(inputFile) {
+  try {
+    // Make a call to the Vision API to detect the faces
+    const request = { image: { source: { imageUri: inputFile } } };
+    const response = await client.faceDetection(request);
+    const facialData = response[0].faceAnnotations[0];
+    return facialData;
+  } catch (err) {
+    console.log('Cloud Vision API Error:', err);
+  }
+}
+
 // Define POST route
 router.post('/test-upload', (request, response) => {
-  console.log('s3secrets', s3secrets);
   const form = new multiparty.Form();
   form.parse(request, async (error, fields, files) => {
     if (error) throw new Error(error);
@@ -50,38 +67,14 @@ router.post('/test-upload', (request, response) => {
       const timestamp = Date.now().toString();
       const fileName = `bucketFolder/${timestamp}-lg`;
       const data = await uploadFile(buffer, fileName, type);
-      return response.status(200).send(data);
+      const urlLink = data.Location;
+      const facialDataObj = await detectFaces(urlLink);
+      console.log('facialDataObj', facialDataObj);
+      console.log('data.location = url?', urlLink);
+
+      return response.status(200).send(facialDataObj);
     } catch (error) {
       return response.status(400).send(error);
     }
   });
-});
-
-// GET request
-const s3Bucket = new AWS.S3({ params: { Bucket: 'my-moodify' } });
-const urlParams = {
-  Bucket: 'my-moodify',
-  Key: 'bucketFolder/1548708223687-lg.jpg',
-};
-
-const vision = require('@google-cloud/vision');
-const GoogleAPIKey = './server/api/keys/GoogleAPIKey.json';
-const imageUrl = './client/public/guliSad.jpeg';
-
-const client = new vision.ImageAnnotatorClient({
-  keyFilename: GoogleAPIKey,
-});
-async function detectFaces(inputFile) {
-  try {
-    // Make a call to the Vision API to detect the faces
-    const request = { image: { source: { imageUri: inputFile } } };
-    const response = await client.faceDetection(request);
-    const facialData = response[0].faceAnnotations[0];
-    console.log('results[0].faceAnnotations[0]', facialData);
-  } catch (err) {
-    console.log('Cloud Vision API Error:', err);
-  }
-}
-s3Bucket.getSignedUrl('getObject', urlParams, function(err, url) {
-  detectFaces(url);
 });
