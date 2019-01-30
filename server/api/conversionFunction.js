@@ -71,7 +71,7 @@ const energyFunc = obj => {
     usefulObj.angerLikelihood
   );
   let [min, max] = toRange(energyMid, 0.2, 0, 1);
-  return `&min_energy=${min}&max_energy=${max}`;
+  return `?min_energy=${min}&max_energy=${max}`;
 };
 
 const valenceFunc = obj => {
@@ -172,7 +172,7 @@ const tempoFunc = obj => {
 };
 
 const bigConversionFunc = obj => {
-  console.log('test');
+  //   console.log('test');
   if (newSelfie(obj) === 'error') return '';
   // if reject cases, throw alert on front end
   const sameForAll = 'max_liveness=0.75&max_speechiness=0.66';
