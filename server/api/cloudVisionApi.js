@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const vision = require('@google-cloud/vision');
-const GoogleAPIKey = './server/api/keys/GoogleAPIKey.json';
+const GoogleAPIKey = 'secrets/keys/GoogleAPIKey.json';
 const imageUrl =
   'https://my-moodify.s3.amazonaws.com/bucketFolder/1548791805067-lg.jpg';
-
+const bigConversionFunc = require('./conversionFunction');
 // Imports the Google Cloud client library &
 // Creates a client
 const client = new vision.ImageAnnotatorClient({
@@ -18,6 +18,7 @@ async function detectFaces(inputFile) {
     const facialData = response[0].faceAnnotations[0];
     console.log('results[0].faceAnnotations[0]', facialData);
     console.log('GoogleAPIKey', GoogleAPIKey);
+    console.log('bigConversionFunc', bigConversionFunc(facialData));
   } catch (err) {
     console.log('Cloud Vision API Error:', err);
   }
