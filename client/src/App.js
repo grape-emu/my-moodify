@@ -5,17 +5,16 @@ import SpotifyDisplay from './SpotifyComponents/spotify-display';
 import ImageForm from './ImageForm.js';
 
 class App extends Component {
-	render() {
-		return (
-			<div className="App">
-				<header className="App-header">
-					<Navbar className="App-header" />
-				</header>
-				<ImageForm />
-				<SpotifyDisplay />
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <Navbar className="App-header" />
+        </header>
+        <SpotifyDisplay />
+      </div>
+    );
+  }
 }
 
 export default App;
