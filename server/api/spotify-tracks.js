@@ -2,7 +2,7 @@ const router = require('express').Router();
 module.exports = router;
 const https = require('https');
 const conversionFunction = require('./conversionFunction');
-const query = '?seed_genres=blues&8=0.5';
+const query = '?seed_genres=blues&max_valence=0.5';
 
 function spotifyAPI(params, token) {
 	return new Promise((resolve, reject) => {
@@ -34,7 +34,7 @@ function spotifyAPI(params, token) {
 
 router.get('/find', async (req, res, next) => {
 	let token = req.query.token;
-	//this is where the query will eventually be generated. 
+	//this is where the query will eventually be generated.
 	//Takes in Claire's conversion function and Guli's GoogleCloudAPI object
 	//return query string, pass as query to SpotifyAPI
 	console.log(conversionFunction({}));

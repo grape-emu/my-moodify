@@ -11,7 +11,7 @@ export default class RecommendationsButton extends Component {
 			playlist: []
 		};
 		this.fetchRequests = this.fetchRequests.bind(this);
-		this.makePlaylist = this.makePlaylist.bind(this);
+		this.makeAndFetchPlaylist = this.makeAndFetchPlaylist.bind(this);
 	}
 	fetchRequests = async () => {
 		try {
