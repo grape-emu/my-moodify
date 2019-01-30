@@ -71,7 +71,7 @@ const energyFunc = obj => {
     usefulObj.angerLikelihood
   );
   let [min, max] = toRange(energyMid, 0.2, 0, 1);
-  return `?min_energy=${min}&max_energy=${max}`;
+  return `&min_energy=${min}&max_energy=${max}`;
 };
 
 const valenceFunc = obj => {
