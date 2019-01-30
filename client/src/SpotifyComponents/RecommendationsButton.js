@@ -12,50 +12,41 @@ export default class RecommendationsButton extends Component {
       tracks: [],
       file: null,
     };
-    this.handleRecommendations = this.handleRecommendations.bind(this);
   }
 
-  handleRecommendations = async () => {
+  submitFile = async event => {
     try {
-      const token = getHashParams();
+      console.log('submitFile working...');
+      event.preventDefault();
+      const formData = new FormData();
+      formData.append('file', this.state.file[0]);
+      const query = await axios.post('/api/s3/test-upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('query.data,', query.data);
 
-      //make request to backend to fetch querry from Spotify API
-      //using relative path because of proxy setup for create-react-app
+      // Passing query to Spotify to generate playlist:
+      const token = getHashParams();
       const { data } = await axios.get(
         `/api/spotify/find?token=${
           token.access_token
         }&recommendations=${convertedFromFunction}`
       );
-      //update local state with URL
       this.setState({
         tracks: data.tracks,
       });
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
-  };
-
-  submitFile = event => {
-    console.log('submitFile working...');
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append('file', this.state.file[0]);
-    axios
-      .post('/api/s3/test-upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then(result => console.log('result.data,', result.data))
-      .catch(error => {
-        console.log('error');
-      });
   };
 
   handleFileUpload = event => {
     console.log('updating');
     this.setState({ file: event.target.files });
   };
+
   render() {
     return (
       <div>
@@ -68,9 +59,6 @@ export default class RecommendationsButton extends Component {
           <button type="submit">Send</button>
         </form>
 
-        <button type="button" onClick={this.handleRecommendations}>
-          Get Recommendations
-        </button>
         {this.state.tracks.length === 0 ? (
           <div />
         ) : (
