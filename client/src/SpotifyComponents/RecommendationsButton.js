@@ -3,8 +3,6 @@ import axios from 'axios';
 import { getHashParams } from './spotify-functions';
 import RecommendationsView from './RecommendationsView';
 
-const convertedFromFunction = '?seed_genres=blues&max_valence=0.5';
-
 export default class RecommendationsButton extends Component {
   constructor() {
     super();
@@ -12,27 +10,26 @@ export default class RecommendationsButton extends Component {
       tracks: [],
       file: null,
     };
+    this.submitFile = this.submitFile.bind(this);
+    this.handleFileUpload = this.handleFileUpload.bind(this);
   }
 
   submitFile = async event => {
     try {
-      console.log('submitFile working...');
       event.preventDefault();
       const formData = new FormData();
       formData.append('file', this.state.file[0]);
-      const query = await axios.post('/api/s3/test-upload', formData, {
+      // Query.data holds information about the query we pass to Spotify
+      const query = await axios.post('/api/s3/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('query.data,', query.data);
 
       // Passing query to Spotify to generate playlist:
       const token = getHashParams();
       const { data } = await axios.get(
-        `/api/spotify/find?token=${
-          token.access_token
-        }&recommendations=${convertedFromFunction}`
+        `/api/spotify/find?token=${token.access_token}${query.data}`
       );
       this.setState({
         tracks: data.tracks,
@@ -43,7 +40,6 @@ export default class RecommendationsButton extends Component {
   };
 
   handleFileUpload = event => {
-    console.log('updating');
     this.setState({ file: event.target.files });
   };
 
@@ -56,7 +52,7 @@ export default class RecommendationsButton extends Component {
             type="file"
             onChange={this.handleFileUpload}
           />
-          <button type="submit">Send</button>
+          <button type="submit">Moodify</button>
         </form>
 
         {this.state.tracks.length === 0 ? (
