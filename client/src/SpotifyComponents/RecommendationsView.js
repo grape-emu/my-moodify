@@ -1,11 +1,14 @@
-// import React from 'react';
-// import RecomendationsComponent from './RecomendationsComponent';
+import React from 'react';
+import RecommendationsComponent from './RecommendationsComponent';
 
-// const RecommendationsView = props => {
-// 	const { tracks } = props;
-// 	return (
-// 	{.map((track) => <RecomendationsComponent id = {track.id})}
-// 	);
-// };
+const RecommendationsView = props => {
+	return (
+		<div>
+			{props.tracks.map(track => {
+				return <RecommendationsComponent track={track.id} />;
+			})}
+		</div>
+	);
+};
 
-// export default RecommendationsView;
+export default RecommendationsView;

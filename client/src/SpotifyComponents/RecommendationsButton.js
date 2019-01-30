@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { getHashParams } from './spotify-functions';
+import RecommendationsView from './RecommendationsView';
 
 const convertedFromFunction = '?seed_genres=blues&max_valence=0.5';
 
@@ -23,7 +24,6 @@ export default class RecommendationsButton extends Component {
 					token.access_token
 				}&recommendations=${convertedFromFunction}`
 			);
-			console.log(data);
 			//update local state with URL
 			this.setState({
 				tracks: data.tracks
@@ -38,12 +38,11 @@ export default class RecommendationsButton extends Component {
 				<button type="button" onClick={this.handleRecommendations}>
 					Get Recommendations
 				</button>
-				{/* {this.state.tracks.length > 0 ? (
+				{this.state.tracks.length === 0 ? (
 					<div />
 				) : (
-					// <RecommendationsView tracks={this.state.tracks} />
-					<div />
-				)} */}
+					<RecommendationsView tracks={this.state.tracks} />
+				)}
 			</div>
 		);
 	}
