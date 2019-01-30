@@ -175,7 +175,7 @@ const bigConversionFunc = obj => {
   //   console.log('test');
   if (newSelfie(obj) === 'error') return '';
   // if reject cases, throw alert on front end
-  const sameForAll = 'max_liveness=0.75&max_speechiness=0.66';
+  const sameForAll = '&max_liveness=0.75&max_speechiness=0.66';
   return energyFunc(obj)
     .concat(valenceFunc(obj))
     .concat(danceabilityFunc(obj))
