@@ -74,9 +74,9 @@ router.post('/test-upload', (request, response) => {
       const facialDataObj = await detectFaces(urlLink);
       const spotifyQuery = bigConversionFunc(facialDataObj);
 
-      console.log('facialDataObj', facialDataObj);
-      console.log('data.location = url?', urlLink);
-      console.log('conversion result', bigConversionFunc(facialDataObj));
+      // console.log('facialDataObj', facialDataObj);
+      // console.log('data.location = url?', urlLink);
+      // console.log('conversion result', bigConversionFunc(facialDataObj));
 
       return response.status(200).send(spotifyQuery);
     } catch (error) {
