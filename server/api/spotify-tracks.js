@@ -34,7 +34,7 @@ function spotifyAPI(params, token) {
 
 router.get('/find', async (req, res, next) => {
 	let token = req.query.token;
-	//this is where the query will eventually be generated. 
+	//this is where the query will eventually be generated.
 	//Takes in Claire's conversion function and Guli's GoogleCloudAPI object
 	//return query string, pass as query to SpotifyAPI
 	console.log(conversionFunction({}));
