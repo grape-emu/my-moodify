@@ -59,7 +59,7 @@ async function detectFaces(inputFile) {
 // Integrate Google Cloud Vision API in the route
 // Return facial data object
 
-router.post('/test-upload', (request, response) => {
+router.post('/upload', (request, response) => {
   const form = new multiparty.Form();
   form.parse(request, async (error, fields, files) => {
     if (error) throw new Error(error);
