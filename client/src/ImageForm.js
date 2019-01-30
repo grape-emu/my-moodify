@@ -20,6 +20,7 @@ class ImageForm extends Component {
           'Content-Type': 'multipart/form-data',
         },
       })
+      .then(result => console.log('result.data,', result.data))
       .catch(error => {
         console.log('error');
       });
