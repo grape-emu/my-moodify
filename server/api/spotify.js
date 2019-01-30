@@ -1,9 +1,8 @@
 const router = require('express').Router();
 module.exports = router;
-
 const https = require('https');
-
-const functionConversion = '?seed_genres=blues&max_valence=0.5';
+const conversionFunction = require('./conversionFunction');
+const query = '?seed_genres=blues&max_valence=0.5';
 
 function spotifyAPI(params, token) {
 	return new Promise((resolve, reject) => {
@@ -35,8 +34,9 @@ function spotifyAPI(params, token) {
 
 router.get('/find', async (req, res, next) => {
 	let token = req.query.token;
+	console.log(conversionFunction({}));
 	try {
-		const data = await spotifyAPI(functionConversion, token);
+		const data = await spotifyAPI(query, token);
 		res.json(JSON.parse(data));
 	} catch (err) {
 		next(err);
