@@ -2,7 +2,7 @@ const router = require('express').Router();
 module.exports = router;
 const https = require('https');
 const conversionFunction = require('./conversionFunction');
-const query = '?seed_genres=blues&max_valence=0.5';
+const query = '?seed_genres=blues&8=0.5';
 
 function spotifyAPI(params, token) {
 	return new Promise((resolve, reject) => {

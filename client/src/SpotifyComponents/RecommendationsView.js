@@ -1,6 +1,5 @@
 import React from 'react';
 import RecommendationsComponent from './RecommendationsComponent';
-
 const RecommendationsView = props => {
 	return (
 		<div>
