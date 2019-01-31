@@ -1,189 +1,96 @@
-/* eslint-disable guard-for-in */
-const convertToNums = selfieObj => {
-  let newObj = {};
-  for (let key in selfieObj) {
-    if (selfieObj[key] === 'VERY_UNLIKELY') newObj[key] = -2;
-    if (selfieObj[key] === 'UNLIKELY') newObj[key] = -1;
-    if (selfieObj[key] === 'LIKELY') newObj[key] = 1;
-    if (selfieObj[key] === 'VERY_LIKELY') newObj[key] = 2;
-    if (selfieObj[key] === 'POSSIBLE' || selfieObj[key] === 'UNKNOWN')
-      newObj[key] = 0;
+const testSelfie = require('../../conversion/list')
+// backup for testing is below (same as obj in file)
+// const selfieObj = {
+//   joyLikelihood: 'VERY_UNLIKELY',
+//   sorrowLikelihood: 'VERY_LIKELY',
+//   angerLikelihood: 'POSSIBLE',
+//   surpriseLikelihood: 'VERY_UNLIKELY'}
+
+class SpotifyUrlObject {
+  // eslint-disable-next-line max-params
+  constructor(name,joyScale,sorrowScale,surpriseScale,angerScale,minVal = 0,maxVal = 1,radius = 0.2) {
+    this.name = name;
+    this.joyScale = joyScale;
+    this.sorrowScale = sorrowScale;
+    this.surpriseScale = surpriseScale;
+    this.angerScale = angerScale;
+    this.minVal = minVal;
+    this.maxVal = maxVal;
+    this.radius = radius;
   }
-  return newObj;
-};
-
-const toRange = (center, width, rangeMin, rangeMax) => {
-  const cheapRound = x => Math.round(x * 10000) / 10000;
-  return [
-    cheapRound(Math.max(center - width / 2, rangeMin)),
-    cheapRound(Math.min(center + width / 2, rangeMax)),
-  ];
-};
-
-const translator = (
-  rangeMin,
-  rangeMax,
-  joyScale,
-  sorrowScale,
-  surpriseScale,
-  angerScale
-) => {
-  let rangeWidth = rangeMax - rangeMin;
-  let scaledMax = 0;
-  if (joyScale !== 0) scaledMax += Math.abs(joyScale);
-  if (sorrowScale !== 0) scaledMax += Math.abs(sorrowScale);
-  if (surpriseScale !== 0) scaledMax += Math.abs(surpriseScale);
-  if (angerScale !== 0) scaledMax += Math.abs(angerScale);
-  scaledMax *= 2;
-  let out = (joyVal, sorrowVal, surpriseVal, angerVal) => {
-    let hold = 0;
-    hold += joyVal * joyScale;
-    hold += sorrowVal * sorrowScale;
-    hold += surpriseVal * surpriseScale;
-    hold += angerVal * angerScale;
-    return rangeMin + ((hold + scaledMax) / (scaledMax * 2)) * rangeWidth;
-  };
-  return out;
-};
-
-const newSelfie = obj => {
-  const usefulObj = convertToNums(obj);
-  if (
-    usefulObj.blurredLikelihood === 2 ||
-    (usefulObj.joyLikelihood === 0 &&
-      usefulObj.sorrowLikelihood === 0 &&
-      usefulObj.surpriseLikelihood === 0 &&
-      usefulObj.angerLikelihood === 0)
-  ) {
-    console.log(
-      'We need to throw an error here: "Image quality insufficient. Please try a different selfie."'
-    );
-    return 'error';
+  addEmotionKeys(obj) {
+    /* eslint-disable guard-for-in */
+    for(let key in obj) {
+      if(obj[key] === 'VERY_LIKELY') this[key] = 2;
+      if(obj[key] === 'LIKELY') this[key] = 1;
+      if(obj[key] === 'UNLIKELY') this[key] = -1;
+      if(obj[key] === 'VERY_UNLIKELY') this[key] = -2;
+      if(obj[key] === 'POSSIBLE' || obj[key] === 'UNKNOWN') this[key] = 0;
+    }
+    return this;
   }
-};
+  translator() {
+    const rangeWidth = this.maxVal - this.minVal;
+    let scaledMax = 0;
+    if(this.joyScale !== 0) scaledMax += Math.abs(this.joyScale);
+    if(this.sorrowScale !== 0) scaledMax += Math.abs(this.sorrowScale);
+    if(this.surpriseScale !== 0) scaledMax += Math.abs(this.surpriseScale);
+    if(this.angerScale !== 0) scaledMax += Math.abs(this.angerScale);
+    scaledMax *= 2;
+    const fixedPoint = () => {
+      let hold = 0;
+      hold += (this.joyLikelihood * this.joyScale);
+      hold += (this.sorrowLikelihood * this.sorrowScale);
+      hold += (this.surpriseLikelihood * this.surpriseScale);
+      hold += (this.angerLikelihood * this.angerScale);
+      return this.minVal + (((hold + scaledMax) / (scaledMax * 2)) * rangeWidth);
+    }
+    return fixedPoint;
+  }
+  printString() {
+    this.midpoint = this.translator()();
+    const cheapRound = x => Math.round(x*100000) / 100000;
+    const rangeMin = cheapRound(Math.max(this.midpoint - (this.radius / 2), this.minVal));
+    const rangeMax = cheapRound(Math.min(this.midpoint + (this.radius / 2), this.maxVal));
+    if(this.name === 'genre') {
+      const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
+      return `?seed_${this.name}s=${genreSimple}`;
+    }
+    if(this.name === 'mode') return `&${this.name}=${Math.round(this.midpoint)}`;
+    else return `&min_${this.name}=${rangeMin}&max_${this.name}=${rangeMax}`;
+  }
+}
 
-const energyFunc = obj => {
-  const usefulObj = convertToNums(obj);
-  let energyMid = translator(0, 1, 2, -1.5, 0, 1)(
-    usefulObj.joyLikelihood,
-    usefulObj.sorrowLikelihood,
-    usefulObj.surpriseLikelihood,
-    usefulObj.angerLikelihood
-  );
-  let [min, max] = toRange(energyMid, 0.2, 0, 1);
-  return `&min_energy=${min}&max_energy=${max}`;
-};
+const genreUrlObj = new SpotifyUrlObject('genre',2,-2,0,0)
+const energyUrlObj = new SpotifyUrlObject('energy',2,-1.5,0,1);
+const valenceUrlObj = new SpotifyUrlObject('valence',2,-2,1,-1);
+const danceabilityUrlObj = new SpotifyUrlObject('danceability',1,-1,1,0);
+const acousticnessUrlObj = new SpotifyUrlObject('acousticness',0,1,0,-1);
+const instrumentalnessUrlObj = new SpotifyUrlObject('instrumentalness',-1,0,-1,-1);
+const popularityUrlObj = new SpotifyUrlObject('popularity',1,0,0,-1);
+const modeUrlObj = new SpotifyUrlObject('mode',2,-2,0,0);
+const loudnessUrlObj = new SpotifyUrlObject('loudness',0,-1,0,2,-60,1,15);
+const tempoUrlObj = new SpotifyUrlObject('tempo',1,-2,-1,2,50,210,60);
 
-const valenceFunc = obj => {
-  const usefulObj = convertToNums(obj);
-  let valenceMid = translator(0, 1, 2, -2, 1, -1)(
-    usefulObj.joyLikelihood,
-    usefulObj.sorrowLikelihood,
-    usefulObj.surpriseLikelihood,
-    usefulObj.angerLikelihood
-  );
-  let [min, max] = toRange(valenceMid, 0.2, 0, 1);
-  return `&min_valence=${min}&max_valence=${max}`;
-};
+const fullUrlObject = [genreUrlObj, energyUrlObj, valenceUrlObj, danceabilityUrlObj, acousticnessUrlObj, instrumentalnessUrlObj, popularityUrlObj, modeUrlObj, loudnessUrlObj, tempoUrlObj]
 
-const danceabilityFunc = obj => {
-  const usefulObj = convertToNums(obj);
-  let danceabilityMid = translator(0, 1, 1, -1, 1, 0)(
-    usefulObj.joyLikelihood,
-    usefulObj.sorrowLikelihood,
-    usefulObj.surpriseLikelihood,
-    usefulObj.angerLikelihood
-  );
-  let [min, max] = toRange(danceabilityMid, 0.2, 0, 1);
-  return `&min_danceability=${min}&max_danceability=${max}`;
-};
+const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
+  const failsTest = (arr, keyword) => {
+    const hold = arr.filter(el => el === keyword);
+    if(hold.length === arr.length) return 'error';
+    else return 'good to go';
+  }
+  if(selfieObj.blurredLikelihood === 'VERY_LIKELY' ||
+    (failsTest([selfieObj.joyLikelihood, selfieObj.sorrowLikelihood, selfieObj.surpriseLikelihood, selfieObj.angerLikelihood], 'UNKNOWN') === 'error') ||
+    (failsTest([selfieObj.joyLikelihood, selfieObj.sorrowLikelihood, selfieObj.surpriseLikelihood, selfieObj.angerLikelihood], 'VERY_UNLIKELY') === 'error')) {
+    console.log('We need to throw an error here on the front end: "Image quality insufficient. Please try a different selfie."');
+    return 'error'
+  }
+  const specificPhotoObject = fullUrlObject.map(el => el.addEmotionKeys(selfieObj));
+  const urlString = specificPhotoObject.map((el) => el.printString()).join('');
+  return urlString;
+}
 
-const acousticnessFunc = obj => {
-  const usefulObj = convertToNums(obj);
-  let acousticnessMid = translator(0, 1, 0, 1, 0, -1)(
-    usefulObj.joyLikelihood,
-    usefulObj.sorrowLikelihood,
-    usefulObj.surpriseLikelihood,
-    usefulObj.angerLikelihood
-  );
-  let [min, max] = toRange(acousticnessMid, 0.2, 0, 1);
-  return `&min_acousticness=${min}&max_acousticness=${max}`;
-};
+console.log(convertGoogleCloudVisionObjToSpotifyString(testSelfie));
 
-const instrumentalnessFunc = obj => {
-  const usefulObj = convertToNums(obj);
-  let instrumentalnessMid = translator(0, 1, -1, 0, -1, -1)(
-    usefulObj.joyLikelihood,
-    usefulObj.sorrowLikelihood,
-    usefulObj.surpriseLikelihood,
-    usefulObj.angerLikelihood
-  );
-  let [min, max] = toRange(instrumentalnessMid, 0.2, 0, 1);
-  return `&min_instrumentalness=${min}&max_instrumentalness=${max}`;
-};
-
-const popularityFunc = obj => {
-  const usefulObj = convertToNums(obj);
-  let popularityMid = translator(0, 1, 1, 0, 0, -1)(
-    usefulObj.joyLikelihood,
-    usefulObj.sorrowLikelihood,
-    usefulObj.surpriseLikelihood,
-    usefulObj.angerLikelihood
-  );
-  let [min, max] = toRange(popularityMid, 0.2, 0, 1);
-  return `&min_popularity=${min}&max_popularity=${max}`;
-};
-
-const modeFunc = obj => {
-  const usefulObj = convertToNums(obj);
-  let modeMid = translator(0, 1, 2, -2, 0, 0)(
-    usefulObj.joyLikelihood,
-    usefulObj.sorrowLikelihood,
-    usefulObj.surpriseLikelihood,
-    usefulObj.angerLikelihood
-  );
-  return `&mode=${Math.round(modeMid)}`;
-};
-
-// &min_loudness=-60&max_loudness=1 (-60,1,0,-1,0,2)
-const loudnessFunc = obj => {
-  const usefulObj = convertToNums(obj);
-  let loudnessMid = translator(0, 1, 1, 0, 0, -1)(
-    usefulObj.joyLikelihood,
-    usefulObj.sorrowLikelihood,
-    usefulObj.surpriseLikelihood,
-    usefulObj.angerLikelihood
-  );
-  let [min, max] = toRange(loudnessMid, 0.2, 0, 1);
-  return `&min_loudness=${min}&max_loudness=${max}`;
-};
-
-// &min_tempo=50&max_tempo=350 (50,350,1,-2,-1,2)
-const tempoFunc = obj => {
-  const usefulObj = convertToNums(obj);
-  let tempoMid = translator(0, 1, 1, 0, 0, -1)(
-    usefulObj.joyLikelihood,
-    usefulObj.sorrowLikelihood,
-    usefulObj.surpriseLikelihood,
-    usefulObj.angerLikelihood
-  );
-  let [min, max] = toRange(tempoMid, 0.2, 0, 1);
-  return `&min_tempo=${min}&max_tempo=${max}`;
-};
-
-const bigConversionFunc = obj => {
-  //   console.log('test');
-  if (newSelfie(obj) === 'error') return '';
-  // if reject cases, throw alert on front end
-  const sameForAll = '&max_liveness=0.75&max_speechiness=0.66';
-  return energyFunc(obj)
-    .concat(valenceFunc(obj))
-    .concat(danceabilityFunc(obj))
-    .concat(acousticnessFunc(obj))
-    .concat(instrumentalnessFunc(obj))
-    .concat(popularityFunc(obj))
-    .concat(modeFunc(obj))
-    .concat(sameForAll);
-};
-
-module.exports = bigConversionFunc;
+module.exports = convertGoogleCloudVisionObjToSpotifyString;
