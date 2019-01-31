@@ -1,7 +1,6 @@
 import React from 'react';
 
 const RecommendationsComponent = props => {
-	console.log(props.id);
 	return (
 		<div>
 			<iframe
@@ -13,7 +12,6 @@ const RecommendationsComponent = props => {
 				height="80"
 				frameBorder="0"
 				allow="encrypted-media"
-				marginwidth="50"
 			/>
 		</div>
 	);

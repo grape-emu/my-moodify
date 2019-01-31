@@ -10,6 +10,7 @@
 
 # production
 /build
+/client/build
 
 # misc
 .DS_Store
@@ -18,7 +19,7 @@
 .env.test.local
 .env.production.local
 /client/.env.local
-./conversion
+conversion/
 
 npm-debug.log*
 yarn-debug.log*

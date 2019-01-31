@@ -7,8 +7,6 @@ const path = require('path');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api', require('./server/api'));
-app.use('*', (req, res) => {
-	res.sendFile(path.join(__dirname, '..', 'public/index.html'));
-});
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
