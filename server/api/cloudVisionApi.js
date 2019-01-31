@@ -1,8 +1,6 @@
 const router = require('express').Router();
 const vision = require('@google-cloud/vision');
-if (process.env.NODE_ENV === 'development') {
-  const GoogleAPIKey = './server/api/keys/GoogleAPIKey.json';
-}
+const GoogleAPIKey = './server/api/keys/GoogleAPIKey.json';
 const imageUrl =
   'https://my-moodify.s3.amazonaws.com/bucketFolder/1548791805067-lg.jpg';
 

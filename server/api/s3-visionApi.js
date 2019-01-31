@@ -8,11 +8,7 @@ const bluebird = require('bluebird');
 const multiparty = require('multiparty');
 const multer = require('multer');
 const S3_BUCKET = 'my-moodify';
-
-if (process.env.NODE_ENV === 'development') {
-  console.log(process.env.NODE_ENV, typeof process.env.NODE_ENV);
-  const s3secrets = require('../../secrets/keys/S3secrets');
-}
+const s3secrets = require('../../secrets/keys/S3secrets');
 const bigConversionFunc = require('./conversionFunction.js');
 
 module.exports = router;
@@ -43,9 +39,7 @@ const uploadFile = (buffer, name, type) => {
 
 // Defining google cloud vision api:
 const vision = require('@google-cloud/vision');
-if (process.env.NODE_ENV === 'development') {
-  const GoogleAPIKey = './secrets/keys/GoogleAPIKey.json';
-}
+const GoogleAPIKey = './secrets/keys/GoogleAPIKey.json';
 const client = new vision.ImageAnnotatorClient({
   keyFilename: GoogleAPIKey,
 });
