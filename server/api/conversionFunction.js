@@ -1,11 +1,3 @@
-const testSelfie = require('../../conversion/list')
-// backup for testing is below (same as obj in file)
-// const selfieObj = {
-//   joyLikelihood: 'VERY_UNLIKELY',
-//   sorrowLikelihood: 'VERY_LIKELY',
-//   angerLikelihood: 'POSSIBLE',
-//   surpriseLikelihood: 'VERY_UNLIKELY'}
-
 class SpotifyUrlObject {
   // eslint-disable-next-line max-params
   constructor(name,joyScale,sorrowScale,surpriseScale,angerScale,minVal = 0,maxVal = 1,radius = 0.2) {
@@ -54,7 +46,7 @@ class SpotifyUrlObject {
     const rangeMax = cheapRound(Math.min(this.midpoint + (this.radius / 2), this.maxVal));
     if(this.name === 'genre') {
       const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
-      return `?seed_${this.name}s=${genreSimple}`;
+      return `&seed_${this.name}s=${genreSimple}`;
     }
     if(this.name === 'mode') return `&${this.name}=${Math.round(this.midpoint)}`;
     else return `&min_${this.name}=${rangeMin}&max_${this.name}=${rangeMax}`;
@@ -90,7 +82,5 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
   const urlString = specificPhotoObject.map((el) => el.printString()).join('');
   return urlString;
 }
-
-console.log(convertGoogleCloudVisionObjToSpotifyString(testSelfie));
 
 module.exports = convertGoogleCloudVisionObjToSpotifyString;
