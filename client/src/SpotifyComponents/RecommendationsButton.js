@@ -4,49 +4,63 @@ import { getHashParams } from './spotify-functions';
 import RecommendationsView from './RecommendationsView';
 
 export default class RecommendationsButton extends Component {
-	constructor() {
-		super();
-		this.state = {
-			tracks: [],
-			playlist: []
-		};
-		this.fetchRequests = this.fetchRequests.bind(this);
-		this.makeAndFetchPlaylist = this.makeAndFetchPlaylist.bind(this);
-	}
-	fetchRequests = async () => {
-		try {
-			const token = getHashParams();
-			const { data } = await axios.get(
-				`/api/spotify/find?token=${token.access_token}`
-			);
-			this.setState({
-				tracks: data.tracks
-			});
-		} catch (err) {
-			console.error(err);
-		}
-	};
+  constructor() {
+    super();
+    this.state = {
+      tracks: [],
+      file: null,
+    };
+    this.submitFile = this.submitFile.bind(this);
+    this.handleFileUpload = this.handleFileUpload.bind(this);
+  }
 
-	makeAndFetchPlaylist() {
-		this.fetchRequests();
-		if (this.state.tracks) console.log(this.state.tracks);
-	}
+  submitFile = async event => {
+    try {
+      event.preventDefault();
+      const formData = new FormData();
+      formData.append('file', this.state.file[0]);
+      // Query.data holds information about the query we pass to Spotify
+      const query = await axios.post('/api/s3/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-	render() {
-		return (
-			<div>
-				<button type="button" onClick={this.fetchRequests}>
-					Get Recommendations
-				</button>
-				{this.state.tracks.length > 0 && (
-					<div>
-						<button type="button" onClick={this.makeAndFetchPlaylist}>
-							Make Playlist
-						</button>
-						<RecommendationsView tracks={this.state.tracks} />
-					</div>
-				)}
-			</div>
-		);
-	}
+      // Passing query to Spotify to generate playlist:
+      const token = getHashParams();
+      const { data } = await axios.get(
+        `/api/spotify/find?token=${token.access_token}${query.data}`
+      );
+      this.setState({
+        tracks: data.tracks,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  handleFileUpload = event => {
+    this.setState({ file: event.target.files });
+  };
+
+  render() {
+    return (
+      <div>
+        <form onSubmit={this.submitFile}>
+          <input
+            label="upload file"
+            type="file"
+            onChange={this.handleFileUpload}
+          />
+          <button type="submit">Moodify</button>
+        </form>
+
+        {this.state.tracks.length === 0 ? (
+          <div />
+        ) : (
+          <RecommendationsView tracks={this.state.tracks} />
+        )}
+      </div>
+    );
+  }
 }

@@ -1,7 +1,7 @@
 const router = require('express').Router();
 module.exports = router;
 
-// router.use('/s3', require('./s3-visionApi.js'));
+router.use('/s3', require('./s3-visionApi.js'));
 router.use('/spotify', require('./spotify-tracks'));
 
 router.use((req, res, next) => {
