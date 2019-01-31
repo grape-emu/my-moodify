@@ -65,7 +65,7 @@ async function detectFaces(inputFile) {
 // Integrate Google Cloud Vision API in the route
 // Return facial data object
 
-router.post('/test-upload', (request, response) => {
+router.post('/upload', (request, response) => {
   const form = new multiparty.Form();
   form.parse(request, async (error, fields, files) => {
     if (error) throw new Error(error);
@@ -78,11 +78,13 @@ router.post('/test-upload', (request, response) => {
       const data = await uploadFile(buffer, fileName, type);
       const urlLink = data.Location;
       const facialDataObj = await detectFaces(urlLink);
-      console.log('facialDataObj', facialDataObj);
-      console.log('data.location = url?', urlLink);
-      console.log('conversion result', bigConversionFunc(facialDataObj));
+      const spotifyQuery = bigConversionFunc(facialDataObj);
 
-      return response.status(200).send(facialDataObj);
+      // console.log('facialDataObj', facialDataObj);
+      // console.log('data.location = url?', urlLink);
+      // console.log('conversion result', bigConversionFunc(facialDataObj));
+
+      return response.status(200).send(spotifyQuery);
     } catch (error) {
       return response.status(400).send(error);
     }

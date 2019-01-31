@@ -1,14 +1,14 @@
-import React from 'react'
-import SpotifyContainer from './spotify-container'
-import RecommendationsButton from './RecommendationsButton'
+import React from 'react';
+import ConnectSpotify from './connect-spotify';
+import RecommendationsButton from './RecommendationsButton';
 
 const SpotifyDisplay = () => {
   return (
     <div>
-      <SpotifyContainer />
+      <ConnectSpotify />
       <RecommendationsButton />
     </div>
-  )
-}
+  );
+};
 
-export default SpotifyDisplay
+export default SpotifyDisplay;
