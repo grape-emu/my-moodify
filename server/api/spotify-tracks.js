@@ -35,10 +35,16 @@ router.get('/find', async (req, res, next) => {
   let queryObj = req.query;
   let token = req.query.token;
   // Query starts with a hardcoded genre as there is no solution for this yet:
-  let newQuery = '&seed_genres=blues';
+  // let newQuery = '&seed_genres=blues';
+  let newQuery = '';
+  let arrayOfQueries = ['seed_genres', 'min_energy', 'max_energy'];
   for (const property in queryObj) {
-    if (queryObj.hasOwnProperty(property) && property !== 'token') {
-      newQuery += `&${property}:${queryObj[property]}`;
+    if (
+      queryObj.hasOwnProperty(property) &&
+      property !== 'token' &&
+      arrayOfQueries.includes(property)
+    ) {
+      newQuery += `&${property}=${queryObj[property]}`;
     }
   }
   console.log('query passed to Spotify', newQuery);
