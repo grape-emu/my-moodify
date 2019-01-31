@@ -83,4 +83,6 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
   return urlString;
 }
 
+console.log('testing whether I can commit to master branch')
+
 module.exports = convertGoogleCloudVisionObjToSpotifyString;
