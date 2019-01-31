@@ -1,47 +1,53 @@
 const router = require('express').Router();
-module.exports = router;
 const https = require('https');
-const conversionFunction = require('./conversionFunction');
-const query = '?seed_genres=blues&max_valence=0.5';
+module.exports = router;
 
 function spotifyAPI(params, token) {
-	return new Promise((resolve, reject) => {
-		let options = {
-			hostname: 'api.spotify.com',
-			port: 443,
-			path: '/v1/recommendations' + params,
-			method: 'GET',
-			headers: {
-				Authorization: ' Bearer ' + token
-			}
-		};
+  return new Promise((resolve, reject) => {
+    let options = {
+      hostname: 'api.spotify.com',
+      port: 443,
+      path: '/v1/recommendations?' + params,
+      method: 'GET',
+      headers: {
+        Authorization: ' Bearer ' + token,
+      },
+    };
 
-		https.get(options, res => {
-			let data = '';
-			res
-				.on('data', chunk => {
-					data += chunk;
-				})
-				.on('end', () => {
-					resolve(data);
-				})
-				.on('error', err => {
-					reject(err);
-				});
-		});
-	});
+    https.get(options, res => {
+      let data = '';
+      res
+        .on('data', chunk => {
+          data += chunk;
+        })
+        .on('end', () => {
+          resolve(data);
+        })
+        .on('error', err => {
+          reject(err);
+        });
+    });
+  });
 }
 
 router.get('/find', async (req, res, next) => {
-	let token = req.query.token;
-	//this is where the query will eventually be generated.
-	//Takes in Claire's conversion function and Guli's GoogleCloudAPI object
-	//return query string, pass as query to SpotifyAPI
-	console.log(conversionFunction({}));
-	try {
-		const data = await spotifyAPI(query, token);
-		res.json(JSON.parse(data));
-	} catch (err) {
-		next(err);
-	}
+  // We extract a token and query string from the query object
+  let queryObj = req.query;
+  let token = req.query.token;
+  // Query starts with a hardcoded genre as there is no solution for this yet:
+  let newQuery = '&seed_genres=blues';
+  for (const property in queryObj) {
+    if (queryObj.hasOwnProperty(property) && property !== 'token') {
+      newQuery += `&${property}:${queryObj[property]}`;
+    }
+  }
+  console.log('query passed to Spotify', newQuery);
+
+  // We invoke spotifyAPI with the data we extracted:
+  try {
+    const data = await spotifyAPI(newQuery, token);
+    res.json(JSON.parse(data));
+  } catch (err) {
+    next(err);
+  }
 });
