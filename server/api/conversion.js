@@ -54,7 +54,7 @@ class SpotifyUrlObject {
     const rangeMax = cheapRound(Math.min(this.midpoint + (this.radius / 2), this.maxVal));
     if(this.name === 'genre') {
       const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
-      return `?seed_${this.name}=${genreSimple}`;
+      return `?seed_${this.name}s=${genreSimple}`;
     }
     if(this.name === 'mode') return `&${this.name}=${Math.round(this.midpoint)}`;
     else return `&min_${this.name}=${rangeMin}&max_${this.name}=${rangeMax}`;
