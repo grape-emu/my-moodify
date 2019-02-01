@@ -2,7 +2,7 @@
 
 class SpotifyUrlObject {
   // eslint-disable-next-line max-params
-  constructor(name,joyScale,sorrowScale,surpriseScale,angerScale,radius = 0.35,minVal = 0,maxVal = 1) {
+  constructor(name,joyScale,sorrowScale,surpriseScale,angerScale,radius = 0.4,minVal = 0,maxVal = 1) {
     this.name = name;
     /* These scales indicate how each emotion relates to each spotify tag (this.name).
       Energy, for example: sorrow means low energy; joy and anger mean higher energy; surprise is irrelevant to energy. So surpriseScale is 0, and sorrowScale is a negative number. Joy and sorrow are more important to energy than anger, though, so anger is 1 but joy is 2. These are unique to each tag. */
@@ -97,18 +97,18 @@ class SpotifyUrlObject {
 
 // For each spotify key that we intend to use, we need to initialize an instance of the constructor (see details begin at line 7)
 const genreUrlObj = new SpotifyUrlObject('genre',2,-2,0,0)
-const energyUrlObj = new SpotifyUrlObject('energy',2,-1.5,0,1,0.48);
-const valenceUrlObj = new SpotifyUrlObject('valence',2,-2,1,-1);
-const danceabilityUrlObj = new SpotifyUrlObject('danceability',1,-1,1,0);
-const acousticnessUrlObj = new SpotifyUrlObject('acousticness',0,1,0,-1);
-const instrumentalnessUrlObj = new SpotifyUrlObject('instrumentalness',-1,0,-1,-1);
-const popularityUrlObj = new SpotifyUrlObject('popularity',1,0,0,-1);
 const modeUrlObj = new SpotifyUrlObject('mode',2,-2,0,0);
-const loudnessUrlObj = new SpotifyUrlObject('loudness',0,-1,0,2,20,-60,1);
-const tempoUrlObj = new SpotifyUrlObject('tempo',1,-2,-1,2,60,50,210);
+const valenceUrlObj = new SpotifyUrlObject('valence',2,-2,1,-1);
+const energyUrlObj = new SpotifyUrlObject('energy',2,-1.5,0,1);
+// const acousticnessUrlObj = new SpotifyUrlObject('acousticness',0,1,0,-1,0.33);
+// const danceabilityUrlObj = new SpotifyUrlObject('danceability',1,-1,1,0);
+// const instrumentalnessUrlObj = new SpotifyUrlObject('instrumentalness',-1,0,-1,-1);
+// const popularityUrlObj = new SpotifyUrlObject('popularity',1,0,0,-1);
+// const loudnessUrlObj = new SpotifyUrlObject('loudness',0,-1,0,2,30,-60,1);
+// const tempoUrlObj = new SpotifyUrlObject('tempo',1,-2,-1,2,100,50,210);
 
 // Before we can act, we need an array that contains the instances for all the spotify keys we care about (see just above, line 99)
-const fullUrlObject = [genreUrlObj, energyUrlObj, valenceUrlObj, danceabilityUrlObj, acousticnessUrlObj, instrumentalnessUrlObj, popularityUrlObj, modeUrlObj, loudnessUrlObj, tempoUrlObj]
+const fullUrlObject = [genreUrlObj,  modeUrlObj, valenceUrlObj, energyUrlObj/*, acousticnessUrlObj, danceabilityUrlObj, instrumentalnessUrlObj, popularityUrlObj, loudnessUrlObj, tempoUrlObj*/]
 
 
 // *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*
@@ -136,7 +136,7 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
   /* now that we have all the data we need in the object, it's time to get the url string spotify needs
     note that this.printString returns the string for each key in turn, so they need to be joined
     then these four things are static to every query, so we concat them onto the end */
-  let urlString = specificPhotoObject.map((el) => el.printString()).join('') + 'max_liveness=0.75&max_speechiness=0.66&market=US&explicit=false';
+  let urlString = specificPhotoObject.map((el) => el.printString()).join('') + '&max_liveness=0.75&max_speechiness=0.66&market=US&explicit=false';
   return urlString;
 }
 
