@@ -12,3 +12,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.button {
+  margin: 5em;
+}
+
+.ConnectSpotify {
+  margin: 1em;
+}
+
+.ConnectSpotify a {
+  text-decoration: none;
+  color: black;
+}
+
+.colorInherit {
+  color: blueviolet;
+}
