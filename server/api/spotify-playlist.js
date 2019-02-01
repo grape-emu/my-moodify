@@ -1,54 +1,82 @@
 const router = require('express').Router();
-const https = require('https');
 const request = require('request');
+const querystring = require('querystring');
 module.exports = router;
 
-const newPlaylist = { name: 'Moodify' };
+const spotifyBaseUrl = 'https://api.spotify.com/v1/';
 
-function spotifyCreatePlaylist(body, token) {
-  return new Promise((resolve, reject) => {
-    let options = {
-      hostname: 'api.spotify.com',
-      port: 443,
-      method: 'POST',
+router.post('/', (req, res) => {
+  // let tracks = req.query.tracks;
+  let token = req.query.token;
+  let userId, playlistUrl;
+
+  // 1. Get user ID
+  let requestURL = spotifyBaseUrl + 'me';
+
+  let options = {
+    url: requestURL,
+    headers: { Authorization: 'Bearer ' + token },
+    json: true,
+  };
+
+  request.get(options, function(error, response, body) {
+    if (error) console.error(error);
+    userId = body.id;
+    console.log('userId', userId);
+
+    // 2. Create playlist
+    requestURL = spotifyBaseUrl + 'users/' + userId + '/playlists';
+    console.log(requestURL);
+
+    options = {
+      url: requestURL,
       headers: {
-        Authorization: ' Bearer ' + token,
+        Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      path: '/v1/users/35zyxganjrgn1k7pjyh7yrf31/playlists',
-      body: JSON.stringify(body),
+      json: true,
+      'Content-Type': 'json',
+      body: { name: 'Moodify Tracks' },
     };
-    console.log('in create', options);
 
-    https.request(options, function(res) {
-      console.log(res);
-      let data = '';
-      res
-        .on('data', chunk => {
-          data += chunk;
-        })
-        .on('end', () => {
-          resolve(data);
-        })
-        .on('error', err => {
-          reject(err);
-        });
+    request.post(options, function(error, response, body) {
+      if (error) console.error(error);
+      res.sendStatus(200);
+
+      //   // 3. Add tracks to playlist
+      //   requestURL =
+      //     playlistUrl +
+      //     '/?' +
+      //     querystring.stringify({
+      //       uris: tracks,
+      //     });
+
+      //   options = {
+      //     url: requestURL,
+      //     headers: { Authorization: 'Bearer ' + token },
+      //     json: true,
+      //   };
+
+      //   request.post(options, function(error, response, body) {
+      //     console.log('in post', options);
+      //     if (error) console.error(error);
+      //     res.sendStatus(200);
+      //   });
+      // });
     });
   });
-}
-
-router.get('/', async (req, res, next) => {
-  // We extract a token and query string from the query object
-  let token =
-    'BQBavALJegJasBGwFvwjkvhhTVutwy3OoU9p5LnMFGs6QL-Vz2wgwc2LGaEGqg7lmUH2fqTbyl-9oET8MLyQIPgp2ed7WqLnO1U5Mt8Ts8KyefKNczWbFrJ-CZKKBhrX-1_1ph9ImG7EExKr5SAU8awE-E3xHUwiMStwzPob6pPZ2PEA7pzWLjXj04T2nRit8ZXbZ_jHKxFKjKEL0QJPJIlh_C52zBok4FuSMvCUGykORw';
-
-  console.log('playlist request passed to Spotify', newPlaylist);
-
-  // We invoke spotifyAPI with the data we extracted:
-  try {
-    const data = await spotifyCreatePlaylist(newPlaylist, token);
-    res.json(JSON.parse(data));
-  } catch (err) {
-    next(err);
-  }
 });
+
+// We extract a token and query string from the query object
+// let token =
+//   'BQBgnKGNLUAJZpHiRVncp3ZF-UYv4aXRiuthQxERfHK5HudkBsCdo-vAr2Q-GxGyubBt54R3pEXDxNz5SnyWgD4TbioeDFJV1BJJrWevEpm9BZX_WqYmHExsWh9dcFx-d9k-kn87DIMhDQjusO58DKgBoUPIGQfyNMveKFE9r2jdD08-ATveksctgIxrFpwY7l0_f8tlj-MHMX7k4NmWntJPvJNvWwnvZaSCKkejeSm4bg';
+
+// console.log('playlist request passed to Spotify', newPlaylist);
+
+// We invoke spotifyAPI with the data we extracted:
+// try {
+//   const data = await spotifyCreatePlaylist(newPlaylist, token);
+//   res.json(JSON.parse(data));
+// } catch (err) {
+//   next(err);
+// }
