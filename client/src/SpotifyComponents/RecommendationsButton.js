@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import { getHashParams } from './spotify-functions';
 import RecommendationsView from './RecommendationsView';
@@ -52,7 +53,9 @@ export default class RecommendationsButton extends Component {
             type="file"
             onChange={this.handleFileUpload}
           />
-          <button type="submit">Moodify</button>
+          <Button variant="contained" type="submit">
+            Moodify
+          </Button>
         </form>
 
         {this.state.tracks.length === 0 ? (
