@@ -141,10 +141,10 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
 }
 
 // Retaining this for easy testing purposes
-console.log(convertGoogleCloudVisionObjToSpotifyString({
-  joyLikelihood: 'VERY_UNLIKELY',
-  sorrowLikelihood: 'VERY_LIKELY',
-  angerLikelihood: 'POSSIBLE',
-  surpriseLikelihood: 'VERY_UNLIKELY'}))
+// console.log(convertGoogleCloudVisionObjToSpotifyString({
+//   joyLikelihood: 'VERY_UNLIKELY',
+//   sorrowLikelihood: 'VERY_LIKELY',
+//   angerLikelihood: 'POSSIBLE',
+//   surpriseLikelihood: 'VERY_UNLIKELY'}))
 
 module.exports = convertGoogleCloudVisionObjToSpotifyString;
