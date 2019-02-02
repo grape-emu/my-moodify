@@ -14,6 +14,7 @@ export default class RecommendationsButton extends Component {
 		this.submitFile = this.submitFile.bind(this);
 		this.handleFileUpload = this.handleFileUpload.bind(this);
 		this.savePlaylist = this.savePlaylist.bind(this);
+		this.mapTracks = this.mapTracks.bind(this);
 	}
 
 	savePlaylist = async () => {
@@ -21,11 +22,18 @@ export default class RecommendationsButton extends Component {
 		const { data } = await axios.post(
 			`/api/playlist?token=${token.access_token}`
 		);
-		console.log(data);
+		let uris = this.mapTracks();
+		console.log(uris);
 		const response = await axios.post(
-			`/api/playlist/add?token=${token.access_token}&playlistId=${data}`
+			`/api/playlist/add?token=${token.access_token}&uris=${uris.join(
+				','
+			)}&playlistId=${data}`
 		);
 		console.log(response);
+	};
+
+	mapTracks = () => {
+		return this.state.tracks.map(track => `spotify:track:${track.id}`);
 	};
 
 	submitFile = async event => {

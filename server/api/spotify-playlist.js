@@ -37,8 +37,6 @@ router.post('/', (req, res) => {
 
 		request.post(options, function(error, response, body) {
 			if (error) console.error(error);
-			console.log(response.body.id);
-			// res.sendStatus(200);
 			res.send(response.body.id);
 		});
 	});
@@ -47,17 +45,19 @@ router.post('/', (req, res) => {
 router.post('/add', (req, res) => {
 	let token = req.query.token;
 	let playlistId = req.query.playlistId;
+	let uris = req.query.uris.split(',');
 
 	let requestURL = `${spotifyBaseUrl}playlists/${playlistId}/tracks`;
-
+	console.log(uris);
 	let options = {
 		url: requestURL,
 		headers: { Authorization: 'Bearer ' + token },
 		body: {
-			uris: [
-				'spotify:track:4iV5W9uYEdYUVa79Axb7Rh',
-				'spotify:track:1301WleyT98MSxVHPZCA6M'
-			]
+			// uris: [
+			// 	'spotify:track:4iV5W9uYEdYUVa79Axb7Rh',
+			// 	'spotify:track:1301WleyT98MSxVHPZCA6M'
+			// ]
+			uris: uris
 		},
 		json: true
 	};
