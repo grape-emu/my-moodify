@@ -22,6 +22,10 @@ export default class RecommendationsButton extends Component {
 			`/api/playlist?token=${token.access_token}`
 		);
 		console.log(data);
+		const response = await axios.post(
+			`/api/playlist/add?token=${token.access_token}&playlistId=${data}`
+		);
+		console.log(response);
 	};
 
 	submitFile = async event => {
