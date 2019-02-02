@@ -18,7 +18,7 @@ export default class RecommendationsButton extends Component {
 
 	savePlaylist = async () => {
 		const token = getHashParams();
-		const { data } = await axios.get(
+		const { data } = await axios.post(
 			`/api/playlist?token=${token.access_token}`
 		);
 		console.log(data);
@@ -72,7 +72,7 @@ export default class RecommendationsButton extends Component {
 						<Button type="button" onClick={this.savePlaylist}>
 							Save Playlist
 						</Button>
-						{/* <RecommendationsView tracks={this.state.tracks} /> */}
+						<RecommendationsView tracks={this.state.tracks} />
 					</div>
 				)}
 			</div>
