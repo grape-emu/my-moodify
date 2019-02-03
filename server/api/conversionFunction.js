@@ -128,8 +128,6 @@ const fullUrlObject = [
   energyUrlObj /*, acousticnessUrlObj, danceabilityUrlObj, instrumentalnessUrlObj, popularityUrlObj, loudnessUrlObj, tempoUrlObj*/,
 ];
 
-// *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*
-//
 // Here is where the function begins -- it takes the object that Google Cloud Vision gives to us
 const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
   const failsTest = (arr, keyword) => {

@@ -68,7 +68,6 @@ export default class RecommendationsButton extends Component {
 	};
 
 	render() {
-		console.log(this.state.feedback);
 		return (
 			<div>
 				<form onSubmit={this.submitFile}>
@@ -82,7 +81,7 @@ export default class RecommendationsButton extends Component {
 					</Button>
 				</form>
 
-				{this.state.tracks.length > 0 && (
+				{this.state.tracks && this.state.tracks.length > 0 && (
 					<div>
 						<p>Joy Likelihood: {this.state.feedback.joyLikelihood}</p>
 						<p> Anger Likelihood: {this.state.feedback.angerLikelihood}</p>

@@ -1,13 +1,12 @@
 const router = require('express').Router();
 const request = require('request');
-const querystring = require('querystring');
 module.exports = router;
 
 const spotifyBaseUrl = 'https://api.spotify.com/v1/';
 
 router.post('/', (req, res) => {
 	let token = req.query.token;
-	let userId, playlistUrl;
+	let userId;
 
 	let requestURL = spotifyBaseUrl + 'me';
 
@@ -21,7 +20,6 @@ router.post('/', (req, res) => {
 		if (error) console.error(error);
 		userId = body.id;
 
-		// 2. Create playlist
 		requestURL = spotifyBaseUrl + 'users/' + userId + '/playlists';
 
 		options = {
@@ -48,15 +46,10 @@ router.post('/add', (req, res) => {
 	let uris = req.query.uris.split(',');
 
 	let requestURL = `${spotifyBaseUrl}playlists/${playlistId}/tracks`;
-	console.log(uris);
 	let options = {
 		url: requestURL,
 		headers: { Authorization: 'Bearer ' + token },
 		body: {
-			// uris: [
-			// 	'spotify:track:4iV5W9uYEdYUVa79Axb7Rh',
-			// 	'spotify:track:1301WleyT98MSxVHPZCA6M'
-			// ]
 			uris: uris
 		},
 		json: true
@@ -64,7 +57,6 @@ router.post('/add', (req, res) => {
 
 	request.post(options, function(error, response, body) {
 		if (error) console.error(error);
-		console.log(response.body.snapshot_id);
 		res.send(response.body);
 	});
 });

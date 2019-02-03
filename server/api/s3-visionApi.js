@@ -6,7 +6,6 @@ const fs = require('fs');
 const fileType = require('file-type');
 const bluebird = require('bluebird');
 const multiparty = require('multiparty');
-const multer = require('multer');
 const S3_BUCKET = 'my-moodify';
 const s3secrets = require('../../secrets/keys/S3secrets');
 const bigConversionFunc = require('./conversionFunction.js');
@@ -79,6 +78,7 @@ router.post('/upload', (request, response) => {
 				angerLikelihood,
 				surpriseLikelihood
 			} = facialDataObj;
+
 			const returnData = {
 				joyLikelihood,
 				sorrowLikelihood,

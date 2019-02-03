@@ -41,7 +41,6 @@ router.get('/find', async (req, res, next) => {
 			newQuery += `&${property}=${queryObj[property]}`;
 		}
 	}
-	console.log('query passed to Spotify', newQuery);
 	// We invoke spotifyAPI with the data we extracted:
 	try {
 		const data = await spotifyAPI(newQuery, token);
