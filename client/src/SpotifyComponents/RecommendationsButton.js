@@ -9,6 +9,7 @@ export default class RecommendationsButton extends Component {
 		super();
 		this.state = {
 			tracks: [],
+			feedback: {},
 			file: null
 		};
 		this.submitFile = this.submitFile.bind(this);
@@ -23,7 +24,6 @@ export default class RecommendationsButton extends Component {
 			`/api/playlist?token=${token.access_token}`
 		);
 		let uris = this.mapTracks();
-		console.log(uris);
 		const response = await axios.post(
 			`/api/playlist/add?token=${token.access_token}&uris=${uris.join(
 				','
@@ -46,18 +46,20 @@ export default class RecommendationsButton extends Component {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				}
-			});
-
-			// Passing query to Spotify to generate playlist:
+			}); // Passing query to Spotify to generate playlist:
 			const token = getHashParams();
+
 			const { data } = await axios.get(
-				`/api/spotify/find?token=${token.access_token}${query.data}`
+				`/api/spotify/find?token=${token.access_token}${
+					query.data.spotifyQuery
+				}`
 			);
 			this.setState({
-				tracks: data.tracks
+				tracks: data.tracks,
+				feedback: query.data
 			});
 		} catch (err) {
-			console.log(err);
+			console.error(err);
 		}
 	};
 
@@ -66,6 +68,7 @@ export default class RecommendationsButton extends Component {
 	};
 
 	render() {
+		console.log(this.state.feedback);
 		return (
 			<div>
 				<form onSubmit={this.submitFile}>
@@ -81,6 +84,10 @@ export default class RecommendationsButton extends Component {
 
 				{this.state.tracks.length > 0 && (
 					<div>
+						<p>Joy Likelihood: {this.state.feedback.joyLikelihood}</p>
+						<p> Anger Likelihood: {this.state.feedback.angerLikelihood}</p>
+						<p>Sorrow Likelihood: {this.state.feedback.sorrowLikelihood}</p>
+						<p>Surprise Likelihood: {this.state.feedback.surpriseLikelihood}</p>
 						<Button type="button" onClick={this.savePlaylist}>
 							Save Playlist
 						</Button>
