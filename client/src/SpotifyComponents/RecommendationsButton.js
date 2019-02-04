@@ -76,24 +76,25 @@ export default class RecommendationsButton extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.submitFile}>
-          <input
-            label="upload file"
-            type="file"
-            onChange={this.handleFileUpload}
-          />
-          <Button variant="contained" type="submit">
-            Moodify
-          </Button>
-        </form>
-        <h3>New button:</h3>
         <div className="container">
-          <div>
-            <input type="file" name="" id="" ref={this.refButton} />
-          </div>
-          <div>
-            <img src="" alt="" ref={this.refImage} />
-          </div>
+          <form onSubmit={this.submitFile}>
+            <div>
+              <input
+                label="upload file"
+                type="file"
+                name=""
+                id=""
+                ref={this.refButton}
+                onChange={this.handleFileUpload}
+              />
+            </div>
+            <div>
+              <img src="" alt="" ref={this.refImage} />
+            </div>
+            <Button variant="contained" type="submit">
+              Moodify
+            </Button>
+          </form>
         </div>
 
         {this.state.tracks && this.state.tracks.length > 0 && (
