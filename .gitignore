@@ -27,3 +27,5 @@ yarn-error.log*
 /src/secrets.js
 
 secrets/
+/secrets.js
+/googleSecrets.js

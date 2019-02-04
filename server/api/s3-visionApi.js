@@ -7,15 +7,16 @@ const fileType = require('file-type');
 const bluebird = require('bluebird');
 const multiparty = require('multiparty');
 const S3_BUCKET = 'my-moodify';
-const s3secrets = require('../../secrets/keys/S3secrets');
+// const s3secrets = require('../../secrets/keys/S3secrets');
 const bigConversionFunc = require('./conversionFunction.js');
+require('../../secrets.js');
 
 module.exports = router;
 
 // configure the keys for accessing AWS
 AWS.config.update({
-	accessKeyId: s3secrets.accessKeyId,
-	secretAccessKey: s3secrets.secretAccessKey
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
 // configure AWS to work with promises
@@ -38,9 +39,10 @@ const uploadFile = (buffer, name, type) => {
 
 // Defining google cloud vision api:
 const vision = require('@google-cloud/vision');
-const GoogleAPIKey = './secrets/keys/GoogleAPIKey.json';
+const client_email = process.env.client_email;
+const private_key = process.env.private_key;
 const client = new vision.ImageAnnotatorClient({
-	keyFilename: GoogleAPIKey
+  credentials: { client_email, private_key },
 });
 async function detectFaces(inputFile) {
 	try {
