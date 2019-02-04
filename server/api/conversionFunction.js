@@ -47,12 +47,12 @@ class SpotifyUrlObject {
     const surpriseGenreSeeds = ['bossanova', 'funk', 'honky-tonk', 'j-pop', 'latin', 'pop-film', 'rainy-day', 'road-trip', 'rockabilly', 'show-tunes', 'ska', 'soul', 'soundtracks'];
     const angerGenreSeeds = ['alt-rock', 'alternative', 'black-metal', 'goth', 'grindcore', 'grunge', 'hardcore', 'heavy-metal', 'metal', 'metal-misc', 'metalcore', 'progressive-house', 'psych-rock', 'punk', 'punk-rock'];
     const populateSeedArr = emotion => {
-      console.log('emotion', emotion)
+      // console.log('emotion', emotion)
       if(emotion === 'joyLikelihood') hold = hold.concat(joyGenreSeeds);
       if(emotion === 'sorrowLikelihood') hold = hold.concat(sorrowGenreSeeds);
       if(emotion === 'surpriseLikelihood') hold = hold.concat(surpriseGenreSeeds);
       if(emotion === 'angerLikelihood') hold = hold.concat(angerGenreSeeds);
-      console.log(hold)
+      // console.log(hold)
       return hold;
     }
     const getGenreSeeds = (arr,given) => {
@@ -68,7 +68,7 @@ class SpotifyUrlObject {
       return output;
     }
     if(this.veryLikelyMood.length === 1) {
-      console.log('this.veryLikelyMood',this.veryLikelyMood)
+      // console.log('this.veryLikelyMood',this.veryLikelyMood)
       populateSeedArr(this.veryLikelyMood[0])
     }
     else {
@@ -145,9 +145,10 @@ class SpotifyUrlObject {
     );
     // Genre comes first in the string, and also follows some different output rules
     if (this.name === 'genre') {
-      // const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
-      // return `&seed_genres=${genreSimple}`;
-      return this.genreStringComplex()
+      const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
+      return `&seed_genres=${genreSimple}`;
+      // return this.genreStringComplex()
+      // genreStringComplex is nearly working, and will replace the two lines above, but for now, leaving them for testing purposes
     }
     // Mode is a boolean, so its output also follows a different format
     if (this.name === 'mode') {
