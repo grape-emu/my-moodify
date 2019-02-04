@@ -13,6 +13,7 @@ export default class RecommendationsButton extends Component {
       tracks: [],
       feedback: {},
       file: null,
+      imageSrc: '',
     };
     this.submitFile = this.submitFile.bind(this);
     this.handleFileUpload = this.handleFileUpload.bind(this);
@@ -28,12 +29,6 @@ export default class RecommendationsButton extends Component {
 
   setRef = webcam => {
     this.webcam = webcam;
-  };
-
-  capture = async () => {
-    const imageSrc = this.webcam.getScreenshot();
-    console.log('imageSrc', imageSrc);
-    await axios.post('/api/s3/capture', { url: imageSrc });
   };
 
   savePlaylist = async () => {
@@ -52,6 +47,29 @@ export default class RecommendationsButton extends Component {
 
   mapTracks = () => {
     return this.state.tracks.map(track => `spotify:track:${track.id}`);
+  };
+
+  capture = async event => {
+    try {
+      event.preventDefault();
+      const imageSrc = this.webcam.getScreenshot();
+      const query = await axios.post('/api/s3/capture', { url: imageSrc });
+      // Passing query to Spotify to generate playlist:
+      const token = getHashParams();
+
+      const { data } = await axios.get(
+        `/api/spotify/find?token=${token.access_token}${
+          query.data.spotifyQuery
+        }`
+      );
+      this.setState({
+        tracks: data.tracks,
+        feedback: query.data,
+        imageSrc,
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   submitFile = async event => {
@@ -110,7 +128,7 @@ export default class RecommendationsButton extends Component {
               />
             </div>
             <div>
-              <img src="" alt="" ref={this.refImage} />
+              <img src={'' || this.state.imageSrc} alt="" ref={this.refImage} />
             </div>
             <Button variant="contained" type="submit">
               Moodify
@@ -118,17 +136,21 @@ export default class RecommendationsButton extends Component {
           </form>
         </div>
 
-        <div>
-          <Webcam
-            audio={false}
-            height={350}
-            ref={this.setRef}
-            screenshotFormat="image/jpeg"
-            width={350}
-            videoConstraints={videoConstraints}
-          />
-          <button onClick={this.capture}>Capture photo</button>
-        </div>
+        <form onSubmit={this.capture}>
+          <div>
+            <Webcam
+              audio={false}
+              height={350}
+              ref={this.setRef}
+              screenshotFormat="image/jpeg"
+              width={350}
+              videoConstraints={videoConstraints}
+            />
+            <Button variant="contained" type="submit">
+              Moodify
+            </Button>
+          </div>
+        </form>
 
         {this.state.tracks && this.state.tracks.length > 0 && (
           <div>
