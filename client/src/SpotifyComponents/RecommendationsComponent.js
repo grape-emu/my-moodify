@@ -5,7 +5,7 @@ const RecommendationsComponent = props => {
 		<div>
 			<iframe
 				id="iFrame"
-				title="myTitle"
+				title={props.id}
 				sandbox="allow-scripts allow-same-origin"
 				src={`https://open.spotify.com/embed/track/${props.id}`}
 				width="300"

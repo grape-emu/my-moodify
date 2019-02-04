@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api', require('./server/api'));
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build/index.html'));
+	res.sendFile(path.join(__dirname, 'client/build/index.html'));
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
