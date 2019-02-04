@@ -41,19 +41,20 @@ class SpotifyUrlObject {
   this.printString, line 79 */
 
   genreStringComplex() {
-    let hold = [];
+    // this.genrePossibilities = [];
     const joyGenreSeeds = ['disney', 'hip-hop', 'jazz', 'new-release', 'pop', 'power-pop', 'r-n-b', 'rainy-day', 'rock', 'rock-n-roll', 'summer'];
     const sorrowGenreSeeds = ['bluegrass', 'blues', 'emo', 'folk', 'indie', 'singer-songwriter'];
     const surpriseGenreSeeds = ['bossanova', 'funk', 'honky-tonk', 'j-pop', 'latin', 'pop-film', 'rainy-day', 'road-trip', 'rockabilly', 'show-tunes', 'ska', 'soul', 'soundtracks'];
     const angerGenreSeeds = ['alt-rock', 'alternative', 'black-metal', 'goth', 'grindcore', 'grunge', 'hardcore', 'heavy-metal', 'metal', 'metal-misc', 'metalcore', 'progressive-house', 'psych-rock', 'punk', 'punk-rock'];
     const populateSeedArr = emotion => {
+      this.genrePossibilities = [];
       // console.log('emotion', emotion)
-      if(emotion === 'joyLikelihood') hold = hold.concat(joyGenreSeeds);
-      if(emotion === 'sorrowLikelihood') hold = hold.concat(sorrowGenreSeeds);
-      if(emotion === 'surpriseLikelihood') hold = hold.concat(surpriseGenreSeeds);
-      if(emotion === 'angerLikelihood') hold = hold.concat(angerGenreSeeds);
-      // console.log(hold)
-      return hold;
+      if(emotion === 'joyLikelihood') this.genrePossibilities = this.genrePossibilities.concat(joyGenreSeeds);
+      if(emotion === 'sorrowLikelihood') this.genrePossibilities = this.genrePossibilities.concat(sorrowGenreSeeds);
+      if(emotion === 'surpriseLikelihood') this.genrePossibilities = this.genrePossibilities.concat(surpriseGenreSeeds);
+      if(emotion === 'angerLikelihood') this.genrePossibilities = this.genrePossibilities.concat(angerGenreSeeds);
+      console.log('emotion + this.genrePossibilities', emotion, '+', this.genrePossibilities)
+      return this.genrePossibilities;
     }
     const getGenreSeeds = (arr,given) => {
       const output = (given) ? [given] : [];
@@ -80,11 +81,13 @@ class SpotifyUrlObject {
         else this.likelyMood.map(likelyMood => populateSeedArr(likelyMood));
       }
       else this.veryLikelyMood.map(veryLikelyMood => populateSeedArr(veryLikelyMood))
+      // if !veryLikelyMood && !likelyMood
     }
-    if(hold.includes('disney')) this.genreSeeds = getGenreSeeds(hold,'happy');
-    else if(hold.includes('bluegrass')) this.genreSeeds = getGenreSeeds(hold,'sad');
-    else this.genreSeeds = getGenreSeeds(hold);
-    return `&seed_genres=${this.genreSeeds.join(',')}`;
+    if(this.genrePossibilities.includes('disney')) this.genreSeeds = getGenreSeeds(this.genrePossibilities,'happy');
+    else if(this.genrePossibilities.includes('bluegrass')) this.genreSeeds = getGenreSeeds(this.genrePossibilities,'sad');
+    else this.genreSeeds = getGenreSeeds(this.genrePossibilities);
+    console.log('this.genreSeeds',this.genreSeeds)
+    return `&seed_genres=${this.genreSeeds.join('%2C')}`;
   }
 
   translator() {
@@ -148,6 +151,7 @@ class SpotifyUrlObject {
       // const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
       // return `&seed_genres=${genreSimple}`;
       return this.genreStringComplex()
+      // genreStringComplex is nearly working, and will replace the two lines above, but for now, leaving them for testing purposes
     }
     // Mode is a boolean, so its output also follows a different format
     if (this.name === 'mode') {
@@ -277,11 +281,11 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
 
 
 // Retaining this for easy testing purposes:
-console.log(convertGoogleCloudVisionObjToSpotifyString({
-  joyLikelihood: 'VERY_UNLIKELY',
-  sorrowLikelihood: 'VERY_LIKELY',
-  angerLikelihood: 'POSSIBLE',
-  surpriseLikelihood: 'VERY_UNLIKELY'}))
+// console.log(convertGoogleCloudVisionObjToSpotifyString({
+//   joyLikelihood: 'VERY_UNLIKELY',
+//   sorrowLikelihood: 'VERY_LIKELY',
+//   angerLikelihood: 'POSSIBLE',
+//   surpriseLikelihood: 'VERY_UNLIKELY'}))
 
   // console.log(improveMyMood({
   //   joyLikelihood: 'VERY_UNLIKELY',
