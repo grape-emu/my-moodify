@@ -41,27 +41,22 @@ class SpotifyUrlObject {
   this.printString, line 79 */
 
   genreStringComplex() {
-    // this.genrePossibilities = [];
     const joyGenreSeeds = ['disney', 'hip-hop', 'jazz', 'new-release', 'pop', 'power-pop', 'r-n-b', 'rainy-day', 'rock', 'rock-n-roll', 'summer'];
     const sorrowGenreSeeds = ['bluegrass', 'blues', 'emo', 'folk', 'indie', 'singer-songwriter'];
     const surpriseGenreSeeds = ['bossanova', 'funk', 'honky-tonk', 'j-pop', 'pop-film', 'rainy-day', 'road-trip', 'rockabilly', 'show-tunes', 'ska', 'soul', 'soundtracks'];
     const angerGenreSeeds = ['alt-rock', 'alternative', 'black-metal', 'goth', 'grindcore', 'grunge', 'hardcore', 'heavy-metal', 'metal', 'metal-misc', 'metalcore', 'progressive-house', 'psych-rock', 'punk', 'punk-rock'];
     const populateSeedArr = emotion => {
       this.genrePossibilities = [];
-      // console.log('emotion', emotion)
       if(emotion === 'joyLikelihood') this.genrePossibilities = this.genrePossibilities.concat(joyGenreSeeds);
       if(emotion === 'sorrowLikelihood') this.genrePossibilities = this.genrePossibilities.concat(sorrowGenreSeeds);
       if(emotion === 'surpriseLikelihood') this.genrePossibilities = this.genrePossibilities.concat(surpriseGenreSeeds);
       if(emotion === 'angerLikelihood') this.genrePossibilities = this.genrePossibilities.concat(angerGenreSeeds);
-      // console.log('emotion + this.genrePossibilities', emotion, '+', this.genrePossibilities)
       return this.genrePossibilities;
     }
     const getGenreSeeds = (arr,given) => {
       const output = (given) ? [given] : [];
       while(output.length < 5) {
         let idx = Math.floor(Math.random() * (arr.length - 1))
-        // console.log(arr.length)
-        // console.log('idx',idx)
         if(!output.includes(arr[idx])) {
           output.push(arr[idx])
         }
@@ -69,12 +64,10 @@ class SpotifyUrlObject {
       return output;
     }
     if(this.veryLikelyMood.length === 1) {
-      // console.log('this.veryLikelyMood',this.veryLikelyMood)
       populateSeedArr(this.veryLikelyMood[0])
     }
     else {
       // refactor into separate helper functions
-        // not breaking the linter rule noted below, but it keeps throwing the error...
       // eslint-disable-next-line no-lonely-if
       if(this.veryLikelyMood.length < 1) {
         if (this.likelyMood.length === 1) populateSeedArr(this.likelyMood[0]);
@@ -299,7 +292,7 @@ module.exports = convertGoogleCloudVisionObjToSpotifyString;
 
 
 
-// According to Google, this face is definitely (joyful, sorrowful, surprised, angry), probably (ibid.), probably not (ibid.), and definitely not (ibid.).
+// According to Google Cloud Vision, this face is definitely (joyful, sorrowful, surprised, angry), probably (ibid.), probably not (ibid.), and definitely not (ibid.).
 /*
 
 

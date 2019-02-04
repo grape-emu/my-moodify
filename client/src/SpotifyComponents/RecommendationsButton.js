@@ -10,7 +10,8 @@ export default class RecommendationsButton extends Component {
 		this.state = {
 			tracks: [],
 			feedback: {},
-			file: null
+			file: null,
+			seedGenres: []
 		};
 		this.submitFile = this.submitFile.bind(this);
 		this.handleFileUpload = this.handleFileUpload.bind(this);
@@ -63,8 +64,10 @@ export default class RecommendationsButton extends Component {
 					query.data.spotifyQuery
 				}`
 			)
+			console.log(query.data)
 			this.setState({
 				tracks: data.tracks,
+				seedGenres: data.seeds
 			})
 		}
 		} catch(err) {
@@ -77,34 +80,42 @@ export default class RecommendationsButton extends Component {
 	};
 
 	render() {
-		return (
-			<div>
+		const genres = this.state.seedGenres;
+		return(
+			<div id='container'>
 				<form onSubmit={this.submitFile}>
 					<input
-						label="upload file"
-						type="file"
+						label='upload file'
+						type='file'
 						onChange={this.handleFileUpload}
-					/>
-					<Button variant="contained" type="submit">
-						Moodify
-					</Button>
+						/>
+					<Button variant='contained' type='submit'>Moodify</Button>
 				</form>
-
-				{this.state.feedback.hasOwnProperty('spotifyQuery') && this.state.feedback.spotifyQuery === false && (<p>{"We're sorry, Google can't determine the emotions in this image. Please try a different selfie."}</p>)}
-
-				{this.state.tracks && this.state.tracks.length > 0 && (
-					<div>
-						<p>Joy Likelihood: {this.state.feedback.joyLikelihood}</p>
-						<p>Anger Likelihood: {this.state.feedback.angerLikelihood}</p>
-						<p>Sorrow Likelihood: {this.state.feedback.sorrowLikelihood}</p>
-						<p>Surprise Likelihood: {this.state.feedback.surpriseLikelihood}</p>
-						<Button type="button" onClick={this.savePlaylist}>
-							Save Playlist
-						</Button>
-						<RecommendationsView tracks={this.state.tracks} />
+				<div id='not-form'>
+					<div id='error-handling'>
+						{this.state.feedback.hasOwnProperty('spotifyQuery') && this.state.feedback.spotifyQuery === false && (<p>{"We're sorry, Google can't determine the emotions in this image. Please try a different selfie."}</p>)}
+					</div>
+					{this.state.tracks && this.state.tracks.length > 0 && (
+					<div id='valid-photo-container'>
+						<div id='emotion-data'>
+							<p>Joy Likelihood: {this.state.feedback.joyLikelihood}</p>
+							<p>Anger Likelihood: {this.state.feedback.angerLikelihood}</p>
+							<p>Sorrow Likelihood: {this.state.feedback.sorrowLikelihood}</p>
+							<p>Surprise Likelihood: {this.state.feedback.surpriseLikelihood}</p>
+						</div>
+						<div id='genre-data'>
+							{genres && <p>This playlist draws from the Spotify genres {genres[0].id}, {genres[1].id}, {genres[2].id}, {genres[3].id}, and {genres[4].id}.</p>}
+						</div>
+						<div id='save-button'>
+							<Button type="button" onClick={this.savePlaylist}>Save Playlist</Button>
+						</div>
+						<div id='playlist'>
+							<RecommendationsView tracks={this.state.tracks} />
+						</div>
 					</div>
 				)}
+				</div>
 			</div>
-		);
+		)
 	}
 }
