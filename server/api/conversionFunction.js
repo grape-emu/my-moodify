@@ -84,7 +84,7 @@ class SpotifyUrlObject {
     if(hold.includes('disney')) this.genreSeeds = getGenreSeeds(hold,'happy');
     else if(hold.includes('bluegrass')) this.genreSeeds = getGenreSeeds(hold,'sad');
     else this.genreSeeds = getGenreSeeds(hold);
-    return `&seed_genres=${this.genreSeeds.join('OR')}`;
+    return `&seed_genres=${this.genreSeeds.join(',')}`;
   }
 
   translator() {
@@ -145,10 +145,9 @@ class SpotifyUrlObject {
     );
     // Genre comes first in the string, and also follows some different output rules
     if (this.name === 'genre') {
-      const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
-      return `&seed_genres=${genreSimple}`;
-      // return this.genreStringComplex()
-      // genreStringComplex is nearly working, and will replace the two lines above, but for now, leaving them for testing purposes
+      // const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
+      // return `&seed_genres=${genreSimple}`;
+      return this.genreStringComplex()
     }
     // Mode is a boolean, so its output also follows a different format
     if (this.name === 'mode') {
