@@ -4,6 +4,7 @@ import axios from 'axios';
 import { getHashParams } from './spotify-functions';
 import RecommendationsView from './RecommendationsView';
 import ImageLoad from 'image-preview-react';
+import Webcam from 'react-webcam';
 
 export default class RecommendationsButton extends Component {
   constructor(props) {
@@ -20,9 +21,19 @@ export default class RecommendationsButton extends Component {
     this.refButton = React.createRef();
     this.refImage = React.createRef();
   }
+
   componentDidMount() {
     ImageLoad({ button: this.refButton, image: this.refImage });
   }
+
+  setRef = webcam => {
+    this.webcam = webcam;
+  };
+
+  capture = () => {
+    const imageSrc = this.webcam.getScreenshot();
+    console.log('imageSrc', imageSrc);
+  };
 
   savePlaylist = async () => {
     const token = getHashParams();
@@ -74,6 +85,12 @@ export default class RecommendationsButton extends Component {
   };
 
   render() {
+    const videoConstraints = {
+      width: 1280,
+      height: 720,
+      facingMode: 'user',
+    };
+
     return (
       <div>
         <div className="container">
@@ -82,6 +99,7 @@ export default class RecommendationsButton extends Component {
               <input
                 label="upload file"
                 type="file"
+                accept="image/*"
                 name=""
                 id=""
                 ref={this.refButton}
@@ -95,6 +113,18 @@ export default class RecommendationsButton extends Component {
               Moodify
             </Button>
           </form>
+        </div>
+
+        <div>
+          <Webcam
+            audio={false}
+            height={350}
+            ref={this.setRef}
+            screenshotFormat="image/jpeg"
+            width={350}
+            videoConstraints={videoConstraints}
+          />
+          <button onClick={this.capture}>Capture photo</button>
         </div>
 
         {this.state.tracks && this.state.tracks.length > 0 && (

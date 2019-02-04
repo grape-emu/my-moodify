@@ -42,6 +42,7 @@
     "query-string": "^5.1.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
+    "react-webcam": "^1.1.0",
     "request": "^2.88.0",
     "typeface-roboto": "0.0.54"
   },
