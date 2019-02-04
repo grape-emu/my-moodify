@@ -72,6 +72,7 @@ router.post('/upload', (request, response) => {
 			const urlLink = data.Location;
 			const facialDataObj = await detectFaces(urlLink);
 			const spotifyQuery = bigConversionFunc(facialDataObj);
+
 			const {
 				joyLikelihood,
 				sorrowLikelihood,

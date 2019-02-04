@@ -184,7 +184,7 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
   // Then we run those tests, confirming that we have emotion data to work with
   if (tooBlurry || selfieObjEmotions.every(allUnknown) || selfieObjEmotions.every(allVeryUnlikely)) {
     // This isn't just a console log; we need to build this error in on the front end still...
-    return "We\'re sorry, Google can\'t determine the emotions in this image. Please try a different selfie."
+    return false;
     // throw new Error;
   }
 
@@ -209,15 +209,15 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
 };
 
 // Can we pass this the same object we've already processed? Or do we need to run the whole thing anew?
-const improveMyMood = (processedSelfieObj) => {
-  if(this.joyLikelihood <= 1) this.joyLikelihood += 1;
-  else this.joyScale += 1;
-  let urlString =
-    processedSelfieObj.map(tag => tag.printString()).join('') +
-    '&max_liveness=0.75&max_speechiness=0.66&market=US&explicit=false';
-  console.log('urlString from the conversion function', urlString);
-  return urlString;
-}
+// const improveMyMood = (processedSelfieObj) => {
+//   if(this.joyLikelihood <= 1) this.joyLikelihood += 1;
+//   else this.joyScale += 1;
+//   let urlString =
+//     processedSelfieObj.map(tag => tag.printString()).join('') +
+//     '&max_liveness=0.75&max_speechiness=0.66&market=US&explicit=false';
+//   console.log('urlString from the conversion function', urlString);
+//   return urlString;
+// }
 
 
 // Retaining this for easy testing purposes:
@@ -227,11 +227,11 @@ console.log(convertGoogleCloudVisionObjToSpotifyString({
   angerLikelihood: 'POSSIBLE',
   surpriseLikelihood: 'VERY_UNLIKELY'}))
 
-  console.log(improveMyMood({
-    joyLikelihood: 'VERY_UNLIKELY',
-    sorrowLikelihood: 'VERY_LIKELY',
-    angerLikelihood: 'POSSIBLE',
-    surpriseLikelihood: 'VERY_UNLIKELY'}))
+  // console.log(improveMyMood({
+  //   joyLikelihood: 'VERY_UNLIKELY',
+  //   sorrowLikelihood: 'VERY_LIKELY',
+  //   angerLikelihood: 'POSSIBLE',
+  //   surpriseLikelihood: 'VERY_UNLIKELY'}))
 
 
 module.exports = convertGoogleCloudVisionObjToSpotifyString;
