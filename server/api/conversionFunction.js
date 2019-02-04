@@ -23,9 +23,9 @@ class SpotifyUrlObject {
     for (let key in obj) {
       if (obj[key] === 'VERY_LIKELY') this[key] = 2;
       if (obj[key] === 'LIKELY') this[key] = 1;
+      if (obj[key] === 'POSSIBLE' || obj[key] === 'UNKNOWN') this[key] = 0;
       if (obj[key] === 'UNLIKELY') this[key] = -1;
       if (obj[key] === 'VERY_UNLIKELY') this[key] = -2;
-      if (obj[key] === 'POSSIBLE' || obj[key] === 'UNKNOWN') this[key] = 0;
     }
     return this;
   }
@@ -120,19 +120,16 @@ and angerScale. These scales indicate how each emotion relates to each spotify t
   surprise is irrelevant to energy. So surpriseScale is 0, and sorrowScale is a
   negative number. Joy and sorrow are more important to energy than anger, though,
   so anger is 1 but joy is 2. These are unique to each tag. */
+/* const instanceName = newSpotifyUrlObject(name, joyScale, sorrowScale,
+  surpriseScale, angerScale) */
 const genreUrlObj = new SpotifyUrlObject('genre', 2, -2, 0, 0);
 const modeUrlObj = new SpotifyUrlObject('mode', 2, -2, 0, 0);
 const valenceUrlObj = new SpotifyUrlObject('valence', 2, -2, 1, -1);
 const energyUrlObj = new SpotifyUrlObject('energy', 2, -1.5, 0, 1);
 
-/* Geoff had suggested that we move these numbers into a different, hard-coded object, but I don't see a good way to do that, because we need to keep the constructor or else (I think?) completely rework how the particular image's emotion is added to the object. Below are my attempts, which I retain for discussion purposes.
+/* Geoff had suggested that we move these numbers into a different, hard-coded object, but I don't see a good way to do that, because we need to keep the constructor or else (I think?) completely rework how the particular image's emotion is added to the object. Below are my attempts, which I retain for discussion purposes. */
 
-const genreVars = ['genre', 2, -2, 0, 0];
-const modeVars = ['mode', 2, -2, 0, 0];
-const valenceVars = ['valence', 2, -2, 1, -1];
-const energyVars = ['energy', 2, -1.5, 0, 1];
-
-const genreObj = {
+const genreData = {
   name: 'genre',
   joyScale: 2,
   sorrowScale: -2,
@@ -140,7 +137,7 @@ const genreObj = {
   angerScale: 0
 }
 
-const modeObj = {
+const modeData = {
   name: 'mode',
   joyScale: 2,
   sorrowScale: -2,
@@ -148,7 +145,7 @@ const modeObj = {
   angerScale: 0
 }
 
-const valenceObj = {
+const valenceData = {
   name: 'valence',
   joyScale: 2,
   sorrowScale: -2,
@@ -156,13 +153,13 @@ const valenceObj = {
   angerScale: -1
 }
 
-const energyObj = {
+const energyData = {
   name: 'energy',
   joyScale: 2,
   sorrowScale: -1.5,
   surpriseScale: 0,
   angerScale: 1
-} */
+}
 
 /* Before we can act, we need an array that contains the instances for all the
 spotify keys we care about (see just above, line 112) */
@@ -180,17 +177,15 @@ gives to us */
 const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
   /* First, we set up some variables that will help us confirm that Cloud Vision
   has detected emotions in the photo */
-  const allUnknown = currentVal => currentVal === 'UNKNOWN';
-  const allVeryUnlikely = currentVal => currentVal === 'VERY_UNLIKELY';
+  const allUnknown = currentEmotion => currentEmotion === 'UNKNOWN';
+  const allVeryUnlikely = currentEmotion => currentEmotion === 'VERY_UNLIKELY';
   const tooBlurry = selfieObj.blurredLikelihood === 'VERY_LIKELY';
   const selfieObjEmotions = [selfieObj.joyLikelihood, selfieObj.sorrowLikelihood, selfieObj.surpriseLikelihood, selfieObj.angerLikelihood];
   // Then we run those tests, confirming that we have emotion data to work with
   if (tooBlurry || selfieObjEmotions.every(allUnknown) || selfieObjEmotions.every(allVeryUnlikely)) {
     // This isn't just a console log; we need to build this error in on the front end still...
-    console.log(
-      'We need to throw an error here on the front end: "We\'re sorry, Google can\'t determine the emotions in this image. Please try a different selfie."'
-    );
-    throw new Error;
+    return "We\'re sorry, Google can\'t determine the emotions in this image. Please try a different selfie."
+    // throw new Error;
   }
 
   /* Before we can process the selfie's emotions, we need to initialize our
