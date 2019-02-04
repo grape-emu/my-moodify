@@ -30,9 +30,10 @@ export default class RecommendationsButton extends Component {
     this.webcam = webcam;
   };
 
-  capture = () => {
+  capture = async () => {
     const imageSrc = this.webcam.getScreenshot();
     console.log('imageSrc', imageSrc);
+    await axios.post('/api/s3/capture', { url: imageSrc });
   };
 
   savePlaylist = async () => {
@@ -63,7 +64,9 @@ export default class RecommendationsButton extends Component {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      }); // Passing query to Spotify to generate playlist:
+      });
+
+      // Passing query to Spotify to generate playlist:
       const token = getHashParams();
 
       const { data } = await axios.get(
