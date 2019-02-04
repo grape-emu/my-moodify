@@ -12,6 +12,8 @@ class SpotifyUrlObject {
     this.sorrowScale = sorrowScale;
     this.surpriseScale = surpriseScale;
     this.angerScale = angerScale;
+    this.veryLikelyMood = [];
+    this.likelyMood = [];
   }
   // Line 30 maps over the array of instances with this.addEmotionKeys, just below
 
@@ -21,8 +23,14 @@ class SpotifyUrlObject {
     contains (like in ../../conversion/spotifyObjEmotions.js) */
     /* eslint-disable guard-for-in */
     for (let key in obj) {
-      if (obj[key] === 'VERY_LIKELY') this[key] = 2;
-      if (obj[key] === 'LIKELY') this[key] = 1;
+      if (obj[key] === 'VERY_LIKELY') {
+        this[key] = 2;
+        this.veryLikelyMood.push(key);
+      }
+      if (obj[key] === 'LIKELY') {
+        this[key] = 1;
+        this.likelyMood.push(key);
+      }
       if (obj[key] === 'POSSIBLE' || obj[key] === 'UNKNOWN') this[key] = 0;
       if (obj[key] === 'UNLIKELY') this[key] = -1;
       if (obj[key] === 'VERY_UNLIKELY') this[key] = -2;
@@ -31,6 +39,53 @@ class SpotifyUrlObject {
   }
   /* Return to line 165, which maps over the output of this method with
   this.printString, line 79 */
+
+  genreStringComplex() {
+    let hold = [];
+    const joyGenreSeeds = ['disney', 'hip-hop', 'jazz', 'new-release', 'pop', 'power-pop', 'r-n-b', 'rainy-day', 'rock', 'rock-n-roll', 'summer'];
+    const sorrowGenreSeeds = ['bluegrass', 'blues', 'emo', 'folk', 'indie', 'singer-songwriter'];
+    const surpriseGenreSeeds = ['bossanova', 'funk', 'honky-tonk', 'j-pop', 'latin', 'pop-film', 'rainy-day', 'road-trip', 'rockabilly', 'show-tunes', 'ska', 'soul', 'soundtracks'];
+    const angerGenreSeeds = ['alt-rock', 'alternative', 'black-metal', 'goth', 'grindcore', 'grunge', 'hardcore', 'heavy-metal', 'metal', 'metal-misc', 'metalcore', 'progressive-house', 'psych-rock', 'punk', 'punk-rock'];
+    const populateSeedArr = emotion => {
+      console.log('emotion', emotion)
+      if(emotion === 'joyLikelihood') hold = hold.concat(joyGenreSeeds);
+      if(emotion === 'sorrowLikelihood') hold = hold.concat(sorrowGenreSeeds);
+      if(emotion === 'surpriseLikelihood') hold = hold.concat(surpriseGenreSeeds);
+      if(emotion === 'angerLikelihood') hold = hold.concat(angerGenreSeeds);
+      console.log(hold)
+      return hold;
+    }
+    const getGenreSeeds = (arr,given) => {
+      const output = (given) ? [given] : [];
+      while(output.length < 5) {
+        let idx = Math.floor(Math.random() * (arr.length - 1))
+        // console.log(arr.length)
+        // console.log('idx',idx)
+        if(!output.includes(arr[idx])) {
+          output.push(arr[idx])
+        }
+      }
+      return output;
+    }
+    if(this.veryLikelyMood.length === 1) {
+      console.log('this.veryLikelyMood',this.veryLikelyMood)
+      populateSeedArr(this.veryLikelyMood[0])
+    }
+    else {
+      // refactor into separate helper functions
+        // not breaking the linter rule noted below, but it keeps throwing the error...
+      // eslint-disable-next-line no-lonely-if
+      if(this.veryLikelyMood.length < 1) {
+        if (this.likelyMood.length === 1) populateSeedArr(this.likelyMood[0]);
+        else this.likelyMood.map(likelyMood => populateSeedArr(likelyMood));
+      }
+      else this.veryLikelyMood.map(veryLikelyMood => populateSeedArr(veryLikelyMood))
+    }
+    if(hold.includes('disney')) this.genreSeeds = getGenreSeeds(hold,'happy');
+    else if(hold.includes('bluegrass')) this.genreSeeds = getGenreSeeds(hold,'sad');
+    else this.genreSeeds = getGenreSeeds(hold);
+    return `&seed_genres=${this.genreSeeds.join('OR')}`;
+  }
 
   translator() {
     /* rangeWidth holds the largest possible output range, based on what spotify
@@ -90,8 +145,9 @@ class SpotifyUrlObject {
     );
     // Genre comes first in the string, and also follows some different output rules
     if (this.name === 'genre') {
-      const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
-      return `&seed_genres=${genreSimple}`;
+      // const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
+      // return `&seed_genres=${genreSimple}`;
+      return this.genreStringComplex()
     }
     // Mode is a boolean, so its output also follows a different format
     if (this.name === 'mode') {
