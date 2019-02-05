@@ -40,107 +40,58 @@ class SpotifyUrlObject {
 	/* Return to line 165, which maps over the output of this method with
   this.printString, line 79 */
 
-	genreStringComplex() {
-		let hold = [];
-		const joyGenreSeeds = [
-			'disney',
-			'hip-hop',
-			'jazz',
-			'new-release',
-			'pop',
-			'power-pop',
-			'r-n-b',
-			'rainy-day',
-			'rock',
-			'rock-n-roll',
-			'summer'
-		];
-		const sorrowGenreSeeds = [
-			'bluegrass',
-			'blues',
-			'emo',
-			'folk',
-			'indie',
-			'singer-songwriter'
-		];
-		const surpriseGenreSeeds = [
-			'bossanova',
-			'funk',
-			'honky-tonk',
-			'j-pop',
-			'latin',
-			'pop-film',
-			'rainy-day',
-			'road-trip',
-			'rockabilly',
-			'show-tunes',
-			'ska',
-			'soul',
-			'soundtracks'
-		];
-		const angerGenreSeeds = [
-			'alt-rock',
-			'alternative',
-			'black-metal',
-			'goth',
-			'grindcore',
-			'grunge',
-			'hardcore',
-			'heavy-metal',
-			'metal',
-			'metal-misc',
-			'metalcore',
-			'progressive-house',
-			'psych-rock',
-			'punk',
-			'punk-rock'
-		];
-		const populateSeedArr = emotion => {
-			// console.log('emotion', emotion)
-			if (emotion === 'joyLikelihood') hold = hold.concat(joyGenreSeeds);
-			if (emotion === 'sorrowLikelihood') hold = hold.concat(sorrowGenreSeeds);
-			if (emotion === 'surpriseLikelihood')
-				hold = hold.concat(surpriseGenreSeeds);
-			if (emotion === 'angerLikelihood') hold = hold.concat(angerGenreSeeds);
-			// console.log(hold)
-			return hold;
-		};
-		const getGenreSeeds = (arr, given) => {
-			const output = given ? [given] : [];
-			while (output.length < 5) {
-				let idx = Math.floor(Math.random() * (arr.length - 1));
-				// console.log(arr.length)
-				// console.log('idx',idx)
-				if (!output.includes(arr[idx])) {
-					output.push(arr[idx]);
-				}
-			}
-			return output;
-		};
-		if (this.veryLikelyMood.length === 1) {
-			// console.log('this.veryLikelyMood',this.veryLikelyMood)
-			populateSeedArr(this.veryLikelyMood[0]);
-		} else {
-			// refactor into separate helper functions
-			// not breaking the linter rule noted below, but it keeps throwing the error...
-			// eslint-disable-next-line no-lonely-if
-			if (this.veryLikelyMood.length < 1) {
-				if (this.likelyMood.length === 1) populateSeedArr(this.likelyMood[0]);
-				else this.likelyMood.map(likelyMood => populateSeedArr(likelyMood));
-			} else
-				this.veryLikelyMood.map(veryLikelyMood =>
-					populateSeedArr(veryLikelyMood)
-				);
-		}
-		if (hold.includes('disney')) this.genreSeeds = getGenreSeeds(hold, 'happy');
-		else if (hold.includes('bluegrass'))
-			this.genreSeeds = getGenreSeeds(hold, 'sad');
-		else this.genreSeeds = getGenreSeeds(hold);
-		return `&seed_genres=${this.genreSeeds.join('OR')}`;
-	}
+  genreStringComplex() {
+    // this.genrePossibilities = [];
+    const joyGenreSeeds = ['disney', 'hip-hop', 'jazz', 'new-release', 'pop', 'power-pop', 'r-n-b', 'rainy-day', 'rock', 'rock-n-roll', 'summer'];
+    const sorrowGenreSeeds = ['bluegrass', 'blues', 'emo', 'folk', 'indie', 'singer-songwriter'];
+    const surpriseGenreSeeds = ['bossanova', 'funk', 'honky-tonk', 'j-pop', 'latin', 'pop-film', 'rainy-day', 'road-trip', 'rockabilly', 'show-tunes', 'ska', 'soul', 'soundtracks'];
+    const angerGenreSeeds = ['alt-rock', 'alternative', 'black-metal', 'goth', 'grindcore', 'grunge', 'hardcore', 'heavy-metal', 'metal', 'metal-misc', 'metalcore', 'progressive-house', 'psych-rock', 'punk', 'punk-rock'];
+    const populateSeedArr = emotion => {
+      this.genrePossibilities = [];
+      // console.log('emotion', emotion)
+      if(emotion === 'joyLikelihood') this.genrePossibilities = this.genrePossibilities.concat(joyGenreSeeds);
+      if(emotion === 'sorrowLikelihood') this.genrePossibilities = this.genrePossibilities.concat(sorrowGenreSeeds);
+      if(emotion === 'surpriseLikelihood') this.genrePossibilities = this.genrePossibilities.concat(surpriseGenreSeeds);
+      if(emotion === 'angerLikelihood') this.genrePossibilities = this.genrePossibilities.concat(angerGenreSeeds);
+      // console.log('emotion + this.genrePossibilities', emotion, '+', this.genrePossibilities)
+      return this.genrePossibilities;
+    }
+    const getGenreSeeds = (arr,given) => {
+      const output = (given) ? [given] : [];
+      while(output.length < 5) {
+        let idx = Math.floor(Math.random() * (arr.length - 1))
+        // console.log(arr.length)
+        // console.log('idx',idx)
+        if(!output.includes(arr[idx])) {
+          output.push(arr[idx])
+        }
+      }
+      return output;
+    }
+    if(this.veryLikelyMood.length === 1) {
+      // console.log('this.veryLikelyMood',this.veryLikelyMood)
+      populateSeedArr(this.veryLikelyMood[0])
+    }
+    else {
+      // refactor into separate helper functions
+        // not breaking the linter rule noted below, but it keeps throwing the error...
+      // eslint-disable-next-line no-lonely-if
+      if(this.veryLikelyMood.length < 1) {
+        if (this.likelyMood.length === 1) populateSeedArr(this.likelyMood[0]);
+        else this.likelyMood.map(likelyMood => populateSeedArr(likelyMood));
+      }
+      else this.veryLikelyMood.map(veryLikelyMood => populateSeedArr(veryLikelyMood))
+      // if !veryLikelyMood && !likelyMood
+    }
+    if(this.genrePossibilities.includes('disney')) this.genreSeeds = getGenreSeeds(this.genrePossibilities,'happy');
+    else if(this.genrePossibilities.includes('bluegrass')) this.genreSeeds = getGenreSeeds(this.genrePossibilities,'sad');
+    else this.genreSeeds = getGenreSeeds(this.genrePossibilities);
+    // console.log('this.genreSeeds',this.genreSeeds)
+    return `&seed_genres=${this.genreSeeds.join('%2C')}`;
+  }
 
-	translator() {
-		/* rangeWidth holds the largest possible output range, based on what spotify
+  translator() {
+    /* rangeWidth holds the largest possible output range, based on what spotify
     permits. Since the tags we are using all have a minimum value of 0 and a
     maximum value of 1, this is a constant value, 1. */
 		const rangeWidth = 1;
@@ -188,19 +139,21 @@ class SpotifyUrlObject {
 		const rangeMin = cheapRound(
 			/* We set a radius of 0.2 for the fixed point radius, to give Spotify a
       fairly large range within each tag */
-			Math.max(this.midpoint - 0.2, 0)
-		);
-		const rangeMax = cheapRound(Math.min(this.midpoint + 0.2, 1));
-		// Genre comes first in the string, and also follows some different output rules
-		if (this.name === 'genre') {
-			const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
-			return `&seed_genres=${genreSimple}`;
-			// return this.genreStringComplex()
-			// genreStringComplex is nearly working, and will replace the two lines above, but for now, leaving them for testing purposes
-		}
-		// Mode is a boolean, so its output also follows a different format
-		if (this.name === 'mode') {
-			/* since Cloud Vision sometimes detects that an image is both very joyful
+      Math.max(this.midpoint - 0.2, 0)
+    );
+    const rangeMax = cheapRound(
+      Math.min(this.midpoint + 0.2, 1)
+    );
+    // Genre comes first in the string, and also follows some different output rules
+    if (this.name === 'genre') {
+      // const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
+      // return `&seed_genres=${genreSimple}`;
+      return this.genreStringComplex()
+      // genreStringComplex is nearly working, and will replace the two lines above, but for now, leaving them for testing purposes
+    }
+    // Mode is a boolean, so its output also follows a different format
+    if (this.name === 'mode') {
+      /* since Cloud Vision sometimes detects that an image is both very joyful
       and very sorrowful, and that result returns a net positive in our function,
       omit mode entirely in this case, to add variety in the output */
 			if (this.joyLikelihood === 2 && this.sorrowLikelihood === 2) return ``;
@@ -309,7 +262,7 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
   Note that this.printString returns the strings for each key as an array,
   so they need to be joined.
   Then, these four things are static to every query, so we concat them onto the end */
-	console.log('hello from convertGoogleCloudVisionObjToSpotifyString');
+	// console.log('hello from convertGoogleCloudVisionObjToSpotifyString');
 	let urlString =
 		specificPhotoObject.map(tag => tag.printString()).join('') +
 		'&max_liveness=0.75&max_speechiness=0.66&market=US&explicit=false';
