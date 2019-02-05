@@ -154,11 +154,16 @@ export default class RecommendationsButton extends Component {
 
         {this.state.tracks && this.state.tracks.length > 0 && (
           <div>
-            <p>Joy Likelihood: {this.state.feedback.joyLikelihood}</p>
+            <h3>Here is the playlist that matches your mood:</h3>
+            {/* <p>Joy Likelihood: {this.state.feedback.joyLikelihood}</p>
             <p> Anger Likelihood: {this.state.feedback.angerLikelihood}</p>
             <p>Sorrow Likelihood: {this.state.feedback.sorrowLikelihood}</p>
-            <p>Surprise Likelihood: {this.state.feedback.surpriseLikelihood}</p>
-            <Button type="button" onClick={this.savePlaylist}>
+            <p>Surprise Likelihood: {this.state.feedback.surpriseLikelihood}</p> */}
+            <Button
+              variant="contained"
+              type="button"
+              onClick={this.savePlaylist}
+            >
               Save Playlist
             </Button>
             <RecommendationsView tracks={this.state.tracks} />
