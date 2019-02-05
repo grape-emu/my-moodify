@@ -7,7 +7,10 @@ const bluebird = require('bluebird');
 const multiparty = require('multiparty');
 const S3_BUCKET = 'my-moodify';
 const bigConversionFunc = require('./conversionFunction.js');
-require('../../secrets/keys/secrets.js');
+
+if (process.env.NODE_ENV === 'development') {
+  require('../../secrets/keys/secrets.js');
+}
 
 module.exports = router;
 
