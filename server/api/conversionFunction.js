@@ -107,6 +107,7 @@ class SpotifyUrlObject {
     those genres for our seeds */
     grabGenres(this.veryLikelyMood);
     /* If anything was Very Likely, then this.genrePossibilities will have */
+    /* If no emotions were detected as Very Likely, we need to run the same check on those that were Likely */
     if(this.genrePossibilities && this.genrePossibilities.length > 1) grabGenres(this.likelyMood);
     /* We need both arguments for the if statement because if the image is the first one uploaded and nothing came through as Very Likely, then this.genrePossibilties doesn't exist, but if another image has already yielded a playlist, then this.genrePossibilities will have old data */
     // I need to either move where this.genrePossibilities is initiated or change how i'm checking the previous value
