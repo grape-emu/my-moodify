@@ -42,8 +42,17 @@ const vision = require('@google-cloud/vision');
 const client_email = process.env.client_email;
 const private_key = process.env.private_key;
 const private_key_id = process.env.private_key_id;
+let formattedPrivateKey;
+if (private_key) {
+  formattedPrivateKey = private_key.replace(/\\n/g, '\n');
+}
+console.log(formattedPrivateKey);
 const client = new vision.ImageAnnotatorClient({
-  credentials: { client_email, private_key, private_key_id },
+  credentials: {
+    client_email,
+    private_key: formattedPrivateKey,
+    private_key_id,
+  },
 });
 
 async function detectFacesFromFile(inputFile) {
