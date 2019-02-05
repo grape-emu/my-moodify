@@ -49,7 +49,10 @@ const client = new vision.ImageAnnotatorClient({
 async function detectFaces(inputFile) {
   try {
     // Make a call to the Vision API to detect the faces
-    const request = { image: { source: { imageUri: inputFile } } };
+    const request = {
+      image: { content: inputFile.slice(inputFile.indexOf('9') - 1) },
+    };
+    // console.log('request', request);
     const response = await client.faceDetection(request);
     const facialData = response[0].faceAnnotations[0];
     return facialData;
@@ -96,3 +99,65 @@ router.post('/upload', (request, response) => {
     }
   });
 });
+
+// Instant photo route:
+router.post('/capture', async (request, response) => {
+  try {
+    const urlLink = request.body.url;
+    const facialDataObj = await detectFaces(urlLink);
+    const spotifyQuery = bigConversionFunc(facialDataObj);
+    const {
+      joyLikelihood,
+      sorrowLikelihood,
+      angerLikelihood,
+      surpriseLikelihood,
+    } = facialDataObj;
+
+    const returnData = {
+      joyLikelihood,
+      sorrowLikelihood,
+      angerLikelihood,
+      surpriseLikelihood,
+      spotifyQuery,
+    };
+    return response.status(200).send(returnData);
+  } catch (error) {
+    return response.status(400).send(error);
+  }
+});
+
+// S3-integrated API:
+// router.post('/upload', (request, response) => {
+// 	const form = new multiparty.Form();
+// 	form.parse(request, async (error, fields, files) => {
+// 	  if (error) throw new Error(error);
+// 	  try {
+// 		const path = files.file[0].path;
+// 		const buffer = fs.readFileSync(path);
+// 		const type = fileType(buffer);
+// 		const timestamp = Date.now().toString();
+// 		const fileName = `bucketFolder/${timestamp}-lg`;
+// 		const data = await uploadFile(buffer, fileName, type);
+// 		const urlLink = data.Location;
+// 		const facialDataObj = await detectFaces(urlLink);
+// 		const spotifyQuery = bigConversionFunc(facialDataObj);
+// 		const {
+// 		  joyLikelihood,
+// 		  sorrowLikelihood,
+// 		  angerLikelihood,
+// 		  surpriseLikelihood,
+// 		} = facialDataObj;
+
+// 		const returnData = {
+// 		  joyLikelihood,
+// 		  sorrowLikelihood,
+// 		  angerLikelihood,
+// 		  surpriseLikelihood,
+// 		  spotifyQuery,
+// 		};
+// 		return response.status(200).send(returnData);
+// 	  } catch (error) {
+// 		return response.status(400).send(error);
+// 	  }
+// 	});
+//   });

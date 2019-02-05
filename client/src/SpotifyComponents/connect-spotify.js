@@ -14,9 +14,9 @@ const theme = createMuiTheme({
 
 class ConnectSpotify extends Component {
   render() {
-    console.log(
-      'in connectSpotify' + SpotifyFunctions.redirectUrlToSpotifyForLogin()
-    );
+    // console.log(
+    //   'in connectSpotify' + SpotifyFunctions.redirectUrlToSpotifyForLogin()
+    // );
 
     return (
       <div className="ConnectSpotify">
