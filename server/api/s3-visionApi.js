@@ -46,7 +46,19 @@ const client = new vision.ImageAnnotatorClient({
   credentials: { client_email, private_key, private_key_id },
 });
 
-async function detectFaces(inputFile) {
+async function detectFacesFromFile(inputFile) {
+  try {
+    // Make a call to the Vision API to detect the faces
+    const request = { image: { source: { imageUri: inputFile } } };
+    const response = await client.faceDetection(request);
+    const facialData = response[0].faceAnnotations[0];
+    return facialData;
+  } catch (err) {
+    console.log('Cloud Vision API Error:', err);
+  }
+}
+
+async function detectFacesFromSelfie(inputFile) {
   try {
     // Make a call to the Vision API to detect the faces
     const request = {
@@ -77,7 +89,7 @@ router.post('/upload', (request, response) => {
       const fileName = `bucketFolder/${timestamp}-lg`;
       const data = await uploadFile(buffer, fileName, type);
       const urlLink = data.Location;
-      const facialDataObj = await detectFaces(urlLink);
+      const facialDataObj = await detectFacesFromFile(urlLink);
       const spotifyQuery = bigConversionFunc(facialDataObj);
       const {
         joyLikelihood,
@@ -104,7 +116,7 @@ router.post('/upload', (request, response) => {
 router.post('/capture', async (request, response) => {
   try {
     const urlLink = request.body.url;
-    const facialDataObj = await detectFaces(urlLink);
+    const facialDataObj = await detectFacesFromSelfie(urlLink);
     const spotifyQuery = bigConversionFunc(facialDataObj);
     const {
       joyLikelihood,
