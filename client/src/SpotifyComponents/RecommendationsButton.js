@@ -80,7 +80,7 @@ export default class RecommendationsButton extends Component {
   };
 
   render() {
-    // const genres = this.state.seedGenres;
+    const genres = this.state.seedGenres;
     // console.log(genres);
     return (
       <div id="container">
@@ -107,18 +107,16 @@ export default class RecommendationsButton extends Component {
                 <p>Joy Likelihood: {this.state.feedback.joyLikelihood}</p>
                 <p>Anger Likelihood: {this.state.feedback.angerLikelihood}</p>
                 <p>Sorrow Likelihood: {this.state.feedback.sorrowLikelihood}</p>
-                <p>
-                  Surprise Likelihood: {this.state.feedback.surpriseLikelihood}
-                </p>
+                <p>Surprise Likelihood: {this.state.feedback.surpriseLikelihood}</p>
               </div>
               <div id="genre-data">
-                {/* {genres && (
+                {genres && (
                   <p>
                     This playlist draws from the Spotify genres {genres[0].id},{' '}
                     {genres[1].id}, {genres[2].id}, {genres[3].id}, and{' '}
                     {genres[4].id}.
                   </p>
-                )} */}
+                )}
               </div>
               <div id="save-button">
                 <Button type="button" onClick={this.savePlaylist}>

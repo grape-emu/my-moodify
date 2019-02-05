@@ -14,6 +14,7 @@ class SpotifyUrlObject {
     this.angerScale = angerScale;
     this.veryLikelyMood = [];
     this.likelyMood = [];
+    this.possibleMood = [];
     this.leastUnlikelyMood = [];
   }
   // Line 30 maps over the array of instances with this.addEmotionKeys, just below
@@ -32,12 +33,17 @@ class SpotifyUrlObject {
         this[key] = 1;
         this.likelyMood.push(key);
       }
-      if (obj[key] === 'POSSIBLE' || obj[key] === 'UNKNOWN') this[key] = 0;
+      if (obj[key] === 'POSSIBLE') {
+        this[key] = 0;
+        this.possibleMood.push(key);
+      }
       if (obj[key] === 'UNLIKELY') {
         this[key] = -1;
         this.leastUnlikelyMood.push(key);
       }
       if (obj[key] === 'VERY_UNLIKELY') this[key] = -2;
+      if (obj[key] === 'UNKNOWN') this[key] = 0;
+
     }
     return this;
   }
@@ -123,15 +129,12 @@ class SpotifyUrlObject {
           angerGenreSeeds
         );
       }
-      console.log('this.genrePossibilities', this.genrePossibilities)
       return this.genrePossibilities;
     };
     /* This helper function gives us exactly five seed genres, the max that Spotify
     takes. The optional 'given' argument permits us to ensure that 'happy' is always
     included for a joyful photo and 'sad' for a sorrowful photo. (see lines xx) */
     const getGenreSeeds = (arr, given) => {
-      console.log('hitting getGenreSeeds');
-      console.log(arr)
       const output = given ? [given] : [];
       while (output.length < 5) {
         let idx = Math.floor(Math.random() * (arr.length - 1));
@@ -139,35 +142,39 @@ class SpotifyUrlObject {
           output.push(arr[idx]);
         }
       }
-      // console.log(output);
       return output;
     };
     /* This helper function tests, for each array below, whether */
     const grabGenres = moodArr => {
       this.genrePossibilities = [];
       if (moodArr.length < 1) return false;
-      if (moodArr.length === 1) populateSeedArr(moodArr[0]);
-      else if (moodArr.length > 1) moodArr.map(mood => populateSeedArr(mood));
+      if (moodArr.length === 1) {
+        populateSeedArr(moodArr[0]);
+        return true;
+      }
+      if (moodArr.length > 1) {
+        moodArr.map(mood => populateSeedArr(mood));
+        return true;
+      }
     };
     /* if Google Cloud Vision ranks any emotion(s) as Very Likely, let's use
     those genres for our seeds */
-    grabGenres(this.veryLikelyMood);
-    /* If anything was Very Likely, then this.genrePossibilities will have */
-    /* If no emotions were detected as Very Likely, we need to run the same check on those that were Likely */
-    if (this.genrePossibilities && this.genrePossibilities.length > 1)
-      grabGenres(this.likelyMood);
-    /* We need both arguments for the if statement because if the image is the first one uploaded and nothing came through as Very Likely, then this.genrePossibilties doesn't exist, but if another image has already yielded a playlist, then this.genrePossibilities will have old data */
-    // I need to either move where this.genrePossibilities is initiated or change how i'm checking the previous value
-    if (this.genrePossibilities && this.genrePossibilities.length > 1)
-      grabGenres(this.leastUnlikelyMood);
-      //  POSSIBLE
+    let genresFound = grabGenres(this.veryLikelyMood);
+    /* If no emotions were detected as Very Likely, we need to run the same check on those that were Likely. If Likely is also empty, then Possible; if Possible is also empty, then Unlikely. It's impossible for a playlist to be rendered and all these be empty (we'd throw an error). */
+    if (!genresFound) genresFound = grabGenres(this.likelyMood);
+    if (!genresFound) genresFound = grabGenres(this.possibleMood);
+    if (!genresFound) genresFound = grabGenres(this.leastUnlikelyMood);
 
+    /* If joySeeds, which is the only one that includes 'disney', was added to
+    genrePossibilities, then the first seed needs to be 'happy'. Likewise for
+    sorrowSeeds, 'bluegrass', and 'sad'. */
     if (this.genrePossibilities.includes('disney'))
       this.genreSeeds = getGenreSeeds(this.genrePossibilities, 'happy');
     else if (this.genrePossibilities.includes('bluegrass'))
       this.genreSeeds = getGenreSeeds(this.genrePossibilities, 'sad');
     else this.genreSeeds = getGenreSeeds(this.genrePossibilities);
 
+    // This joins the seed genres in the string Spotify needs. Return to printString.
     console.log('this.genreSeeds', this.genreSeeds);
     return `&seed_genres=${this.genreSeeds.join('%2C')}`;
   }
@@ -226,10 +233,10 @@ class SpotifyUrlObject {
     const rangeMax = cheapRound(Math.min(this.midpoint + 0.2, 1));
     // Genre comes first in the string, and also follows some different output rules
     if (this.name === 'genre') {
-      const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
-      console.log('you can switch to the real thing now', this.genreStringComplex());
-      return `&seed_genres=${genreSimple}`;
-      // return this.genreStringComplex();
+      // const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
+      // console.log('you can switch to the real thing now', this.genreStringComplex());
+      // return `&seed_genres=${genreSimple}`;
+      return this.genreStringComplex();
       // genreStringComplex is nearly working, and will replace the two lines above, but for now, leaving them for testing purposes
     }
     // Mode is a boolean, so its output also follows a different format
@@ -343,7 +350,6 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
   Note that this.printString returns the strings for each key as an array,
   so they need to be joined.
   Then, these four things are static to every query, so we concat them onto the end */
-  console.log('hello from convertGoogleCloudVisionObjToSpotifyString');
   let urlString =
     specificPhotoObject.map(tag => tag.printString()).join('') +
     '&max_liveness=0.75&max_speechiness=0.66&market=US&explicit=false';
