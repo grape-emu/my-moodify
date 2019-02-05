@@ -49,6 +49,7 @@ const client = new vision.ImageAnnotatorClient({
 async function detectFacesFromFile(inputFile) {
   try {
     // Make a call to the Vision API to detect the faces
+    console.log('private key ', private_key);
     const request = { image: { source: { imageUri: inputFile } } };
     const response = await client.faceDetection(request);
     const facialData = response[0].faceAnnotations[0];
