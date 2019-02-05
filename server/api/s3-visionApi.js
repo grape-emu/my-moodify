@@ -42,20 +42,30 @@ const vision = require('@google-cloud/vision');
 const client_email = process.env.client_email;
 const private_key = process.env.private_key;
 const private_key_id = process.env.private_key_id;
+let formattedPrivateKey;
+if (private_key) {
+  formattedPrivateKey = private_key.replace(/\\n/g, '\n');
+}
+console.log(formattedPrivateKey);
 const client = new vision.ImageAnnotatorClient({
-	credentials: { client_email, private_key, private_key_id }
+  credentials: {
+    client_email,
+    private_key: formattedPrivateKey,
+    private_key_id,
+  },
 });
 
 async function detectFacesFromFile(inputFile) {
-	try {
-		// Make a call to the Vision API to detect the faces
-		const request = { image: { source: { imageUri: inputFile } } };
-		const response = await client.faceDetection(request);
-		const facialData = response[0].faceAnnotations[0];
-		return facialData;
-	} catch (err) {
-		console.log('Cloud Vision API Error:', err);
-	}
+  try {
+    // Make a call to the Vision API to detect the faces
+    console.log('private key ', private_key);
+    const request = { image: { source: { imageUri: inputFile } } };
+    const response = await client.faceDetection(request);
+    const facialData = response[0].faceAnnotations[0];
+    return facialData;
+  } catch (err) {
+    console.log('Cloud Vision API Error:', err);
+  }
 }
 
 async function detectFacesFromSelfie(inputFile) {
