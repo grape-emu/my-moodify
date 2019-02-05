@@ -9,7 +9,7 @@
     "server": "nodemon server.js",
     "dev": "NODE_ENV=development npm run server",
     "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
-    "start": "cd client && npm run build && cd ../ && npm run dev"
+    "start-dev": "cd client && npm run build && cd ../ && npm run dev"
   },
   "cacheDirectories": [
     "node_modules",
