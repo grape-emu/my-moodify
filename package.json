@@ -7,10 +7,9 @@
   "scripts": {
     "client": "cd client && npm start",
     "server": "nodemon server.js",
-
     "dev": "NODE_ENV=development concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
-    "start-dev": "cd client && npm run build && cd ../ && npm run dev"
+    "start-dev": "cd client && npm run build && cd ../ && NODE_ENV=development npm run server"
   },
   "cacheDirectories": [
     "node_modules",
