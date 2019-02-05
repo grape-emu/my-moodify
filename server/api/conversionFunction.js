@@ -53,7 +53,7 @@ class SpotifyUrlObject {
       if(emotion === 'sorrowLikelihood') this.genrePossibilities = this.genrePossibilities.concat(sorrowGenreSeeds);
       if(emotion === 'surpriseLikelihood') this.genrePossibilities = this.genrePossibilities.concat(surpriseGenreSeeds);
       if(emotion === 'angerLikelihood') this.genrePossibilities = this.genrePossibilities.concat(angerGenreSeeds);
-      console.log('emotion + this.genrePossibilities', emotion, '+', this.genrePossibilities)
+      // console.log('emotion + this.genrePossibilities', emotion, '+', this.genrePossibilities)
       return this.genrePossibilities;
     }
     const getGenreSeeds = (arr,given) => {
@@ -86,7 +86,7 @@ class SpotifyUrlObject {
     if(this.genrePossibilities.includes('disney')) this.genreSeeds = getGenreSeeds(this.genrePossibilities,'happy');
     else if(this.genrePossibilities.includes('bluegrass')) this.genreSeeds = getGenreSeeds(this.genrePossibilities,'sad');
     else this.genreSeeds = getGenreSeeds(this.genrePossibilities);
-    console.log('this.genreSeeds',this.genreSeeds)
+    // console.log('this.genreSeeds',this.genreSeeds)
     return `&seed_genres=${this.genreSeeds.join('%2C')}`;
   }
 
@@ -262,7 +262,7 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
   Note that this.printString returns the strings for each key as an array,
   so they need to be joined.
   Then, these four things are static to every query, so we concat them onto the end */
-	console.log('hello from convertGoogleCloudVisionObjToSpotifyString');
+	// console.log('hello from convertGoogleCloudVisionObjToSpotifyString');
 	let urlString =
 		specificPhotoObject.map(tag => tag.printString()).join('') +
 		'&max_liveness=0.75&max_speechiness=0.66&market=US&explicit=false';

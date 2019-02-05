@@ -77,7 +77,7 @@ export default class RecommendationsButton extends Component {
         ','
       )}&playlistId=${data}`
     );
-    console.log(response);
+    // console.log(response);
   };
 
   mapTracks = () => {
