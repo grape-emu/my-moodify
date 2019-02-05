@@ -58,7 +58,6 @@ Encode spaces with the hex code %20 or +.
 Operator: The operator NOT can be used to exclude results.
 Similarly, the OR operator can be used to broaden the search.
 Note: Operators must be specified in uppercase.
-Genres: 'http://web.archive.org/web/20120704135200/http://www.spotify.com/us/about/features/advanced-search-syntax/genre-list/'
 
 
 
