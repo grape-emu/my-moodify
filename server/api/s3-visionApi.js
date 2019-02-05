@@ -37,9 +37,11 @@ const uploadFile = (buffer, name, type) => {
 
 // Defining google cloud vision api:
 const vision = require('@google-cloud/vision');
-const GoogleAPIKey = './secrets/keys/GoogleAPIKey.json';
+const private_key_id = process.env.private_key_id;
+const private_key = process.env.private_key;
+const client_email = process.env.client_email;
 const client = new vision.ImageAnnotatorClient({
-  keyFilename: GoogleAPIKey,
+  credentials: { private_key, client_email },
 });
 async function detectFaces(inputFile) {
   try {

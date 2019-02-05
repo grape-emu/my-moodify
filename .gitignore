@@ -4,6 +4,8 @@
 **/node_modules
 /.pnp
 .pnp.js
+/node_modules
+/client/node_modules
 
 # testing
 /coverage
@@ -29,4 +31,5 @@ yarn-error.log*
 secrets/
 /secrets.js
 /googleSecrets.js
+./secrets.js
 secrets.js
