@@ -7,7 +7,7 @@ const bluebird = require('bluebird');
 const multiparty = require('multiparty');
 const S3_BUCKET = 'my-moodify';
 const bigConversionFunc = require('./conversionFunction.js');
-require('../../secrets.js');
+require('../../secrets/keys/secrets.js');
 
 module.exports = router;
 
@@ -41,7 +41,7 @@ const private_key_id = process.env.private_key_id;
 const private_key = process.env.private_key;
 const client_email = process.env.client_email;
 const client = new vision.ImageAnnotatorClient({
-  credentials: { private_key, client_email },
+  credentials: { private_key, client_email, private_key_id },
 });
 async function detectFaces(inputFile) {
   try {
