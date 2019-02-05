@@ -118,8 +118,13 @@ export default class RecommendationsButton extends Component {
           query.data.spotifyQuery
         }`
       );
+      console.log('query',query);
+      console.log('feedback',query.data);
+      console.log('data',data);
+
       this.setState({
         tracks: data.tracks,
+        seedGenres: data.seeds,
         feedback: query.data,
         imageSrc,
       });
@@ -141,7 +146,7 @@ render() {
       };
       return (
         <div>
-          
+
 
         <div id="container">
           <form onSubmit={this.submitFile}>
@@ -164,7 +169,7 @@ render() {
             </Button>
           </form>
         </div>
-        
+
         <form onSubmit={this.capture}>
             <div>
               <Webcam
@@ -180,7 +185,7 @@ render() {
               </Button>
             </div>
           </form>
-          
+
           <div id="not-form">
             <div id="error-handling">
               {this.state.feedback.hasOwnProperty('spotifyQuery') &&
