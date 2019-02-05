@@ -1,21 +1,19 @@
-// Temp code:
 const AWS = require('aws-sdk');
 const router = require('express').Router();
-// const app = express()
 const fs = require('fs');
 const fileType = require('file-type');
 const bluebird = require('bluebird');
 const multiparty = require('multiparty');
 const S3_BUCKET = 'my-moodify';
-const s3secrets = require('../../secrets/keys/S3secrets');
 const bigConversionFunc = require('./conversionFunction.js');
-
+if (process.env.NODE_ENV === 'development')
+	require('../../secrets/keys/secrets.js');
 module.exports = router;
 
 // configure the keys for accessing AWS
 AWS.config.update({
-	accessKeyId: s3secrets.accessKeyId,
-	secretAccessKey: s3secrets.secretAccessKey
+	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
 
 // configure AWS to work with promises
@@ -38,10 +36,13 @@ const uploadFile = (buffer, name, type) => {
 
 // Defining google cloud vision api:
 const vision = require('@google-cloud/vision');
-const GoogleAPIKey = './secrets/keys/GoogleAPIKey.json';
+const client_email = process.env.client_email;
+const private_key = process.env.private_key;
+const private_key_id = process.env.private_key_id;
 const client = new vision.ImageAnnotatorClient({
-	keyFilename: GoogleAPIKey
+	credentials: { client_email, private_key, private_key_id }
 });
+
 async function detectFaces(inputFile) {
 	try {
 		// Make a call to the Vision API to detect the faces
