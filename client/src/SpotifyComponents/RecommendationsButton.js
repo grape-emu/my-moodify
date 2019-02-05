@@ -5,6 +5,7 @@ import { getHashParams } from './spotify-functions';
 import RecommendationsView from './RecommendationsView';
 import ImageLoad from 'image-preview-react';
 import Webcam from 'react-webcam';
+import Message from './Message';
 
 export default class RecommendationsButton extends Component {
   constructor(props) {
@@ -117,6 +118,9 @@ export default class RecommendationsButton extends Component {
       height: 720,
       facingMode: 'user',
     };
+    const { joyLikelihood, sorrowLikelihood, angerLikelihood } =
+      this.state.feedback || '';
+    console.log('this.state.feedback', this.state.feedback);
 
     return (
       <div>
@@ -166,13 +170,15 @@ export default class RecommendationsButton extends Component {
               }
             </p>
           )}
-
+        {joyLikelihood && (
+          <Message
+            joyLikelihood={joyLikelihood}
+            sorrowLikelihood={sorrowLikelihood}
+            angerLikelihood={angerLikelihood}
+          />
+        )}
         {this.state.tracks && this.state.tracks.length > 0 && (
           <div>
-            <p>Joy Likelihood: {this.state.feedback.joyLikelihood}</p>
-            <p>Anger Likelihood: {this.state.feedback.angerLikelihood}</p>
-            <p>Sorrow Likelihood: {this.state.feedback.sorrowLikelihood}</p>
-            <p>Surprise Likelihood: {this.state.feedback.surpriseLikelihood}</p>
             <h3>Here is the playlist that matches your mood:</h3>
             <RecommendationsView tracks={this.state.tracks} />
             <Button
