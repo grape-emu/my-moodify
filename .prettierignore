@@ -1,0 +1,14 @@
+public/bundle.js
+public/bundle.js.map
+package-lock.json
+package.json
+/build
+/client/build
+/src/secrets.js
+secrets/
+/secrets.js
+/googleSecrets.js
+./secrets.js
+secrets.js
+/conversion/*.js
+conversion/*.*
