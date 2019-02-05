@@ -47,76 +47,128 @@ class SpotifyUrlObject {
   genreStringComplex() {
     // First we initialize sets of genres for each dominant emotion
     const joyGenreSeeds = [
-      'disney', 'hip-hop', 'jazz', 'new-release', 'pop', 'power-pop', 'r-n-b',
-      'rainy-day', 'rock', 'rock-n-roll', 'summer']
-      ;
+      'disney',
+      'hip-hop',
+      'jazz',
+      'new-release',
+      'pop',
+      'power-pop',
+      'r-n-b',
+      'rainy-day',
+      'rock',
+      'rock-n-roll',
+      'summer',
+    ];
     const sorrowGenreSeeds = [
-      'bluegrass', 'blues', 'emo', 'folk', 'indie', 'singer-songwriter'
+      'bluegrass',
+      'blues',
+      'emo',
+      'folk',
+      'indie',
+      'singer-songwriter',
     ];
     const surpriseGenreSeeds = [
-      'bossanova', 'funk', 'honky-tonk', 'j-pop', 'pop-film', 'rainy-day',
-      'road-trip', 'rockabilly', 'show-tunes', 'ska', 'soul', 'soundtracks'
+      'bossanova',
+      'funk',
+      'honky-tonk',
+      'j-pop',
+      'pop-film',
+      'rainy-day',
+      'road-trip',
+      'rockabilly',
+      'show-tunes',
+      'ska',
+      'soul',
+      'soundtracks',
     ];
     const angerGenreSeeds = [
-      'alt-rock', 'alternative', 'black-metal', 'goth', 'grindcore', 'grunge',
-      'hardcore', 'heavy-metal', 'metal', 'metal-misc', 'metalcore',
-      'progressive-house', 'psych-rock', 'punk', 'punk-rock'
+      'alt-rock',
+      'alternative',
+      'black-metal',
+      'goth',
+      'grindcore',
+      'grunge',
+      'hardcore',
+      'heavy-metal',
+      'metal',
+      'metal-misc',
+      'metalcore',
+      'progressive-house',
+      'psych-rock',
+      'punk',
+      'punk-rock',
     ];
     const populateSeedArr = emotion => {
       /* We initialize genrePossibilities as an empty array (or empty it, if a
       request has already been run on this page), to hold all the possible genres */
-      this.genrePossibilities = [];
+      // this.genrePossibilities = [];
       /* Google Cloud Vision sometimes returns more than one emotion as the most
       dominant, so mapping this function, as we do below, permits us to make one
       array containing all the possibilities for each photo */
-      if(emotion === 'joyLikelihood') {
+      if (emotion === 'joyLikelihood') {
         this.genrePossibilities = this.genrePossibilities.concat(joyGenreSeeds);
       }
-      if(emotion === 'sorrowLikelihood') {
-        this.genrePossibilities = this.genrePossibilities.concat(sorrowGenreSeeds);
+      if (emotion === 'sorrowLikelihood') {
+        this.genrePossibilities = this.genrePossibilities.concat(
+          sorrowGenreSeeds
+        );
       }
-      if(emotion === 'surpriseLikelihood') {
-        this.genrePossibilities = this.genrePossibilities.concat(surpriseGenreSeeds);
+      if (emotion === 'surpriseLikelihood') {
+        this.genrePossibilities = this.genrePossibilities.concat(
+          surpriseGenreSeeds
+        );
       }
-      if(emotion === 'angerLikelihood') {
-        this.genrePossibilities = this.genrePossibilities.concat(angerGenreSeeds);
+      if (emotion === 'angerLikelihood') {
+        this.genrePossibilities = this.genrePossibilities.concat(
+          angerGenreSeeds
+        );
       }
+      console.log('this.genrePossibilities', this.genrePossibilities)
       return this.genrePossibilities;
-    }
+    };
     /* This helper function gives us exactly five seed genres, the max that Spotify
     takes. The optional 'given' argument permits us to ensure that 'happy' is always
     included for a joyful photo and 'sad' for a sorrowful photo. (see lines xx) */
-    const getGenreSeeds = (arr,given) => {
-      const output = (given) ? [given] : [];
-      while(output.length < 5) {
-        let idx = Math.floor(Math.random() * (arr.length - 1))
-        if(!output.includes(arr[idx])) {
-          output.push(arr[idx])
+    const getGenreSeeds = (arr, given) => {
+      console.log('hitting getGenreSeeds');
+      console.log(arr)
+      const output = given ? [given] : [];
+      while (output.length < 5) {
+        let idx = Math.floor(Math.random() * (arr.length - 1));
+        if (!output.includes(arr[idx])) {
+          output.push(arr[idx]);
         }
       }
+      // console.log(output);
       return output;
-    }
+    };
     /* This helper function tests, for each array below, whether */
     const grabGenres = moodArr => {
-      // this.genrePossibilities = [];
-      if(moodArr.length < 1) return false;
-      if(moodArr.length === 1) populateSeedArr(moodArr[0])
-      else if(moodArr.length > 1) moodArr.map(mood => populateSeedArr(mood));
-    }
+      this.genrePossibilities = [];
+      if (moodArr.length < 1) return false;
+      if (moodArr.length === 1) populateSeedArr(moodArr[0]);
+      else if (moodArr.length > 1) moodArr.map(mood => populateSeedArr(mood));
+    };
     /* if Google Cloud Vision ranks any emotion(s) as Very Likely, let's use
     those genres for our seeds */
     grabGenres(this.veryLikelyMood);
     /* If anything was Very Likely, then this.genrePossibilities will have */
     /* If no emotions were detected as Very Likely, we need to run the same check on those that were Likely */
-    if(this.genrePossibilities && this.genrePossibilities.length > 1) grabGenres(this.likelyMood);
+    if (this.genrePossibilities && this.genrePossibilities.length > 1)
+      grabGenres(this.likelyMood);
     /* We need both arguments for the if statement because if the image is the first one uploaded and nothing came through as Very Likely, then this.genrePossibilties doesn't exist, but if another image has already yielded a playlist, then this.genrePossibilities will have old data */
     // I need to either move where this.genrePossibilities is initiated or change how i'm checking the previous value
-    if(this.genrePossibilities && this.genrePossibilities.length > 1) grabGenres(this.leastUnlikelyMood);
+    if (this.genrePossibilities && this.genrePossibilities.length > 1)
+      grabGenres(this.leastUnlikelyMood);
+      //  POSSIBLE
 
-    if(this.genrePossibilities.includes('disney')) this.genreSeeds = getGenreSeeds(this.genrePossibilities,'happy');
-    else if(this.genrePossibilities.includes('bluegrass')) this.genreSeeds = getGenreSeeds(this.genrePossibilities,'sad');
+    if (this.genrePossibilities.includes('disney'))
+      this.genreSeeds = getGenreSeeds(this.genrePossibilities, 'happy');
+    else if (this.genrePossibilities.includes('bluegrass'))
+      this.genreSeeds = getGenreSeeds(this.genrePossibilities, 'sad');
     else this.genreSeeds = getGenreSeeds(this.genrePossibilities);
-    console.log('this.genreSeeds',this.genreSeeds)
+
+    console.log('this.genreSeeds', this.genreSeeds);
     return `&seed_genres=${this.genreSeeds.join('%2C')}`;
   }
 
@@ -152,9 +204,7 @@ class SpotifyUrlObject {
           const emotionTotalProportionFullSize = emotionTotalPercent * rangeWidth;
           const emotionTotalMovedBackToItsProperPlace = emotionTotalProportionFullSize + rangeMin;
           return emotionTotalMovedBackToItsProperPlace; */
-      return (
-        ((emotionTotal + scaledMax) / (scaledMax * 2)) * rangeWidth
-      );
+      return ((emotionTotal + scaledMax) / (scaledMax * 2)) * rangeWidth;
     };
     return fixedPoint;
   }
@@ -173,14 +223,13 @@ class SpotifyUrlObject {
       fairly large range within each tag */
       Math.max(this.midpoint - 0.2, 0)
     );
-    const rangeMax = cheapRound(
-      Math.min(this.midpoint + 0.2, 1)
-    );
+    const rangeMax = cheapRound(Math.min(this.midpoint + 0.2, 1));
     // Genre comes first in the string, and also follows some different output rules
     if (this.name === 'genre') {
-      // const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
-      // return `&seed_genres=${genreSimple}`;
-      return this.genreStringComplex()
+      const genreSimple = Math.round(this.midpoint) === 1 ? 'happy' : 'sad';
+      console.log('you can switch to the real thing now', this.genreStringComplex());
+      return `&seed_genres=${genreSimple}`;
+      // return this.genreStringComplex();
       // genreStringComplex is nearly working, and will replace the two lines above, but for now, leaving them for testing purposes
     }
     // Mode is a boolean, so its output also follows a different format
@@ -188,10 +237,9 @@ class SpotifyUrlObject {
       /* since Cloud Vision sometimes detects that an image is both very joyful
       and very sorrowful, and that result returns a net positive in our function,
       omit mode entirely in this case, to add variety in the output */
-      if(this.joyLikelihood === 2 && this.sorrowLikelihood === 2) return ``;
+      if (this.joyLikelihood === 2 && this.sorrowLikelihood === 2) return ``;
       else return `&mode=${Math.round(this.midpoint)}`;
-    }
-    else {
+    } else {
       // We don't need to specify when our numbers match spotify's defaults
       if (rangeMin === 0) return `&max_${this.name}=${rangeMax}`;
       if (rangeMax === 1) return `&min_${this.name}=${rangeMin}`;
@@ -224,41 +272,36 @@ const genreData = {
   joyScale: 2,
   sorrowScale: -2,
   surpriseScale: 0,
-  angerScale: 0
-}
+  angerScale: 0,
+};
 
 const modeData = {
   name: 'mode',
   joyScale: 2,
   sorrowScale: -2,
   surpriseScale: 0,
-  angerScale: 0
-}
+  angerScale: 0,
+};
 
 const valenceData = {
   name: 'valence',
   joyScale: 2,
   sorrowScale: -2,
   surpriseScale: 1,
-  angerScale: -1
-}
+  angerScale: -1,
+};
 
 const energyData = {
   name: 'energy',
   joyScale: 2,
   sorrowScale: -1.5,
   surpriseScale: 0,
-  angerScale: 1
-}
+  angerScale: 1,
+};
 
 /* Before we can act, we need an array that contains the instances for all the
 spotify keys we care about (see just above, line 112) */
-const fullUrlObject = [
-  genreUrlObj,
-  modeUrlObj,
-  valenceUrlObj,
-  energyUrlObj
-];
+const fullUrlObject = [genreUrlObj, modeUrlObj, valenceUrlObj, energyUrlObj];
 
 // *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*
 //
@@ -270,9 +313,18 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
   const allUnknown = currentEmotion => currentEmotion === 'UNKNOWN';
   const allVeryUnlikely = currentEmotion => currentEmotion === 'VERY_UNLIKELY';
   const tooBlurry = selfieObj.blurredLikelihood === 'VERY_LIKELY';
-  const selfieObjEmotions = [selfieObj.joyLikelihood, selfieObj.sorrowLikelihood, selfieObj.surpriseLikelihood, selfieObj.angerLikelihood];
+  const selfieObjEmotions = [
+    selfieObj.joyLikelihood,
+    selfieObj.sorrowLikelihood,
+    selfieObj.surpriseLikelihood,
+    selfieObj.angerLikelihood,
+  ];
   // Then we run those tests, confirming that we have emotion data to work with
-  if (tooBlurry || selfieObjEmotions.every(allUnknown) || selfieObjEmotions.every(allVeryUnlikely)) {
+  if (
+    tooBlurry ||
+    selfieObjEmotions.every(allUnknown) ||
+    selfieObjEmotions.every(allVeryUnlikely)
+  ) {
     // This isn't just a console log; we need to build this error in on the front end still...
     return false;
     // throw new Error;
@@ -291,6 +343,7 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
   Note that this.printString returns the strings for each key as an array,
   so they need to be joined.
   Then, these four things are static to every query, so we concat them onto the end */
+  console.log('hello from convertGoogleCloudVisionObjToSpotifyString');
   let urlString =
     specificPhotoObject.map(tag => tag.printString()).join('') +
     '&max_liveness=0.75&max_speechiness=0.66&market=US&explicit=false';
@@ -309,7 +362,6 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
 //   return urlString;
 // }
 
-
 // Retaining this for easy testing purposes:
 // console.log(convertGoogleCloudVisionObjToSpotifyString({
 //   joyLikelihood: 'VERY_UNLIKELY',
@@ -317,17 +369,13 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
 //   angerLikelihood: 'POSSIBLE',
 //   surpriseLikelihood: 'VERY_UNLIKELY'}))
 
-  // console.log(improveMyMood({
-  //   joyLikelihood: 'VERY_UNLIKELY',
-  //   sorrowLikelihood: 'VERY_LIKELY',
-  //   angerLikelihood: 'POSSIBLE',
-  //   surpriseLikelihood: 'VERY_UNLIKELY'}))
-
+// console.log(improveMyMood({
+//   joyLikelihood: 'VERY_UNLIKELY',
+//   sorrowLikelihood: 'VERY_LIKELY',
+//   angerLikelihood: 'POSSIBLE',
+//   surpriseLikelihood: 'VERY_UNLIKELY'}))
 
 module.exports = convertGoogleCloudVisionObjToSpotifyString;
-
-
-
 
 // According to Google Cloud Vision, this face is definitely (joyful, sorrowful, surprised, angry), probably (ibid.), probably not (ibid.), and definitely not (ibid.).
 /*
