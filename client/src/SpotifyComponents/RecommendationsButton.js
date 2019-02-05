@@ -46,22 +46,31 @@ export default class RecommendationsButton extends Component {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				}
-			}); // Passing query to Spotify to generate playlist:
+			});
+
+			this.setState({
+				feedback: query.data
+			});
+
+			/* The URL will always begin in an '&' for a successfully read photo.
+			If Google doesn't render useful emotion data, our function returns false.*/
+			if (query.data.spotifyQuery) {
+				// Passing query to Spotify to generate playlist:
 			const token = getHashParams();
 
 			const { data } = await axios.get(
 				`/api/spotify/find?token=${token.access_token}${
 					query.data.spotifyQuery
 				}`
-			);
+			)
 			this.setState({
 				tracks: data.tracks,
-				feedback: query.data
-			});
-		} catch (err) {
-			console.error(err);
+			})
 		}
-	};
+		} catch(err) {
+			console.error(err)
+	}
+	}
 
 	handleFileUpload = event => {
 		this.setState({ file: event.target.files });
@@ -81,10 +90,12 @@ export default class RecommendationsButton extends Component {
 					</Button>
 				</form>
 
+				{this.state.feedback.hasOwnProperty('spotifyQuery') && this.state.feedback.spotifyQuery === false && (<p>{"We're sorry, Google can't determine the emotions in this image. Please try a different selfie."}</p>)}
+
 				{this.state.tracks && this.state.tracks.length > 0 && (
 					<div>
 						<p>Joy Likelihood: {this.state.feedback.joyLikelihood}</p>
-						<p> Anger Likelihood: {this.state.feedback.angerLikelihood}</p>
+						<p>Anger Likelihood: {this.state.feedback.angerLikelihood}</p>
 						<p>Sorrow Likelihood: {this.state.feedback.sorrowLikelihood}</p>
 						<p>Surprise Likelihood: {this.state.feedback.surpriseLikelihood}</p>
 						<Button type="button" onClick={this.savePlaylist}>
