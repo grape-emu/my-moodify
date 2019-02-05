@@ -33,7 +33,10 @@ class SpotifyUrlObject {
         this.likelyMood.push(key);
       }
       if (obj[key] === 'POSSIBLE' || obj[key] === 'UNKNOWN') this[key] = 0;
-      if (obj[key] === 'UNLIKELY') this[key] = -1;
+      if (obj[key] === 'UNLIKELY') {
+        this[key] = -1;
+        this.leastUnlikelyMood.push(key);
+      }
       if (obj[key] === 'VERY_UNLIKELY') this[key] = -2;
     }
     return this;
@@ -43,10 +46,22 @@ class SpotifyUrlObject {
 
   genreStringComplex() {
     // First we initialize sets of genres for each dominant emotion
-    const joyGenreSeeds = ['disney', 'hip-hop', 'jazz', 'new-release', 'pop', 'power-pop', 'r-n-b', 'rainy-day', 'rock', 'rock-n-roll', 'summer'];
-    const sorrowGenreSeeds = ['bluegrass', 'blues', 'emo', 'folk', 'indie', 'singer-songwriter'];
-    const surpriseGenreSeeds = ['bossanova', 'funk', 'honky-tonk', 'j-pop', 'pop-film', 'rainy-day', 'road-trip', 'rockabilly', 'show-tunes', 'ska', 'soul', 'soundtracks'];
-    const angerGenreSeeds = ['alt-rock', 'alternative', 'black-metal', 'goth', 'grindcore', 'grunge', 'hardcore', 'heavy-metal', 'metal', 'metal-misc', 'metalcore', 'progressive-house', 'psych-rock', 'punk', 'punk-rock'];
+    const joyGenreSeeds = [
+      'disney', 'hip-hop', 'jazz', 'new-release', 'pop', 'power-pop', 'r-n-b',
+      'rainy-day', 'rock', 'rock-n-roll', 'summer']
+      ;
+    const sorrowGenreSeeds = [
+      'bluegrass', 'blues', 'emo', 'folk', 'indie', 'singer-songwriter'
+    ];
+    const surpriseGenreSeeds = [
+      'bossanova', 'funk', 'honky-tonk', 'j-pop', 'pop-film', 'rainy-day',
+      'road-trip', 'rockabilly', 'show-tunes', 'ska', 'soul', 'soundtracks'
+    ];
+    const angerGenreSeeds = [
+      'alt-rock', 'alternative', 'black-metal', 'goth', 'grindcore', 'grunge',
+      'hardcore', 'heavy-metal', 'metal', 'metal-misc', 'metalcore',
+      'progressive-house', 'psych-rock', 'punk', 'punk-rock'
+    ];
     const populateSeedArr = emotion => {
       /* We initialize genrePossibilities as an empty array (or empty it, if a
       request has already been run on this page), to hold all the possible genres */
@@ -54,10 +69,18 @@ class SpotifyUrlObject {
       /* Google Cloud Vision sometimes returns more than one emotion as the most
       dominant, so mapping this function, as we do below, permits us to make one
       array containing all the possibilities for each photo */
-      if(emotion === 'joyLikelihood') this.genrePossibilities = this.genrePossibilities.concat(joyGenreSeeds);
-      if(emotion === 'sorrowLikelihood') this.genrePossibilities = this.genrePossibilities.concat(sorrowGenreSeeds);
-      if(emotion === 'surpriseLikelihood') this.genrePossibilities = this.genrePossibilities.concat(surpriseGenreSeeds);
-      if(emotion === 'angerLikelihood') this.genrePossibilities = this.genrePossibilities.concat(angerGenreSeeds);
+      if(emotion === 'joyLikelihood') {
+        this.genrePossibilities = this.genrePossibilities.concat(joyGenreSeeds);
+      }
+      if(emotion === 'sorrowLikelihood') {
+        this.genrePossibilities = this.genrePossibilities.concat(sorrowGenreSeeds);
+      }
+      if(emotion === 'surpriseLikelihood') {
+        this.genrePossibilities = this.genrePossibilities.concat(surpriseGenreSeeds);
+      }
+      if(emotion === 'angerLikelihood') {
+        this.genrePossibilities = this.genrePossibilities.concat(angerGenreSeeds);
+      }
       return this.genrePossibilities;
     }
     /* This helper function gives us exactly five seed genres, the max that Spotify
