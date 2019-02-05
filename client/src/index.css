@@ -29,3 +29,9 @@ code {
 .colorInherit {
   color: blueviolet;
 }
+
+img {
+  width: 30%;
+  height: 30%;
+  border-radius: 100%;
+}
