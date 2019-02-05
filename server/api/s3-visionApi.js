@@ -1,21 +1,26 @@
-// Temp code:
 const AWS = require('aws-sdk');
 const router = require('express').Router();
-// const app = express()
 const fs = require('fs');
 const fileType = require('file-type');
 const bluebird = require('bluebird');
 const multiparty = require('multiparty');
 const S3_BUCKET = 'my-moodify';
-const s3secrets = require('../../secrets/keys/S3secrets');
 const bigConversionFunc = require('./conversionFunction.js');
+
+if (process.env.NODE_ENV === 'development')
+	require('../../secrets/keys/secrets.js');
 
 module.exports = router;
 
 // configure the keys for accessing AWS
 AWS.config.update({
+<<<<<<< HEAD
   accessKeyId: s3secrets.accessKeyId,
   secretAccessKey: s3secrets.secretAccessKey,
+=======
+	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+>>>>>>> master
 });
 
 // configure AWS to work with promises
@@ -38,10 +43,18 @@ const uploadFile = (buffer, name, type) => {
 
 // Defining google cloud vision api:
 const vision = require('@google-cloud/vision');
-const GoogleAPIKey = './secrets/keys/GoogleAPIKey.json';
+
+const client_email = process.env.client_email;
+const private_key = process.env.private_key;
+const private_key_id = process.env.private_key_id;
 const client = new vision.ImageAnnotatorClient({
+<<<<<<< HEAD
   keyFilename: GoogleAPIKey,
+=======
+	credentials: { client_email, private_key, private_key_id }
+>>>>>>> master
 });
+
 async function detectFaces(inputFile) {
   try {
     // Make a call to the Vision API to detect the faces
@@ -62,6 +75,7 @@ async function detectFaces(inputFile) {
 // Return facial data object
 
 router.post('/upload', (request, response) => {
+<<<<<<< HEAD
   const form = new multiparty.Form();
   form.parse(request, async (error, fields, files) => {
     if (error) throw new Error(error);
@@ -108,6 +122,28 @@ router.post('/capture', async (request, response) => {
       angerLikelihood,
       surpriseLikelihood,
     } = facialDataObj;
+=======
+	console.log('hello world');
+	const form = new multiparty.Form();
+	form.parse(request, async (error, fields, files) => {
+		if (error) throw new Error(error);
+		try {
+			const path = files.file[0].path;
+			const buffer = fs.readFileSync(path);
+			const type = fileType(buffer);
+			const timestamp = Date.now().toString();
+			const fileName = `bucketFolder/${timestamp}-lg`;
+			const data = await uploadFile(buffer, fileName, type);
+			const urlLink = data.Location;
+			const facialDataObj = await detectFaces(urlLink);
+			const spotifyQuery = bigConversionFunc(facialDataObj);
+			const {
+				joyLikelihood,
+				sorrowLikelihood,
+				angerLikelihood,
+				surpriseLikelihood
+			} = facialDataObj;
+>>>>>>> master
 
     const returnData = {
       joyLikelihood,
