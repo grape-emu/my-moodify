@@ -14,6 +14,7 @@ class SpotifyUrlObject {
     this.angerScale = angerScale;
     this.veryLikelyMood = [];
     this.likelyMood = [];
+    this.leastUnlikelyMood = [];
   }
   // Line 30 maps over the array of instances with this.addEmotionKeys, just below
 
@@ -41,18 +42,27 @@ class SpotifyUrlObject {
   this.printString, line 79 */
 
   genreStringComplex() {
+    // First we initialize sets of genres for each dominant emotion
     const joyGenreSeeds = ['disney', 'hip-hop', 'jazz', 'new-release', 'pop', 'power-pop', 'r-n-b', 'rainy-day', 'rock', 'rock-n-roll', 'summer'];
     const sorrowGenreSeeds = ['bluegrass', 'blues', 'emo', 'folk', 'indie', 'singer-songwriter'];
     const surpriseGenreSeeds = ['bossanova', 'funk', 'honky-tonk', 'j-pop', 'pop-film', 'rainy-day', 'road-trip', 'rockabilly', 'show-tunes', 'ska', 'soul', 'soundtracks'];
     const angerGenreSeeds = ['alt-rock', 'alternative', 'black-metal', 'goth', 'grindcore', 'grunge', 'hardcore', 'heavy-metal', 'metal', 'metal-misc', 'metalcore', 'progressive-house', 'psych-rock', 'punk', 'punk-rock'];
     const populateSeedArr = emotion => {
+      /* We initialize genrePossibilities as an empty array (or empty it, if a
+      request has already been run on this page), to hold all the possible genres */
       this.genrePossibilities = [];
+      /* Google Cloud Vision sometimes returns more than one emotion as the most
+      dominant, so mapping this function, as we do below, permits us to make one
+      array containing all the possibilities for each photo */
       if(emotion === 'joyLikelihood') this.genrePossibilities = this.genrePossibilities.concat(joyGenreSeeds);
       if(emotion === 'sorrowLikelihood') this.genrePossibilities = this.genrePossibilities.concat(sorrowGenreSeeds);
       if(emotion === 'surpriseLikelihood') this.genrePossibilities = this.genrePossibilities.concat(surpriseGenreSeeds);
       if(emotion === 'angerLikelihood') this.genrePossibilities = this.genrePossibilities.concat(angerGenreSeeds);
       return this.genrePossibilities;
     }
+    /* This helper function gives us exactly five seed genres, the max that Spotify
+    takes. The 'given' argument permits us to ensure that 'happy' is always included
+    for a joyful photo and 'sad' for a sorrowful photo.*/
     const getGenreSeeds = (arr,given) => {
       const output = (given) ? [given] : [];
       while(output.length < 5) {
@@ -63,19 +73,16 @@ class SpotifyUrlObject {
       }
       return output;
     }
-    if(this.veryLikelyMood.length === 1) {
-      populateSeedArr(this.veryLikelyMood[0])
+    /* This helper function tests, for each array below,*/
+    const grabGenres = moodArr => {
+      if(moodArr.length < 1) return false;
+      if(moodArr.length === 1) populateSeedArr(moodArr[0])
+      if(moodArr.length > 1) moodArr.map(mood => populateSeedArr(mood));
     }
-    else {
-      // refactor into separate helper functions
-      // eslint-disable-next-line no-lonely-if
-      if(this.veryLikelyMood.length < 1) {
-        if (this.likelyMood.length === 1) populateSeedArr(this.likelyMood[0]);
-        else this.likelyMood.map(likelyMood => populateSeedArr(likelyMood));
-      }
-      else this.veryLikelyMood.map(veryLikelyMood => populateSeedArr(veryLikelyMood))
-      // if !veryLikelyMood && !likelyMood
-    }
+    grabGenres(this.veryLikelyMood);
+    if(this.genrePossibilities) grabGenres(this.likelyMood);
+    if(this.genrePossibilities) grabGenres(this.leastUnlikelyMood);
+
     if(this.genrePossibilities.includes('disney')) this.genreSeeds = getGenreSeeds(this.genrePossibilities,'happy');
     else if(this.genrePossibilities.includes('bluegrass')) this.genreSeeds = getGenreSeeds(this.genrePossibilities,'sad');
     else this.genreSeeds = getGenreSeeds(this.genrePossibilities);
