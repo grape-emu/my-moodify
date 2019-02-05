@@ -11,7 +11,7 @@
     "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
     "lint": "eslint ./ ",
     "lint-fix": "npm run lint -- --fix",
-    "precommit": " lint-staged # un-comment to enable",
+    "precommit": "# lint-staged # un-comment to enable",
     "prettify": "prettier --write \"**/*.{js,jsx,json,css,scss,md}\"",
     "start-dev": "cd client/ && npm run build && cd ../ && NODE_ENV=development npm run server"
   },
