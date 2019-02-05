@@ -84,8 +84,8 @@ class SpotifyUrlObject {
       return this.genrePossibilities;
     }
     /* This helper function gives us exactly five seed genres, the max that Spotify
-    takes. The 'given' argument permits us to ensure that 'happy' is always included
-    for a joyful photo and 'sad' for a sorrowful photo.*/
+    takes. The optional 'given' argument permits us to ensure that 'happy' is always
+    included for a joyful photo and 'sad' for a sorrowful photo. (see lines xx) */
     const getGenreSeeds = (arr,given) => {
       const output = (given) ? [given] : [];
       while(output.length < 5) {
@@ -96,15 +96,21 @@ class SpotifyUrlObject {
       }
       return output;
     }
-    /* This helper function tests, for each array below,*/
+    /* This helper function tests, for each array below, whether */
     const grabGenres = moodArr => {
+      // this.genrePossibilities = [];
       if(moodArr.length < 1) return false;
       if(moodArr.length === 1) populateSeedArr(moodArr[0])
-      if(moodArr.length > 1) moodArr.map(mood => populateSeedArr(mood));
+      else if(moodArr.length > 1) moodArr.map(mood => populateSeedArr(mood));
     }
+    /* if Google Cloud Vision ranks any emotion(s) as Very Likely, let's use
+    those genres for our seeds */
     grabGenres(this.veryLikelyMood);
-    if(this.genrePossibilities) grabGenres(this.likelyMood);
-    if(this.genrePossibilities) grabGenres(this.leastUnlikelyMood);
+    /* If anything was Very Likely, then this.genrePossibilities will have */
+    if(this.genrePossibilities && this.genrePossibilities.length > 1) grabGenres(this.likelyMood);
+    /* We need both arguments for the if statement because if the image is the first one uploaded and nothing came through as Very Likely, then this.genrePossibilties doesn't exist, but if another image has already yielded a playlist, then this.genrePossibilities will have old data */
+    // I need to either move where this.genrePossibilities is initiated or change how i'm checking the previous value
+    if(this.genrePossibilities && this.genrePossibilities.length > 1) grabGenres(this.leastUnlikelyMood);
 
     if(this.genrePossibilities.includes('disney')) this.genreSeeds = getGenreSeeds(this.genrePossibilities,'happy');
     else if(this.genrePossibilities.includes('bluegrass')) this.genreSeeds = getGenreSeeds(this.genrePossibilities,'sad');
