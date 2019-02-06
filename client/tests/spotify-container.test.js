@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ConnectSpotify from './connect-spotify';
+import SpotifyContainer from '../src/Components/Auth/SpotifyContainer';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<ConnectSpotify />, div);
+  ReactDOM.render(<SpotifyContainer />, div);
   ReactDOM.unmountComponentAtNode(div);
 });
