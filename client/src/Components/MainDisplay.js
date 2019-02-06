@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import { Navbar, SelectionDisplay } from './index';
 import Button from '@material-ui/core/Button';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+	palette: {
+		primary: { main: '#6200ea' }, // deepPurple[a700]
+		secondary: { main: '#3f51b5' }, // indigo[500]
+		accent: { main: '#2196f3' } // blue[500]
+	},
+	typography: { useNextVariants: true }
+});
 
 export default class MainDisplay extends Component {
 	constructor() {
@@ -31,26 +41,53 @@ export default class MainDisplay extends Component {
 				<header className="App-header">
 					<Navbar className="App-header" />
 				</header>
-				{!this.state.option && (
-					<div>
-						<p>Help us understand your mood!</p>
-						<Button type="button" onClick={this.handleUpload}>
-							Upload an image
-						</Button>
-						<Button type="button" onClick={this.handleCapture}>
-							Take a selfie
-						</Button>
-					</div>
-				)}
+				<div id="Content">
+					{!this.state.option && (
+						<div>
+							<h2> Help us understand your mood!</h2>
+							<MuiThemeProvider theme={theme}>
+								<div>
+									<Button
+										type="button"
+										variant="contained"
+										color="primary"
+										onClick={this.handleUpload}
+									>
+										Upload an image
+									</Button>
+								</div>
+								<br />
+								<div>
+									<Button
+										type="button"
+										color="primary"
+										variant="contained"
+										onClick={this.handleCapture}
+									>
+										Take a selfie
+									</Button>
+								</div>
+							</MuiThemeProvider>
+						</div>
+					)}
 
-				{this.state.option && (
-					<div>
-						<SelectionDisplay option={this.state.option} />
-						<Button type="button" onClick={this.handleReset}>
-							Start Over?
-						</Button>
-					</div>
-				)}
+					{this.state.option && (
+						<div>
+							<MuiThemeProvider theme={theme}>
+								<Button
+									type="button"
+									color="primary"
+									onClick={this.handleReset}
+									variant="contained"
+								>
+									Start Over?
+								</Button>
+							</MuiThemeProvider>
+							<br />
+							<SelectionDisplay option={this.state.option} />
+						</div>
+					)}
+				</div>
 			</div>
 		);
 	}
