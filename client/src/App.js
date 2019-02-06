@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import Navbar from './navbar';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { LandingPage, MainDisplay } from './Components';
 import './App.css';
-import SpotifyDisplay from './SpotifyComponents/spotify-display';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <Navbar className="App-header" />
-        </header>
-        <SpotifyDisplay />
-      </div>
-    );
-  }
+	render() {
+		return (
+			<Router>
+				<div className="App">
+					<Route exact path="/" component={LandingPage} />
+					<Route exact path="/callback" component={MainDisplay} />
+				</div>
+			</Router>
+		);
+	}
 }
 
 export default App;

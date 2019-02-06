@@ -1,82 +1,46 @@
-module.exports = [ {
-    name: 'energy',
+module.exports = [
+  {
+    name: 'genre',
     joyScale: 2,
-    sorrowScale: -1.5,
+    sorrowScale: -2,
     surpriseScale: 0,
-    angerScale: 1,
-    minVal: 0,
-    maxVal: 1,
-    radius: 0.2
-  }, {
+    angerScale: 0,
+    veryLikelyMood: ['sorrowLikelihood'],
+    likelyMood: [],
+    possibleMood: ['angerLikelihood'],
+    leastUnlikelyMood: [],
+  },
+  {
+    name: 'mode',
+    joyScale: 2,
+    sorrowScale: -2,
+    surpriseScale: 0,
+    angerScale: 0,
+    veryLikelyMood: ['sorrowLikelihood'],
+    likelyMood: [],
+    possibleMood: ['angerLikelihood'],
+    leastUnlikelyMood: [],
+  },
+  {
     name: 'valence',
     joyScale: 2,
     sorrowScale: -2,
     surpriseScale: 1,
     angerScale: -1,
-    minVal: 0,
-    maxVal: 1,
-    radius: 0.2
-  }, {
-    name: 'danceability',
-    joyScale: 1,
-    sorrowScale: -1,
-    surpriseScale: 1,
-    angerScale: 0,
-    minVal: 0,
-    maxVal: 1,
-    radius: 0.2
-  }, {
-    name: 'acousticness',
-    joyScale: 0,
-    sorrowScale: 1,
-    surpriseScale: 0,
-    angerScale: -1,
-    minVal: 0,
-    maxVal: 1,
-    radius: 0.2
-  }, {
-    name: 'instrumentalness',
-    joyScale: -1,
-    sorrowScale: 0,
-    surpriseScale: -1,
-    angerScale: -1,
-    minVal: 0,
-    maxVal: 1,
-    radius: 0.2
-  }, {
-    name: 'popularity',
-    joyScale: 1,
-    sorrowScale: 0,
-    surpriseScale: 0,
-    angerScale: -1,
-    minVal: 0,
-    maxVal: 1,
-    radius: 0.2
-  }, {
-    name: 'mode',
+    veryLikelyMood: ['sorrowLikelihood'],
+    likelyMood: [],
+    possibleMood: ['angerLikelihood'],
+    leastUnlikelyMood: [],
+  },
+  {
+    name: 'energy',
     joyScale: 2,
     sorrowScale: -1.5,
     surpriseScale: 0,
-    angerScale: 0,
-    minVal: 0,
-    maxVal: 1,
-    radius: 0.2
-  }, {
-    name: 'loudness',
-    joyScale: 0,
-    sorrowScale: -1,
-    surpriseScale: 0,
-    angerScale: 2,
-    minVal: -60,
-    maxVal: 1,
-    radius: 15
-  }, {
-    name: 'tempo',
-    joyScale: 1,
-    sorrowScale: -2,
-    surpriseScale: -1,
-    angerScale: 2,
-    minVal: 50,
-    maxVal: 210,
-    radius: 60
-  }]
+    angerScale: 1,
+    veryLikelyMood: ['sorrowLikelihood'],
+    likelyMood: [],
+    possibleMood: ['angerLikelihood'],
+    leastUnlikelyMood: [],
+  },
+];

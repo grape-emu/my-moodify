@@ -4,7 +4,7 @@ function messageConverter(arr) {
   const arrLikely = ['VERY_LIKELY', 'LIKELY', 'POSSIBLE'];
   const strUnlikely = 'VERY_UNLIKELY';
   let mood = '';
-  let generalMessage = '';
+  let moodNotIdentified = false;
   let feedback = '';
 
   if (
@@ -26,16 +26,20 @@ function messageConverter(arr) {
   ) {
     mood = 'sad';
   } else {
-    generalMessage = 'Here is a playlist that matches your mood:';
+    moodNotIdentified = true;
   }
-  feedback = `You seem to be ${mood} today. Here is your playlist:`;
-  console.log(!!generalMessage);
-  return !!generalMessage ? generalMessage : feedback;
+  feedback = `You seem to be ${mood} today.`;
+  console.log(moodNotIdentified);
+  return moodNotIdentified ? '' : feedback;
 }
 
 class Message extends React.Component {
   render() {
-    const { joyLikelihood, angerLikelihood, sorrowLikelihood } = this.props;
+    const {
+      joyLikelihood,
+      angerLikelihood,
+      sorrowLikelihood,
+    } = this.props.feedback;
 
     return (
       <p>
