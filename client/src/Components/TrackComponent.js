@@ -1,6 +1,6 @@
 import React from 'react';
 
-const RecommendationsComponent = props => {
+const TrackComponent = props => {
 	return (
 		<div>
 			<iframe
@@ -17,4 +17,4 @@ const RecommendationsComponent = props => {
 	);
 };
 
-export default RecommendationsComponent;
+export default TrackComponent;

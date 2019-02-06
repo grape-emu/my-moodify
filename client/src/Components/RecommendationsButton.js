@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import { getHashParams } from './spotify-functions';
-import RecommendationsView from './RecommendationsView';
+import { getHashParams } from './Auth/utils';
+import { TrackContainer } from './index';
 import ImageLoad from 'image-preview-react';
 import Webcam from 'react-webcam';
 
@@ -212,7 +212,7 @@ export default class RecommendationsButton extends Component {
 								)}
 							</div>
 							<div id="playlist">
-								<RecommendationsView tracks={this.state.tracks} />
+								<TrackContainer tracks={this.state.tracks} />
 							</div>
 							<div id="save-button">
 								<Button type="button" onClick={this.savePlaylist}>
