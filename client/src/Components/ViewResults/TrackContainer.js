@@ -1,5 +1,6 @@
 import React from 'react';
-import TrackComponent from './TrackComponent';
+import { TrackComponent } from '../index';
+
 const TrackContainer = props => {
 	return (
 		<div>

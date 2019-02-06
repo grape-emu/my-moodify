@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, RecommendationsButton } from './index';
+import { Navbar, SelectionDisplay } from './index';
 
 const MainDisplay = () => {
 	return (
@@ -7,7 +7,7 @@ const MainDisplay = () => {
 			<header className="App-header">
 				<Navbar className="App-header" />
 			</header>
-			<RecommendationsButton />
+			<SelectionDisplay />
 		</div>
 	);
 };
