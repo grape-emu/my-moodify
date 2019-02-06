@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, SelectionDisplay } from './index';
 import Button from '@material-ui/core/Button';
+import Typing from 'react-typing-animation';
 
 export default class MainDisplay extends Component {
 	constructor() {
@@ -33,7 +34,7 @@ export default class MainDisplay extends Component {
 				</header>
 				{!this.state.option && (
 					<div>
-						<p>Help us understand your mood!</p>
+						<Typing speed={75}>Help us understand your mood!</Typing>
 						<Button type="button" onClick={this.handleUpload}>
 							Upload an image
 						</Button>
