@@ -6,7 +6,7 @@ const RecommendationsDisplay = props => (
 	<div>
 		<EmotionsComponent feedback={props.feedback} />
 
-		<GenreComponent genres={props.genres} />
+		<GenreComponent genres={props.genres} spotifyQuery={props.feedback.spotifyQuery} />
 
 		<TrackContainer tracks={props.tracks} />
 
