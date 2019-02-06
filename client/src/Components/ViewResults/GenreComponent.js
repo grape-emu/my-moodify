@@ -3,7 +3,7 @@ import explainPlaylistData from './PlaylistDataAnalysis';
 import emotionsAnalysis from './EmotionsAnalysis';
 
 const GenreComponent = ({ genres, spotifyQuery }) => (
-  <div>
+  <div id="genre-component">
     <p>{emotionsAnalysis(spotifyQuery)}.</p>
     <p>
       {explainPlaylistData(spotifyQuery)}, from the genres {genres[0].id},{' '}
