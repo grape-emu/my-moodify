@@ -1,1 +1,0 @@
-?seed_genre=sad&min_energy=0.01111&max_energy=0.21111&min_valence=0&max_valence=0.18333&min_danceability=0&max_danceability=0.1&min_acousticness=0.65&max_acousticness=0.85&min_instrumentalness=0.73333&max_instrumentalness=0.93333&min_popularity=0.15&max_popularity=0.35&mode=0&min_loudness=-47.16667&max_loudness=-32.16667&min_tempo=73.33333&max_tempo=133.33333
