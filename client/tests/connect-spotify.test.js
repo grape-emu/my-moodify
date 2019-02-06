@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import ConnectSpotify from '../src/Components/ConnectSpotify';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+  ReactDOM.render(<ConnectSpotify />, div);
   ReactDOM.unmountComponentAtNode(div);
 });
