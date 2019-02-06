@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import * as SpotifyFunctions from './utils.js';
 
 const theme = createMuiTheme({
 	palette: {
