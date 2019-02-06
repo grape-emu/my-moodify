@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SpotifyContainer from '../src/Components/Auth/SpotifyContainer';
+import Navbar from '../Components/Navbar';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<SpotifyContainer />, div);
+  ReactDOM.render(<Navbar />, div);
   ReactDOM.unmountComponentAtNode(div);
 });

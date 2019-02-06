@@ -9,22 +9,7 @@
     "server": "nodemon server.js",
     "dev": "NODE_ENV=development npm run server",
     "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
-    "lint": "eslint ./ ",
-    "lint-fix": "npm run lint -- --fix",
-    "precommit": "# lint-staged # un-comment to enable",
-    "prettify": "prettier --write \"**/*.{js,jsx,json,css,scss,md}\"",
     "start-dev": "cd client/ && npm run build && cd ../ && NODE_ENV=development npm run server"
-  },
-  "lint-staged": {
-    "*.{js,jsx}": [
-      "prettier --write",
-      "npm run lint-fix",
-      "git add"
-    ],
-    "*.{css,scss,json,md}": [
-      "prettier --write",
-      "git add"
-    ]
   },
   "cacheDirectories": [
     "node_modules",
