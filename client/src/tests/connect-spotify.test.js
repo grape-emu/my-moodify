@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ConnectSpotify from '../src/Components/ConnectSpotify';
+import ConnectSpotify from '../Components/Authenticate/ConnectSpotify';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
