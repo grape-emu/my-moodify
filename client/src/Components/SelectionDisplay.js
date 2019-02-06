@@ -5,6 +5,7 @@ import ImageLoad from 'image-preview-react';
 import Webcam from 'react-webcam';
 import Button from '@material-ui/core/Button';
 import { MoodifyUpload, ErrorComponent, RecommendationsDisplay } from './index';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 export default class SelectionDisplay extends Component {
 	constructor(props) {
@@ -110,6 +111,16 @@ export default class SelectionDisplay extends Component {
 	};
 
 	render() {
+		const theme = createMuiTheme({
+		palette: {
+			primary: { main: '#6200ea' }, // deepPurple[a700]
+			secondary: { main: '#3f51b5' }, // indigo[500]
+			accent: { main: '#2196f3' } // blue[500]
+		},
+		typography: { useNextVariants: true }
+	});
+
+
 		const videoConstraints = {
 			width: 1280,
 			height: 720,
@@ -126,6 +137,7 @@ export default class SelectionDisplay extends Component {
 						refImage={this.refImage}
 					/>
 				)}
+				<br />
 
 				{this.state.option === 'capture' && (
 					<form onSubmit={this.moodifyFromCapture}>
@@ -138,13 +150,16 @@ export default class SelectionDisplay extends Component {
 								width={350}
 								videoConstraints={videoConstraints}
 							/>
-						)}
-						<img src={this.state.imageSrc} alt="" ref={this.refImage} />
-						<Button variant="contained" type="submit">
-							Moodify
-						</Button>
+						)} <br />
+						<img src={this.state.imageSrc} alt="" ref={this.refImage} /><br />
+										<MuiThemeProvider theme={theme}>
+											<Button variant="contained" type="submit" color="primary">
+												Moodify
+											</Button>
+										</MuiThemeProvider>
 					</form>
 				)}
+				<br />
 
 				{this.state.feedback.hasOwnProperty('spotifyQuery') &&
 					!this.state.feedback.spotifyQuery && <ErrorComponent />}

@@ -15,7 +15,7 @@ code {
 		monospace;
 }
 
-.button {
+.button, button {
 	margin: 5em;
 }
 
