@@ -2,17 +2,15 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { getHashParams } from './Authenticate/utils';
 import ImageLoad from 'image-preview-react';
-import {
-	MoodifyUpload,
-	MoodifyCapture,
-	ErrorComponent,
-	RecommendationsDisplay
-} from './index';
+import Webcam from 'react-webcam';
+import Button from '@material-ui/core/Button';
+import { MoodifyUpload, ErrorComponent, RecommendationsDisplay } from './index';
 
 export default class SelectionDisplay extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			option: this.props.option,
 			tracks: [],
 			feedback: {},
 			file: null,
@@ -29,7 +27,9 @@ export default class SelectionDisplay extends Component {
 	}
 
 	componentDidMount() {
-		ImageLoad({ button: this.refButton, image: this.refImage });
+		if (this.state.option === 'upload') {
+			ImageLoad({ button: this.refButton, image: this.refImage });
+		}
 	}
 
 	setRef = webcam => {
@@ -88,12 +88,11 @@ export default class SelectionDisplay extends Component {
 				);
 				this.setState({
 					tracks: data.tracks,
-					seedGenres: data.seeds,
-					feedback: query.data
+					seedGenres: data.seeds
 				});
 			}
 		} catch (err) {
-			console.error(err);
+			console.log(err);
 		}
 	};
 
@@ -111,17 +110,41 @@ export default class SelectionDisplay extends Component {
 	};
 
 	render() {
+		const videoConstraints = {
+			width: 1280,
+			height: 720,
+			facingMode: 'user'
+		};
 		return (
 			<div>
-				<MoodifyUpload
-					submit={this.moodifyFromUpload}
-					onChange={this.handleFileUpload}
-					refButton={this.refButton}
-					imageSrc={this.state.imageSrc}
-					refImage={this.refImage}
-				/>
+				{this.state.option === 'upload' && (
+					<MoodifyUpload
+						submit={this.moodifyFromUpload}
+						onChange={this.handleFileUpload}
+						refButton={this.refButton}
+						imageSrc={this.state.imageSrc}
+						refImage={this.refImage}
+					/>
+				)}
 
-				<MoodifyCapture submit={this.moodifyFromCapture} ref={this.setRef} />
+				{this.state.option === 'capture' && (
+					<form onSubmit={this.moodifyFromCapture}>
+						{this.state.imageSrc.length < 1 && (
+							<Webcam
+								audio={false}
+								height={350}
+								ref={this.setRef}
+								screenshotFormat="image/jpeg"
+								width={350}
+								videoConstraints={videoConstraints}
+							/>
+						)}
+						<img src={this.state.imageSrc} alt="" ref={this.refImage} />
+						<Button variant="contained" type="submit">
+							Moodify
+						</Button>
+					</form>
+				)}
 
 				{this.state.feedback.hasOwnProperty('spotifyQuery') &&
 					!this.state.feedback.spotifyQuery && <ErrorComponent />}
