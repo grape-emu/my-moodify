@@ -27,6 +27,7 @@ class Logout extends Component {
     return (
       <div className="logout">
         <MuiThemeProvider theme={theme}>
+        <br />
           <Button
             variant="contained"
             type="button"
@@ -35,6 +36,7 @@ class Logout extends Component {
           >
             Logout from Spotify
           </Button>
+        <br />
         </MuiThemeProvider>
       </div>
     );
