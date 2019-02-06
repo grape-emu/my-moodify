@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input';
 
 const MoodifyUpload = props => {
 	const theme = createMuiTheme({
@@ -18,7 +18,11 @@ const MoodifyUpload = props => {
 			<form onSubmit={props.submit}>
 				<MuiThemeProvider theme={theme}>
 					<div>
-						<input
+						<input style={{backgroundColor: "#6200ea",
+    color: "white",
+    fontSize: "1rem",
+    alignContent: "center",
+    alignItems: "center", margin: "1em"}}
 							variant="outlined"
 							color="primary"
 							label="upload file"
