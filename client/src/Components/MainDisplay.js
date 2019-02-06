@@ -28,6 +28,9 @@ export default class MainDisplay extends Component {
 	render() {
 		return (
 			<div>
+				<header className="App-header">
+					<Navbar className="App-header" />
+				</header>
 				{!this.state.option && (
 					<div>
 						<p>Help us understand your mood!</p>
@@ -42,9 +45,6 @@ export default class MainDisplay extends Component {
 
 				{this.state.option && (
 					<div>
-						<header className="App-header">
-							<Navbar className="App-header" />
-						</header>
 						<SelectionDisplay option={this.state.option} />
 						<Button type="button" onClick={this.handleReset}>
 							Start Over?
