@@ -110,7 +110,6 @@ export default class SelectionDisplay extends Component {
 	};
 
 	render() {
-		console.log(this.state);
 		const videoConstraints = {
 			width: 1280,
 			height: 720,
