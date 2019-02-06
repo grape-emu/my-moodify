@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import { Navbar, SelectionDisplay } from './index';
 import Button from '@material-ui/core/Button';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Typing from 'react-typing-animation';
+
+const theme = createMuiTheme({
+	palette: {
+		primary: { main: '#6200ea' }, // deepPurple[a700]
+		secondary: { main: '#3f51b5' }, // indigo[500]
+		accent: { main: '#2196f3' } // blue[500]
+	},
+	typography: { useNextVariants: true }
+});
 
 export default class MainDisplay extends Component {
 	constructor() {
@@ -34,13 +44,26 @@ export default class MainDisplay extends Component {
 				</header>
 				{!this.state.option && (
 					<div>
-						<Typing speed={75}>Help us understand your mood!</Typing>
-						<Button type="button" onClick={this.handleUpload}>
-							Upload an image
-						</Button>
-						<Button type="button" onClick={this.handleCapture}>
-							Take a selfie
-						</Button>
+						<h2>Help us understand your mood!</h2>
+						<MuiThemeProvider theme={theme}>
+							<Button
+								type="button"
+								variant="contained"
+								color="primary"
+								onClick={this.handleUpload}
+							>
+								Upload an image
+							</Button>
+
+							<Button
+								type="button"
+								color="primary"
+								variant="contained"
+								onClick={this.handleCapture}
+							>
+								Take a selfie
+							</Button>
+						</MuiThemeProvider>
 					</div>
 				)}
 
