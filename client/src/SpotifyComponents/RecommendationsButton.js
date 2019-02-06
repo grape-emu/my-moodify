@@ -134,6 +134,44 @@ export default class RecommendationsButton extends Component {
 		this.setState({ file: event.target.files });
 	};
 
+	explainPlaylistData = urlString => {
+		/* this helper function separates the tags we want from out of the url and
+		converts them to key-value pairs on a new object */
+			const convert = str => {
+				let hold = str.split('&');
+				let pairs = hold.map(pair => pair.split('='))
+				let holdObj = {};
+					pairs.map(pair => {
+					holdObj[pair[0]] = pair[1];
+				})
+				return holdObj;
+			}
+			// this main function interprets the values of each key into nice words for our user to enjoy
+			const prosify = obj => {
+				obj.output = 'Spotify has built you a playlist of songs '
+				if(obj.mode) {
+					obj.output += obj.mode === 1 ? 'in a major key ' : 'in a minor key '
+				}
+				if(!obj.max_valence) obj.output += 'with a very positive mood ';
+				if(!obj.min_valence) obj.output += 'with a very negative mood ';
+				else {
+					if(Number(obj.max_valence) >= 0.7) {
+						obj.output += 'with a comparatively positive mood ';
+					}
+					else obj.output += 'with a comparatively negative mood ';
+				}
+				if(!obj.max_energy || obj.max_energy >= 0.75) {
+					obj.output += 'and high energy';
+				}
+				if(!obj.min_energy || obj.min_energy <= 0.25) {
+					obj.output += 'and low energy';
+				}
+				else obj.output += 'and medium energy';
+				return obj.output;
+			}
+			return prosify(convert(urlString))
+		}
+
 	render() {
 		const genres = this.state.seedGenres;
 		const videoConstraints = {
@@ -205,7 +243,7 @@ export default class RecommendationsButton extends Component {
 							<div id="genre-data">
 								{genres && (
 									<p>
-										This playlist draws from the Spotify genres {genres[0].id},{' '}
+										{this.explainPlaylistData(this.state.feedback.spotifyQuery)}, from the genres {genres[0].id},{' '}
 										{genres[1].id}, {genres[2].id}, {genres[3].id}, and{' '}
 										{genres[4].id}.
 									</p>
@@ -217,6 +255,11 @@ export default class RecommendationsButton extends Component {
 							<div id="save-button">
 								<Button type="button" onClick={this.savePlaylist}>
 									Save Playlist
+								</Button>
+							</div>
+							<div id="improve-my-mood">
+								<Button type="button" onClick={this.improveMyMood}>
+									Improve My Mood
 								</Button>
 							</div>
 						</div>

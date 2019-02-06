@@ -43,7 +43,6 @@ class SpotifyUrlObject {
       }
       if (obj[key] === 'VERY_UNLIKELY') this[key] = -2;
       if (obj[key] === 'UNKNOWN') this[key] = 0;
-
     }
     return this;
   }
@@ -272,40 +271,6 @@ const modeUrlObj = new SpotifyUrlObject('mode', 2, -2, 0, 0);
 const valenceUrlObj = new SpotifyUrlObject('valence', 2, -2, 1, -1);
 const energyUrlObj = new SpotifyUrlObject('energy', 2, -1.5, 0, 1);
 
-/* Geoff had suggested that we move these numbers into a different, hard-coded object, but I don't see a good way to do that, because we need to keep the constructor or else (I think?) completely rework how the particular image's emotion is added to the object. Below are my attempts, which I retain for discussion purposes. */
-
-const genreData = {
-  name: 'genre',
-  joyScale: 2,
-  sorrowScale: -2,
-  surpriseScale: 0,
-  angerScale: 0,
-};
-
-const modeData = {
-  name: 'mode',
-  joyScale: 2,
-  sorrowScale: -2,
-  surpriseScale: 0,
-  angerScale: 0,
-};
-
-const valenceData = {
-  name: 'valence',
-  joyScale: 2,
-  sorrowScale: -2,
-  surpriseScale: 1,
-  angerScale: -1,
-};
-
-const energyData = {
-  name: 'energy',
-  joyScale: 2,
-  sorrowScale: -1.5,
-  surpriseScale: 0,
-  angerScale: 1,
-};
-
 /* Before we can act, we need an array that contains the instances for all the
 spotify keys we care about (see just above, line 112) */
 const fullUrlObject = [genreUrlObj, modeUrlObj, valenceUrlObj, energyUrlObj];
@@ -349,7 +314,7 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
   url string Spotify needs.
   Note that this.printString returns the strings for each key as an array,
   so they need to be joined.
-  Then, these four things are static to every query, so we concat them onto the end */
+	Then, these four things are static to every query, so we concat them onto the end */
   let urlString =
     specificPhotoObject.map(tag => tag.printString()).join('') +
     '&max_liveness=0.75&max_speechiness=0.66&market=US&explicit=false';
@@ -357,53 +322,4 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
   return urlString;
 };
 
-// Can we pass this the same object we've already processed? Or do we need to run the whole thing anew?
-// const improveMyMood = (processedSelfieObj) => {
-//   if(this.joyLikelihood <= 1) this.joyLikelihood += 1;
-//   else this.joyScale += 1;
-//   let urlString =
-//     processedSelfieObj.map(tag => tag.printString()).join('') +
-//     '&max_liveness=0.75&max_speechiness=0.66&market=US&explicit=false';
-//   console.log('urlString from the conversion function', urlString);
-//   return urlString;
-// }
-
-// Retaining this for easy testing purposes:
-// console.log(convertGoogleCloudVisionObjToSpotifyString({
-//   joyLikelihood: 'VERY_UNLIKELY',
-//   sorrowLikelihood: 'VERY_LIKELY',
-//   angerLikelihood: 'POSSIBLE',
-//   surpriseLikelihood: 'VERY_UNLIKELY'}))
-
-// console.log(improveMyMood({
-//   joyLikelihood: 'VERY_UNLIKELY',
-//   sorrowLikelihood: 'VERY_LIKELY',
-//   angerLikelihood: 'POSSIBLE',
-//   surpriseLikelihood: 'VERY_UNLIKELY'}))
-
 module.exports = convertGoogleCloudVisionObjToSpotifyString;
-
-// According to Google Cloud Vision, this face is definitely (joyful, sorrowful, surprised, angry), probably (ibid.), probably not (ibid.), and definitely not (ibid.).
-/*
-
-
-mode:
-  in a major key === 1
-  in a minor key === 0
-
-valence:
-  with a very positive mood
-  with a comparatively positive mood
-  with a comparatively negative mood
-  with a very negative mood
-
-energy:
-  with high energy
-  with medium energy
-  with low energy
-
-genre:
-
-
-
-  */
