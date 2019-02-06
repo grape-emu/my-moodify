@@ -5,7 +5,7 @@ const Navbar = () => (
 	<div>
 		<nav>
 			<Typography variant="h1" gutterBottom color="inherit">
-				MOODIFY
+				moodify
 			</Typography>
 		</nav>
 	</div>

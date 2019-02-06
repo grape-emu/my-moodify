@@ -1,6 +1,11 @@
 import React from 'react';
-import { ConnectSpotify } from './index';
+import { ConnectSpotify, Navbar } from './index';
 
-const LandingPage = () => <ConnectSpotify />;
+const LandingPage = () => (
+	<div id="landing-page">
+		<Navbar />
+		<ConnectSpotify />
+	</div>
+);
 
 export default LandingPage;
