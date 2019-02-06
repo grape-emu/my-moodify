@@ -110,6 +110,7 @@ export default class SelectionDisplay extends Component {
 	};
 
 	render() {
+		console.log(this.state);
 		const videoConstraints = {
 			width: 1280,
 			height: 720,
@@ -150,14 +151,12 @@ export default class SelectionDisplay extends Component {
 					!this.state.feedback.spotifyQuery && <ErrorComponent />}
 
 				{this.state.tracks && this.state.tracks.length > 0 && (
-					<div>
-						<RecommendationsDisplay
-							feedback={this.state.feedback}
-							genres={this.state.seedGenres}
-							tracks={this.state.tracks}
-							onClick={this.savePlaylistToSpotify}
-						/>
-					</div>
+					<RecommendationsDisplay
+						feedback={this.state.feedback}
+						genres={this.state.seedGenres}
+						tracks={this.state.tracks}
+						onClick={this.savePlaylistToSpotify}
+					/>
 				)}
 			</div>
 		);

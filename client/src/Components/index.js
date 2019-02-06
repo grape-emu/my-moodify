@@ -5,7 +5,6 @@ export { default as ConnectSpotify } from './Authenticate/ConnectSpotify';
 export { default as SelectionDisplay } from './SelectionDisplay';
 
 export { default as MoodifyUpload } from './ProcessImage/MoodifyUpload';
-export { default as MoodifyCapture } from './ProcessImage/MoodifyCapture';
 
 export { default as EmotionsComponent } from './ViewResults/EmotionsComponent';
 export { default as ErrorComponent } from './ViewResults/EmotionsComponent';
