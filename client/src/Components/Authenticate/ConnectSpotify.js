@@ -5,7 +5,7 @@ import * as SpotifyFunctions from './utils.js';
 
 const theme = createMuiTheme({
 	palette: {
-		primary: { main: '#673ab7' }, // deepPurple[500]
+		primary: { main: '#6200ea' }, // deepPurple[a700]
 		secondary: { main: '#3f51b5' }, // indigo[500]
 		accent: { main: '#2196f3' } // blue[500]
 	},
