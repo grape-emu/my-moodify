@@ -1,34 +1,36 @@
 import React from 'react';
 
 function messageConverter(arr) {
-  const strLikely = 'VERY_LIKELY';
+  const arrLikely = ['VERY_LIKELY', 'LIKELY', 'POSSIBLE'];
   const strUnlikely = 'VERY_UNLIKELY';
   let mood = '';
+  let generalMessage = '';
+  let feedback = '';
 
   if (
-    arr[0] === strLikely &&
+    arrLikely.includes(arr[0]) &&
     arr[1] === strUnlikely &&
     arr[2] === strUnlikely
   ) {
-    console.log('in a happy mood', arr[0]);
     mood = 'in a happy mood';
   } else if (
-    arr[1] === strLikely &&
+    arrLikely.includes(arr[1]) &&
     arr[0] === strUnlikely &&
     arr[2] === strUnlikely
   ) {
     mood = 'a bit upset';
   } else if (
-    arr[2] === strLikely &&
+    arrLikely.includes(arr[2]) &&
     arr[0] === strUnlikely &&
     arr[1] === strUnlikely
   ) {
     mood = 'sad';
   } else {
-    feedback = 'Here is a playlist that matches your mood:';
+    generalMessage = 'Here is a playlist that matches your mood:';
   }
-  let feedback = `You seem to be ${mood} today. Here is your playlist:`;
-  return feedback;
+  feedback = `You seem to be ${mood} today. Here is your playlist:`;
+  console.log(!!generalMessage);
+  return !!generalMessage ? generalMessage : feedback;
 }
 
 class Message extends React.Component {
