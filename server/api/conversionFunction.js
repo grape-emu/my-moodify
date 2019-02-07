@@ -12,16 +12,16 @@ class SpotifyUrlObject {
     this.sorrowScale = sorrowScale;
     this.surpriseScale = surpriseScale;
     this.angerScale = angerScale;
-    /* These arrays will be used for genre sorting below (genreStringComplex,
-			line 54), to help determine which emotion(s) Google determined to be dominant. */
-    this.veryLikelyMood = [];
-    this.likelyMood = [];
-    this.possibleMood = [];
-    this.leastUnlikelyMood = [];
   }
   // Line 311 maps over the array of instances with this.addEmotionKeys, just below
 
   addEmotionKeys(obj) {
+    /* These arrays will be used for genre sorting below (genreStringComplex,
+    line 54), to help determine which emotion(s) Google determined to be dominant. */
+    this.veryLikelyMood = [];
+    this.likelyMood = [];
+    this.possibleMood = [];
+    this.leastUnlikelyMood = [];
     /* Then we take our selfieObj (from Google Cloud Vision) and add numeric
     values to our instance to correspond with the emotion values the selfieObj
     contains (see example in ../../conversion/spotifyObjEmotions.js) */
@@ -46,6 +46,7 @@ class SpotifyUrlObject {
       if (obj[key] === 'VERY_UNLIKELY') this[key] = -2;
       if (obj[key] === 'UNKNOWN') this[key] = 0;
     }
+    console.log(this);
     return this;
   }
   /* Return to line 320, which maps over the output of this method with
@@ -61,7 +62,6 @@ class SpotifyUrlObject {
       'pop',
       'power-pop',
       'r-n-b',
-      'rainy-day',
       'rock',
       'rock-n-roll',
       'summer',
@@ -126,24 +126,30 @@ class SpotifyUrlObject {
       /* Google Cloud Vision sometimes returns more than one emotion as the most
       dominant, so mapping this function, as we do below, permits us to make one
       array at each rank containing all the possibilities at each rank*/
+      console.log('entering populateSeedArr', this.genrePossibilities);
       if (emotion === 'joyLikelihood') {
         this.genrePossibilities = this.genrePossibilities.concat(joyGenreSeeds);
+        console.log('if joy', this.genrePossibilities);
       }
       if (emotion === 'sorrowLikelihood') {
         this.genrePossibilities = this.genrePossibilities.concat(
           sorrowGenreSeeds
         );
+        console.log('if sorrow', this.genrePossibilities);
       }
       if (emotion === 'surpriseLikelihood') {
         this.genrePossibilities = this.genrePossibilities.concat(
           surpriseGenreSeeds
         );
+        console.log('if surprise', this.genrePossibilities);
       }
       if (emotion === 'angerLikelihood') {
         this.genrePossibilities = this.genrePossibilities.concat(
           angerGenreSeeds
         );
+        console.log('if anger', this.genrePossibilities);
       }
+      console.log('leaving populateSeedArr', this.genrePossibilities);
       return this.genrePossibilities;
     };
 
@@ -152,15 +158,12 @@ class SpotifyUrlObject {
 		not, we repeat the process for the next array */
     const grabGenres = moodArr => {
       /* We initialize genrePossibilities as an empty array (or empty it, if a
-			request has already been run on this page), to hold all the genres that
-			would be possible for this photo */
+        request has already been run on this page), to hold all the genres that
+        would be possible for this photo */
       this.genrePossibilities = [];
+      console.log('possibilities entering grabGenres', this.genrePossibilities);
       if (moodArr.length < 1) return false;
-      if (moodArr.length === 1) {
-        populateSeedArr(moodArr[0]);
-        return true;
-      }
-      if (moodArr.length > 1) {
+      if (moodArr.length >= 1) {
         moodArr.map(mood => populateSeedArr(mood));
         return true;
       }
@@ -185,6 +188,7 @@ class SpotifyUrlObject {
     else this.genreSeeds = getGenreSeeds(this.genrePossibilities);
 
     // This joins the seed genres in the string Spotify needs. Return to printString, line 244.
+    console.log('genreSeeds', this.genreSeeds);
     return `&seed_genres=${this.genreSeeds.join('%2C')}`;
   }
 
@@ -288,6 +292,7 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
   has detected emotions in the photo */
   const allUnknown = currentEmotion => currentEmotion === 'UNKNOWN';
   const allVeryUnlikely = currentEmotion => currentEmotion === 'VERY_UNLIKELY';
+  const tooBlurry = selfieObj.blurredLikelihood === 'VERY_LIKELY';
   const selfieObjEmotions = [
     selfieObj.joyLikelihood,
     selfieObj.sorrowLikelihood,
@@ -296,6 +301,7 @@ const convertGoogleCloudVisionObjToSpotifyString = selfieObj => {
   ];
   // Then we run those tests, confirming that we have emotion data to work with
   if (
+    tooBlurry ||
     selfieObjEmotions.every(allUnknown) ||
     selfieObjEmotions.every(allVeryUnlikely)
   ) {
