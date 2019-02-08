@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import * as SpotifyFunctions from './utils.js';
-
-const theme = createMuiTheme({
-	palette: {
-		primary: { main: '#6200ea' }, // deepPurple[a700]
-		secondary: { main: '#3f51b5' }, // indigo[500]
-		accent: { main: '#2196f3' } // blue[500]
-	},
-	typography: { useNextVariants: true }
-});
+import { theme } from '../index';
 
 class ConnectSpotify extends Component {
 	render() {

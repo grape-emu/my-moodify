@@ -1,58 +1,63 @@
 .App {
-  text-align: center;
+	text-align: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+	animation: App-logo-spin infinite 20s linear;
+	height: 40vmin;
 }
 
 .App-header {
-  min-height: 50%;
-  padding-bottom: 10px;
-  margin-top: 5%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: black;
+	min-height: 50%;
+	padding-bottom: 10px;
+	margin-top: 5%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(10px + 2vmin);
+	color: black;
 }
 
 .App-link {
-  color: #61dafb;
+	color: #61dafb;
 }
 
 .ImageForm {
-  border: 50%;
+	border: 50%;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 #landing-page {
-  align-items: center;
-  margin-top: 20%;
+	align-items: center;
+	margin-top: 20%;
 }
 
 #Content {
-  padding-bottom: 10px;
-  /* margin-top: 10%; */
-  align-items: center;
+	padding-bottom: 10px;
+	align-items: center;
+	width: 50%;
+	border: 1px solid black;
+	margin: auto;
+	border-radius: 50px;
+	background: lightgoldenrodyellow;
+	margin-top: 10%;
 }
 
 #genre-component {
-  margin-left: 28%;
-  margin-right: 28%;
+	margin-left: 28%;
+	margin-right: 28%;
 }
 
 #dictionary-entry {
-  margin-left: 20%;
-  margin-right: 20%;
+	margin-left: 20%;
+	margin-right: 20%;
 }

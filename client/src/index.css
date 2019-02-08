@@ -6,16 +6,28 @@ body {
 		sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	background: linear-gradient(to right, #b388ff 0%, #ede7f6 100%);
+	background: #7f00ff; /* fallback for old browsers */
+	background: -webkit-linear-gradient(
+		to right,
+		#e100ff,
+		#7f00ff
+	); /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(
+		to right,
+		#e100ff,
+		#7f00ff
+	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 	max-height: 100%;
 }
 
-code {
+/* code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 		monospace;
 }
 
-.button, button {
+.button,
+button {
 	margin: 5em;
 }
 
@@ -30,7 +42,7 @@ code {
 
 .colorInherit {
 	color: blueviolet;
-}
+} */
 
 img {
 	width: 15%;

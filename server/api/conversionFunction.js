@@ -55,6 +55,7 @@ class SpotifyUrlObject {
 	genreStringComplex() {
 		// First we initialize sets of genres for each dominant emotion
 		const joyGenreSeeds = [
+			'happy',
 			'disney',
 			'hip-hop',
 			'jazz',
@@ -68,6 +69,7 @@ class SpotifyUrlObject {
 			'summer'
 		];
 		const sorrowGenreSeeds = [
+			'sad',
 			'bluegrass',
 			'blues',
 			'emo',
@@ -182,11 +184,8 @@ class SpotifyUrlObject {
 		/* If joySeeds, which is the only set that includes 'disney', was added to
     genrePossibilities, then the first seed needs to be 'happy'. Likewise for
     sorrowSeeds, 'bluegrass', and 'sad'. */
-		if (this.genrePossibilities.includes('disney'))
-			this.genreSeeds = getGenreSeeds(this.genrePossibilities, 'happy');
-		else if (this.genrePossibilities.includes('bluegrass'))
-			this.genreSeeds = getGenreSeeds(this.genrePossibilities, 'sad');
-		else this.genreSeeds = getGenreSeeds(this.genrePossibilities);
+
+		this.genreSeeds = getGenreSeeds(this.genrePossibilities);
 		console.log('genresFound', this.genreSeeds);
 		// This joins the seed genres in the string Spotify needs. Return to printString, line 244.
 		return `&seed_genres=${this.genreSeeds.join('%2C')}`;
