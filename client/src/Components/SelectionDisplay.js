@@ -151,7 +151,7 @@ export default class SelectionDisplay extends Component {
 								width={350}
 								videoConstraints={videoConstraints}
 							/>
-						)}{' '}
+						)}
 						<br />
 						<img src={this.state.imageSrc} alt="" ref={this.refImage} />
 						<br />

@@ -17,11 +17,15 @@ const MoodifyUpload = props => {
 			<form onSubmit={props.submit}>
 				<MuiThemeProvider theme={theme}>
 					<div>
-						<input style={{backgroundColor: "#6200ea",
-    color: "white",
-    fontSize: "1rem",
-    alignContent: "center",
-    alignItems: "center", margin: "1em"}}
+						<input
+							style={{
+								backgroundColor: '#6200ea',
+								color: 'white',
+								fontSize: '1rem',
+								alignContent: 'center',
+								alignItems: 'center',
+								margin: '1em'
+							}}
 							variant="outlined"
 							color="primary"
 							label="upload file"
