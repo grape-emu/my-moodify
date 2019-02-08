@@ -35,7 +35,8 @@ export default class MainDisplay extends Component {
 				<div id="Content">
 					{!this.state.option && (
 						<div>
-							<h2> Help us understand your mood!</h2>
+							<h1> Help us understand your mood!</h1>
+
 							<MuiThemeProvider theme={theme}>
 								<div>
 									<Button
@@ -61,7 +62,8 @@ export default class MainDisplay extends Component {
 							</MuiThemeProvider>
 
 							<br />
-							<div id="dictionary-entry">
+							{/* <div id="dictionary-entry"> */}
+							<div>
 								<h3>mood·i·fy /ˈmuːdɪˌfaɪ/</h3>
 								<p>
 									<em>Verb.</em>

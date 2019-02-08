@@ -12,7 +12,7 @@ const styles = {
 		flexGrow: 1
 	},
 	grow: {
-		flexGrow: 1
+		flexGrow: 0.5
 	}
 };
 
@@ -21,10 +21,13 @@ const Navbar = props => {
 	return (
 		<MuiThemeProvider theme={theme}>
 			<div className={classes.root}>
-				<AppBar position="static">
+				<AppBar
+					position="static"
+					style={{ background: 'transparent', boxShadow: 'none' }}
+				>
 					<Toolbar>
 						<Typography
-							variant="h4"
+							variant="h3"
 							gutterBottom
 							color="inherit"
 							className={classes.grow}

@@ -4,7 +4,7 @@ import Typing from 'react-typing-animation';
 
 const LandingNavbar = () => (
 	<nav id="landing-nav">
-		<Typography variant="h1" gutterBottom color="primary">
+		<Typography variant="h1" gutterBottom color="inherit">
 			<Typing speed={250}>moodify</Typing>
 		</Typography>
 	</nav>

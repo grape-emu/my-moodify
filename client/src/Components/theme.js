@@ -2,9 +2,9 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
 	palette: {
-		primary: { main: '#1a237e' }, // deepPurple[a700]
-		secondary: { main: '#3f51b5' }, // indigo[500]
-		accent: { main: '#2196f3' } // blue[500]
+		primary: { main: '#8c9eff' },
+		secondary: { main: '#fafafa' },
+		accent: { main: '#fafafa' }
 	},
 	typography: { useNextVariants: true }
 });
