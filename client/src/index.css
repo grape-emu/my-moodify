@@ -1,3 +1,7 @@
+/* * {
+	border: 1px solid black;
+} */
+
 body {
 	margin: 0;
 	padding: 0;
@@ -6,7 +10,7 @@ body {
 		sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	background: linear-gradient(to right, #b388ff 0%, #ede7f6 100%);
+	/* background: linear-gradient(to right, #b388ff 0%, #ede7f6 100%); */
 	max-height: 100%;
 }
 
@@ -15,7 +19,8 @@ code {
 		monospace;
 }
 
-.button, button {
+.button,
+button {
 	margin: 5em;
 }
 
