@@ -8,6 +8,7 @@ const emotionsAnalysis = urlString => {
     pairs.map(pair => {
       holdObj[pair[0]] = pair[1];
     });
+    holdObj.seed_genres = holdObj.seed_genres.split('%2C');
     return holdObj;
   };
   // these are the same lists of genre seeds that we used in the conversion function
@@ -20,7 +21,6 @@ const emotionsAnalysis = urlString => {
     'pop',
     'power-pop',
     'r-n-b',
-    'rainy-day',
     'rock',
     'rock-n-roll',
     'summer',
@@ -71,18 +71,21 @@ const emotionsAnalysis = urlString => {
     let emotionHold = [];
     /* this helper function works backwords from the genres chosen to assess the
     dominant emotions detected in the photo (tested just below for each emotion) */
+    console.log('emotionHold, before', emotionHold);
     const genreTest = (seedArr, emotionName) => {
       const urlMatches = seedArr.filter(seed => obj.seed_genres.includes(seed));
+      console.log('urlMatches', urlMatches);
       if (urlMatches.length >= 1) emotionHold = [...emotionHold, emotionName];
       return emotionHold;
     };
-    genreTest(joyGenreSeeds, 'happy');
     genreTest(sorrowGenreSeeds, 'sad');
     genreTest(surpriseGenreSeeds, 'surprised');
     genreTest(angerGenreSeeds, 'angry');
+    genreTest(joyGenreSeeds, 'happy');
 
     obj.output = 'You seem to be ';
     obj.output += emotionHold.join(' and ');
+    console.log('emotionHold, after', emotionHold);
     return (obj.output += ' today');
   };
   return emotePhoto(convert(urlString));
