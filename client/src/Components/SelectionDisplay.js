@@ -111,6 +111,7 @@ export default class SelectionDisplay extends Component {
 	};
 
 	render() {
+		console.log(this.state)
 		const theme = createMuiTheme({
 		palette: {
 			primary: { main: '#6200ea' }, // deepPurple[a700]
@@ -152,11 +153,11 @@ export default class SelectionDisplay extends Component {
 							/>
 						)} <br />
 						<img src={this.state.imageSrc} alt="" ref={this.refImage} /><br />
-										<MuiThemeProvider theme={theme}>
+										{this.state.tracks && this.state.tracks.length < 1 && <MuiThemeProvider theme={theme}>
 											<Button variant="contained" type="submit" color="primary">
 												Moodify
 											</Button>
-										</MuiThemeProvider>
+										</MuiThemeProvider>}
 					</form>
 				)}
 				<br />

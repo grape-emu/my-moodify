@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 const RecommendationsDisplay = props => (
   <div>
     <GenreComponent
+      feedback={props.feedback}
       genres={props.genres}
       spotifyQuery={props.feedback.spotifyQuery}
     />
