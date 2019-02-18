@@ -12,7 +12,7 @@ module.exports = urlString => {
   };
   // this main function interprets the values of each key into nice words for our user to enjoy
   const prosify = obj => {
-    obj.output = 'Spotify has built you a playlist of songs ';
+    obj.output = 'We built you a playlist of songs ';
 
     if (obj.mode) {
       obj.output +=

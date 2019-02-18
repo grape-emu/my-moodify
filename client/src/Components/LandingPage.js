@@ -1,5 +1,5 @@
 import React from 'react';
-import { ConnectSpotify, LandingNavbar } from './index';
+import { ConnectSpotify, LandingNavbar} from './index';
 
 const LandingPage = () => (
 	<div id="landing-page">
