@@ -21,10 +21,10 @@ module.exports = urlString => {
 
     if (!obj.max_valence) obj.output += 'with a very positive mood ';
     if (!obj.min_valence) obj.output += 'with a very negative mood ';
-    if (Number(obj.max_valence) >= 0.7) {
+    if (Boolean(obj.min_valence) && Number(obj.max_valence) >= 0.7) {
       obj.output += 'with a comparatively positive mood ';
     }
-    if (Number(obj.max_valence) < 0.7) {
+    if (Boolean(obj.min_valence) && Number(obj.max_valence) < 0.7) {
       obj.output += 'with a comparatively negative mood ';
     }
 

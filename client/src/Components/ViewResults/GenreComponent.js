@@ -2,7 +2,7 @@ import React from 'react';
 import explainPlaylistData from './PlaylistDataAnalysis';
 
 const GenreComponent = ({ genres, spotifyQuery, feedback }) => (
-  <div id="genre-component">
+  <div className="inline-component">
     <p>Happiness: {(feedback.joyLikelihood)} </p>
     <p>Surprise:{feedback.surpriseLikelihood} </p>
     <p>Sorrow:{feedback.sorrowLikelihood} </p>

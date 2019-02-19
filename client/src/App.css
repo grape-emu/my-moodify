@@ -46,12 +46,7 @@
 	align-items: center;
 }
 
-#genre-component {
-	margin-left: 28%;
-	margin-right: 28%;
-}
-
-#dictionary-entry {
+.inline-component {
 	margin-left: 30%;
 	margin-right: 30%;
 }

@@ -72,13 +72,20 @@ export default class SelectionDisplay extends Component {
 	};
 
 	moodifyFromCapture = async event => {
+		let imageSrc;
 		try {
 			event.preventDefault();
-			const imageSrc = this.webcam.getScreenshot();
+			if (this.state.imageSrc.length === 0) {
+				imageSrc = this.webcam.getScreenshot();
+				this.setState({
+					imageSrc
+				});
+			} else {
+				imageSrc = this.state.imageSrc
+			}
 			const query = await axios.post('/api/s3/capture', { url: imageSrc });
 			this.setState({
 				feedback: query.data,
-				imageSrc
 			});
 			if (query.data.spotifyQuery) {
 				const token = getHashParams();
@@ -149,9 +156,10 @@ export default class SelectionDisplay extends Component {
 								width={350}
 								videoConstraints={videoConstraints}
 							/>
-						)} <br />
+						)} 
+						<br />
 						<img src={this.state.imageSrc} alt="" ref={this.refImage} /><br />
-										{this.state.tracks && this.state.tracks.length < 1 && <MuiThemeProvider theme={theme}>
+										{<MuiThemeProvider theme={theme}>
 											<Button variant="contained" type="submit" color="primary">
 												Moodify
 											</Button>
