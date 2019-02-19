@@ -111,7 +111,6 @@ export default class SelectionDisplay extends Component {
 	};
 
 	render() {
-		console.log(this.state)
 		const theme = createMuiTheme({
 		palette: {
 			primary: { main: '#6200ea' }, // deepPurple[a700]
@@ -120,7 +119,6 @@ export default class SelectionDisplay extends Component {
 		},
 		typography: { useNextVariants: true }
 	});
-
 
 		const videoConstraints = {
 			width: 1280,
