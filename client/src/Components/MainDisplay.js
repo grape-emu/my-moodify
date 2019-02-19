@@ -74,7 +74,6 @@ export default class MainDisplay extends Component {
 									</Button>
 								</div>
 							</MuiThemeProvider>
-
 							<br />
 						</div>
 					)}
