@@ -15,7 +15,7 @@ const styles = {
 	}
 };
 
-const TopBar = props => {
+const TopNav = props => {
 	const { classes } = props;
 	return (
 		<MuiThemeProvider theme={theme}>
@@ -33,8 +33,8 @@ const TopBar = props => {
 	);
 };
 
-TopBar.propTypes = {
+TopNav.propTypes = {
 	classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(TopBar);
+export default withStyles(styles)(TopNav);

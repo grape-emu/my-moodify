@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, SelectionDisplay} from './index';
+import { Navbar, SelectionDisplay, TopNav} from './index';
 import Button from '@material-ui/core/Button';
 import Logout from './Authenticate/Logout';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -39,6 +39,7 @@ export default class MainDisplay extends Component {
 	render() {
 		return (
 			<div>
+				<TopNav />
 				<header className="App-header">
 					<Navbar className="App-header" />
 				</header>
