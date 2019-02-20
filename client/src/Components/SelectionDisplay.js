@@ -143,17 +143,17 @@ export default class SelectionDisplay extends Component {
 						refImage={this.refImage}
 					/>
 				)}
-				<br />
+
 
 				{this.state.option === 'capture' && (
 					<form onSubmit={this.moodifyFromCapture}>
 						{this.state.imageSrc.length < 1 && (
 							<Webcam
 								audio={false}
-								height={350}
+								height={500}
 								ref={this.setRef}
 								screenshotFormat="image/jpeg"
-								width={350}
+								width={500}
 								videoConstraints={videoConstraints}
 							/>
 						)} 

@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import { theme, Logout } from './index';
 
 const styles = {
@@ -15,7 +16,7 @@ const styles = {
 	}
 };
 
-const TopNav = props => {
+const Navbar = props => {
 	const { classes } = props;
 	return (
 		<MuiThemeProvider theme={theme}>
@@ -33,8 +34,8 @@ const TopNav = props => {
 	);
 };
 
-TopNav.propTypes = {
+Navbar.propTypes = {
 	classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(TopNav);
+export default withStyles(styles)(Navbar);

@@ -29,7 +29,7 @@ class Logout extends Component {
         <MuiThemeProvider theme={theme}>
         <br />
           <Button
-            variant="contained"
+            variant="text"
             type="button"
             color="primary"
             onClick={this.handleLogout}

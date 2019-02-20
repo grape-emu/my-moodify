@@ -16,3 +16,4 @@ export {
 } from './ViewResults/RecommendationsDisplay';
 export { default as TrackComponent } from './ViewResults/TrackComponent';
 export { default as TrackContainer } from './ViewResults/TrackContainer';
+export {default as theme} from './theme'

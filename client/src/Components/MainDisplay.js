@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Navbar, SelectionDisplay, TopNav} from './index';
 import Button from '@material-ui/core/Button';
-import Logout from './Authenticate/Logout';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
 
 const theme = createMuiTheme({
 	palette: {
@@ -43,15 +43,13 @@ export default class MainDisplay extends Component {
 				<header className="App-header">
 					<Navbar className="App-header" />
 				</header>
-
-					<p className="inline-component">Upload an image or take a selfie and let us find you the perfect playlist.
-					Using machine learning and a few funky functions of our own, we'll analyze your facial exprsesions,
-					and send back a Spotify playlist that matches your current mood. </p>
-
+			<h2>Help Us Find Your Mood</h2>
+				<p class="inline-component">Upload an image or take a selfie </p>
+				<p classname="inline-component">Analyze mood</p>
+				<p classname="inline-component">Enjoy your new playlist</p>
 				<div id="Content">
 					{!this.state.option && (
 						<div>
-							<h2> Help us understand your mood</h2>
 							<MuiThemeProvider theme={theme}>
 								<div>
 									<Button
@@ -95,12 +93,8 @@ export default class MainDisplay extends Component {
 							<br />
 						</div>
 					)}
-					{this.state.option && (
-						<div>
-							<Logout />
-						</div>
-					)}
 				</div>
+
 			</div>
 		);
 	}
