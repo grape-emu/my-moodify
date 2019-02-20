@@ -6,7 +6,6 @@ export { default as TopNav } from './TopNav'
 export {default as Logout} from './Authenticate/Logout'
 export { default as ConnectSpotify } from './Authenticate/ConnectSpotify';
 export { default as SelectionDisplay } from './SelectionDisplay';
-export {default as Dictionary } from './Dictionary';
 export { default as MoodifyUpload } from './ProcessImage/MoodifyUpload';
 
 export { default as ErrorComponent } from './ViewResults/ErrorComponent';

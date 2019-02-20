@@ -49,9 +49,10 @@ export default class MainDisplay extends Component {
 				<p classname="inline-component">Enjoy your new playlist</p>
 				<div id="Content">
 					{!this.state.option && (
-						<div>
-							<MuiThemeProvider theme={theme}>
+						<div className='flex-container'>
+		
 								<div>
+								<MuiThemeProvider theme={theme}>
 									<Button
 										type="button"
 										variant="contained"
@@ -60,9 +61,10 @@ export default class MainDisplay extends Component {
 									>
 										Upload an image
 									</Button>
+								</MuiThemeProvider>
 								</div>
-								<br />
 								<div>
+								<MuiThemeProvider theme={theme}>
 									<Button
 										type="button"
 										color="primary"
@@ -71,9 +73,8 @@ export default class MainDisplay extends Component {
 									>
 										Take a selfie
 									</Button>
+								</MuiThemeProvider>
 								</div>
-							</MuiThemeProvider>
-							<br />
 						</div>
 					)}
 

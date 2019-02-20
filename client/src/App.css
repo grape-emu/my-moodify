@@ -47,11 +47,20 @@
 }
 
 .inline-component {
-	margin-left: 30%;
-	margin-right: 30%;
+	margin: auto;
+    width: 50%;
 }
 
 .logout {
 	left: 10px;
 	top: 10px;
+}
+
+.flex-container {
+	display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: auto;
+	width: 30%;
+	margin: 5% auto auto;
 }
