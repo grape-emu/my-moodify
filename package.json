@@ -30,7 +30,7 @@
 		"body-parser": "^1.18.3",
 		"canvas": "^2.3.1",
 		"compression": "^1.7.3",
-		"express": "^4.16.4",
+		"express": "^4.17.3",
 		"file-system": "^2.2.2",
 		"file-type": "^16.5.4",
 		"fs": "0.0.1-security",
